@@ -1,10 +1,15 @@
 package view;
 
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+
+import view.paineis.PainelCadastroUsuario;
+
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
@@ -70,7 +75,19 @@ public class FramePrincipal extends JFrame {
 		JMenu mnUsuario = new JMenu("Usuário");
 		menuBar.add(mnUsuario);
 		
-		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");
+		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");		
+		mnItemCadastrarUsuario.addActionListener(new ActionListener() {
+			private PainelCadastroUsuario painelCadastroUsuario;
+
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroUsuario = new PainelCadastroUsuario();
+				painelCadastroUsuario.setVisible(true);
+				
+				//Atualiza a tela principal
+				setContentPane(painelCadastroUsuario);
+				revalidate();
+			}
+		});
 		mnUsuario.add(mnItemCadastrarUsuario);
 		
 		JMenuItem mnItemListarUsuarios = new JMenuItem("Listar");

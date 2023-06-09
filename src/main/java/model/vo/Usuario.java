@@ -5,14 +5,14 @@ public class Usuario {
 	private String nome;
 	private String cpf;
 	private String telefone;
-	private TipoUsuario perfil;
+	private String perfil;
 	
 	public Usuario() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
-	public Usuario(int idUsuario, String nome, String cpf, String telefone, TipoUsuario perfil) {
+	public Usuario(int idUsuario, String nome, String cpf, String telefone, String perfil) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -53,11 +53,11 @@ public class Usuario {
 		this.telefone = telefone;
 	}
 
-	public TipoUsuario getPerfil() {
+	public String getPerfil() {
 		return perfil;
 	}
 
-	public void setPerfil(TipoUsuario perfil) {
+	public void setPerfil(String perfil) {
 		this.perfil = perfil;
 	}
 }
