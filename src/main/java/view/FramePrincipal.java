@@ -8,7 +8,9 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.paineis.PainelCadastroQuarto;
 import view.paineis.PainelCadastroUsuario;
+import view.paineis.PainelListagemQuarto;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -49,9 +51,29 @@ public class FramePrincipal extends JFrame {
 		menuBar.add(mnQuarto);
 		
 		JMenuItem mnItemCadastrarQuarto = new JMenuItem("Cadastrar");
+		mnItemCadastrarQuarto.addActionListener(new ActionListener() {
+			private PainelCadastroQuarto painelCadastroQuarto;
+
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroQuarto = new PainelCadastroQuarto();
+				painelCadastroQuarto.setVisible(true);
+				setContentPane(painelCadastroQuarto);
+				revalidate();
+			}
+		});
 		mnQuarto.add(mnItemCadastrarQuarto);
 		
 		JMenuItem mnItemListarQuartos = new JMenuItem("Listar");
+		mnItemListarQuartos.addActionListener(new ActionListener() {
+			private PainelListagemQuarto painelListagemQuarto;
+
+			public void actionPerformed(ActionEvent e) {
+				painelListagemQuarto = new PainelListagemQuarto();
+				painelListagemQuarto.setVisible(true);
+				setContentPane(painelListagemQuarto);
+				revalidate();
+			}
+		});
 		mnQuarto.add(mnItemListarQuartos);
 		
 		JMenu mnHospede = new JMenu("Hóspede");
