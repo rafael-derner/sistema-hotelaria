@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import view.paineis.PainelCadastroQuarto;
 import view.paineis.PainelCadastroUsuario;
 import view.paineis.PainelListagemQuarto;
+import view.paineis.PainelListagemUsuario;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
