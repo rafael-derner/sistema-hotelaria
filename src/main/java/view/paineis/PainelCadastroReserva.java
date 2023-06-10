@@ -17,12 +17,12 @@ import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 
 public class PainelCadastroReserva extends JPanel {
-	private JTextField tfNomeHospede;
 	private DatePickerSettings dateSettings;
-	private DatePicker dataPicker;
 	private JTable table;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
+	private DatePicker dataInicio;
+	private DatePicker dataFim;
 
 	public PainelCadastroReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -50,6 +50,8 @@ public class PainelCadastroReserva extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
@@ -59,10 +61,6 @@ public class PainelCadastroReserva extends JPanel {
 		
 		JLabel lblReservaHospede = new JLabel("Reserva iniciada para o Hospede:");
 		add(lblReservaHospede, "4, 2, 3, 1");
-		
-		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 4, 5, 1, fill, default");
-		tfNomeHospede.setColumns(10);
 		
 		JLabel lblModeloQuarto = new JLabel("Selecione o modelo de quarto:");
 		add(lblModeloQuarto, "4, 6, 3, 1");
@@ -85,19 +83,27 @@ public class PainelCadastroReserva extends JPanel {
 		add(lblPeriodo, "4, 10, 3, 1");
 		
 		dateSettings = new DatePickerSettings();
-		dataPicker = new DatePicker(dateSettings);
-		add(dataPicker, "4, 12, 3, 1");
+		
+		JLabel lblInicioPeridodo = new JLabel("Inicio:");
+		add(lblInicioPeridodo, "4, 12, left, default");
+		
+		JLabel lblFimPeridodo = new JLabel("Fim:");
+		add(lblFimPeridodo, "6, 12");
+		
+		dataInicio = new DatePicker(dateSettings);
+		add(dataInicio, "4, 14");
+		
+		dataFim = new DatePicker(dateSettings);
+		add(dataFim, "6, 14, fill, default");
 		
 		table = new JTable();
-		add(table, "4, 14, 5, 1, fill, fill");
+		add(table, "4, 16, 5, 1, fill, fill");
 		
 		btnCancelar = new JButton("Cancelar");
-		add(btnCancelar, "4, 16, left, default");
+		add(btnCancelar, "4, 18, left, default");
 		
 		btnSalvar = new JButton("Salvar");
-		add(btnSalvar, "8, 16, right, default");
-		
-		
+		add(btnSalvar, "8, 18, right, default");
 		
 	}
 }
