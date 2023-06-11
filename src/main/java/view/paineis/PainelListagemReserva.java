@@ -21,11 +21,14 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JTable tabelaResultado;
+	private JButton btnEditar;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -55,14 +58,14 @@ public class PainelListagemReserva extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblNome = new JLabel("Nome do hospede:");
-		add(lblNome, "4, 4, 3, 1");
+		add(lblNome, "4, 4, 5, 1");
 		
 		textField = new JTextField();
-		add(textField, "4, 6, 3, 1, fill, default");
+		add(textField, "4, 6, 5, 1, fill, default");
 		textField.setColumns(10);
 		
 		JLabel lblQuarto = new JLabel("Numero do quarto");
-		add(lblQuarto, "4, 8, 3, 1");
+		add(lblQuarto, "4, 8, 5, 1");
 		
 		tfQuarto = new JTextField();
 		tfQuarto.setColumns(10);
@@ -74,7 +77,7 @@ public class PainelListagemReserva extends JPanel {
 		add(lblInicioPeridodo, "4, 12, 2, 1, left, default");
 		
 		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "6, 12");
+		add(lblFimPeridodo, "6, 12, 3, 1");
 		
 		dataInicio = new DatePicker(dateSettings);
 		add(dataInicio, "4, 14");
@@ -83,13 +86,16 @@ public class PainelListagemReserva extends JPanel {
 		add(dataFim, "6, 14, fill, default");
 		
 		tabelaResultado = new JTable();
-		add(tabelaResultado, "4, 16, 3, 1, fill, fill");
+		add(tabelaResultado, "4, 16, 5, 1, fill, fill");
 		
 		btnLimpar = new JButton("Limpar");
 		add(btnLimpar, "4, 18, left, default");
 		
+		btnEditar = new JButton("Editar");
+		add(btnEditar, "6, 18, center, default");
+		
 		btnConsultar = new JButton("Consultar");
-		add(btnConsultar, "6, 18, right, default");
+		add(btnConsultar, "8, 18, right, default");
 
 	}
 

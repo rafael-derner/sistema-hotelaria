@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.RowSpec;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
 
 public class PainelCadastroReserva extends JPanel {
 	private DatePickerSettings dateSettings;
@@ -23,6 +24,7 @@ public class PainelCadastroReserva extends JPanel {
 	private DatePicker dataInicio;
 	private DatePicker dataFim;
 	private JTable tabelaResultados;
+	private JTextField tfNomeHospede;
 
 	public PainelCadastroReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -37,6 +39,8 @@ public class PainelCadastroReserva extends JPanel {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -59,20 +63,30 @@ public class PainelCadastroReserva extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		
-		JLabel lblReservaHospede = new JLabel("Reserva iniciada para o Hospede:");
+		JLabel lblReservaHospede = new JLabel("Buscar hospede:");
 		add(lblReservaHospede, "4, 2, 3, 1");
 		
+		tfNomeHospede = new JTextField();
+		add(tfNomeHospede, "4, 4, 3, 1, fill, default");
+		tfNomeHospede.setColumns(10);
+		
+		JButton btnBuscar = new JButton("Buscar");
+		add(btnBuscar, "8, 4, left, default");
+		
+		JComboBox cbxNomeHospede = new JComboBox();
+		add(cbxNomeHospede, "4, 6, 3, 1, fill, default");
+		
 		JLabel lblModeloQuarto = new JLabel("Selecione o modelo de quarto:");
-		add(lblModeloQuarto, "4, 6, 3, 1");
+		add(lblModeloQuarto, "4, 8, 3, 1");
 		
 		JRadioButton rdbtnBasico = new JRadioButton("Básico");
-		add(rdbtnBasico, "4, 8");
+		add(rdbtnBasico, "4, 10");
 		
 		JRadioButton rdbtnIntermediario = new JRadioButton("Intermediário");
-		add(rdbtnIntermediario, "6, 8");
+		add(rdbtnIntermediario, "6, 10");
 		
 		JRadioButton rdbtnLuxo = new JRadioButton("Luxo");
-		add(rdbtnLuxo, "8, 8");
+		add(rdbtnLuxo, "8, 10");
 		
 		ButtonGroup buttonGroup = new ButtonGroup();
 	    buttonGroup.add(rdbtnBasico);
@@ -80,30 +94,30 @@ public class PainelCadastroReserva extends JPanel {
 	    buttonGroup.add(rdbtnLuxo);
 		
 		JLabel lblPeriodo = new JLabel("Insira um periodo para a reserva:");
-		add(lblPeriodo, "4, 10, 3, 1");
+		add(lblPeriodo, "4, 12, 3, 1");
 		
 		dateSettings = new DatePickerSettings();
 		
 		JLabel lblInicioPeridodo = new JLabel("Inicio:");
-		add(lblInicioPeridodo, "4, 12, left, default");
+		add(lblInicioPeridodo, "4, 14, left, default");
 		
 		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "6, 12");
+		add(lblFimPeridodo, "6, 14");
 		
 		dataInicio = new DatePicker(dateSettings);
-		add(dataInicio, "4, 14");
+		add(dataInicio, "4, 16");
 		
 		dataFim = new DatePicker(dateSettings);
-		add(dataFim, "6, 14, fill, default");
+		add(dataFim, "6, 16, fill, default");
 		
 		tabelaResultados = new JTable();
-		add(tabelaResultados, "4, 16, 5, 1, fill, fill");
+		add(tabelaResultados, "4, 18, 5, 1, fill, fill");
 		
 		btnCancelar = new JButton("Cancelar");
-		add(btnCancelar, "4, 18, left, default");
+		add(btnCancelar, "4, 20, left, default");
 		
 		btnSalvar = new JButton("Salvar");
-		add(btnSalvar, "8, 18, right, default");
+		add(btnSalvar, "8, 20, right, default");
 		
 	}
 }
