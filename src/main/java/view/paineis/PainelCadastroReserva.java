@@ -18,11 +18,11 @@ import javax.swing.JButton;
 
 public class PainelCadastroReserva extends JPanel {
 	private DatePickerSettings dateSettings;
-	private JTable table;
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private DatePicker dataInicio;
 	private DatePicker dataFim;
+	private JTable tabelaResultados;
 
 	public PainelCadastroReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -74,10 +74,10 @@ public class PainelCadastroReserva extends JPanel {
 		JRadioButton rdbtnLuxo = new JRadioButton("Luxo");
 		add(rdbtnLuxo, "8, 8");
 		
-		 ButtonGroup buttonGroup = new ButtonGroup();
-	     buttonGroup.add(rdbtnBasico);
-	     buttonGroup.add(rdbtnIntermediario);
-	     buttonGroup.add(rdbtnLuxo);
+		ButtonGroup buttonGroup = new ButtonGroup();
+	    buttonGroup.add(rdbtnBasico);
+	    buttonGroup.add(rdbtnIntermediario);
+	    buttonGroup.add(rdbtnLuxo);
 		
 		JLabel lblPeriodo = new JLabel("Insira um periodo para a reserva:");
 		add(lblPeriodo, "4, 10, 3, 1");
@@ -96,8 +96,8 @@ public class PainelCadastroReserva extends JPanel {
 		dataFim = new DatePicker(dateSettings);
 		add(dataFim, "6, 14, fill, default");
 		
-		table = new JTable();
-		add(table, "4, 16, 5, 1, fill, fill");
+		tabelaResultados = new JTable();
+		add(tabelaResultados, "4, 16, 5, 1, fill, fill");
 		
 		btnCancelar = new JButton("Cancelar");
 		add(btnCancelar, "4, 18, left, default");
