@@ -11,6 +11,7 @@ import javax.swing.border.EmptyBorder;
 import view.paineis.PainelCadastroQuarto;
 import view.paineis.PainelCadastroUsuario;
 import view.paineis.PainelListagemQuarto;
+import view.paineis.PainelListagemUsuario;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
@@ -18,6 +19,9 @@ import javax.swing.JMenuItem;
 
 public class FramePrincipal extends JFrame {
 
+	private PainelCadastroUsuario painelCadastroUsuario;
+	private PainelListagemUsuario painelListagemUsuario;
+	
 	/**
 	 * Launch the application.
 	 */
@@ -99,11 +103,11 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");		
 		mnItemCadastrarUsuario.addActionListener(new ActionListener() {
-			private PainelCadastroUsuario painelCadastroUsuario;
-
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroUsuario = new PainelCadastroUsuario();
 				painelCadastroUsuario.setVisible(true);
+				// registra action do botao cancelar de dentro do painel
+				registrarCliqueBtnCancelarPainelCadastroUsuario();
 				
 				//Atualiza a tela principal
 				setContentPane(painelCadastroUsuario);
@@ -115,5 +119,29 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemListarUsuarios = new JMenuItem("Listar");
 		mnUsuario.add(mnItemListarUsuarios);
 
+	}
+	
+	/*
+	 * Clique no botão de cancelar do PainelCadastroUsuario
+	 */
+	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
+		if(painelCadastroUsuario == null) {
+			painelCadastroUsuario = new PainelCadastroUsuario();
+		}
+		
+		painelCadastroUsuario.getBtnCancelar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelListagemUsuario = new PainelListagemUsuario();
+				painelListagemUsuario.setVisible(true);
+				registrarCliqueBotaoEditarDoPainelListagemUsuario();
+				setContentPane(painelListagemUsuario);
+				revalidate();
+			}
+		});
+	}
+
+	protected void registrarCliqueBotaoEditarDoPainelListagemUsuario() {
+		// TODO Auto-generated method stub
+		
 	}
 }
