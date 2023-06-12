@@ -69,8 +69,8 @@ public class PainelCheckOut extends JPanel {
 		table = new JTable();
 		add(table, "4, 14, 3, 5, fill, fill");
 		
-		JButton btnCheckIn = new JButton("Check-In");
-		add(btnCheckIn, "4, 20, 3, 1, right, default");
+		JButton btnCheckOut = new JButton("Check-Out");
+		add(btnCheckOut, "4, 20, 3, 1, right, default");
 
 	}
 

@@ -9,6 +9,7 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 import view.paineis.PainelCadastroQuarto;
+import view.paineis.PainelCadastroReserva;
 import view.paineis.PainelCadastroUsuario;
 import view.paineis.PainelListagemQuarto;
 import view.paineis.PainelListagemUsuario;
@@ -21,6 +22,7 @@ public class FramePrincipal extends JFrame {
 
 	private PainelCadastroUsuario painelCadastroUsuario;
 	private PainelListagemUsuario painelListagemUsuario;
+	private PainelCadastroReserva cadastroReserva;
 	
 	/**
 	 * Launch the application.
@@ -93,6 +95,14 @@ public class FramePrincipal extends JFrame {
 		menuBar.add(mnReserva);
 		
 		JMenuItem mnItemCadastrarReserva = new JMenuItem("Cadastrar");
+		mnItemCadastrarReserva.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cadastroReserva = new PainelCadastroReserva();
+				cadastroReserva.setVisible(true);
+				setContentPane(cadastroReserva);
+				revalidate();
+			}
+		});
 		mnReserva.add(mnItemCadastrarReserva);
 		
 		JMenuItem mnItemListarReservas = new JMenuItem("Listar");
@@ -122,7 +132,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no botão de cancelar do PainelCadastroUsuario
+	 * Clique no botï¿½o de cancelar do PainelCadastroUsuario
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
 		if(painelCadastroUsuario == null) {
