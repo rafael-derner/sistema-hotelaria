@@ -127,6 +127,16 @@ public class FramePrincipal extends JFrame {
 		mnUsuario.add(mnItemCadastrarUsuario);
 		
 		JMenuItem mnItemListarUsuarios = new JMenuItem("Listar");
+		mnItemListarUsuarios.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelListagemUsuario = new PainelListagemUsuario();
+				painelListagemUsuario.setVisible(true);
+				
+				//Atualiza a tela principal
+				setContentPane(painelListagemUsuario);
+				revalidate();
+			}
+		});
 		mnUsuario.add(mnItemListarUsuarios);
 
 	}

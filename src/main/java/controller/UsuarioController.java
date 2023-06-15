@@ -1,8 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.bo.UsuarioBO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfDuplicadoException;
+import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
 public class UsuarioController {
@@ -17,19 +21,23 @@ public class UsuarioController {
 		String mensagemValidacao = "";
 		
 		if(novoUsuario.getNome() == null || novoUsuario.getNome().trim().length() < 2) {
-			mensagemValidacao += "Nome inválido \n";
+			mensagemValidacao += "Nome invï¿½lido \n";
 		}
 		
 		if(novoUsuario.getCpf() == null || novoUsuario.getCpf().trim().length() < 2) {
-			mensagemValidacao += "Telefone inválido \n";
+			mensagemValidacao += "Telefone invï¿½lido \n";
 		}
 		
 		if(novoUsuario.getTelefone() == null || novoUsuario.getTelefone().trim().length() < 2) {
-			mensagemValidacao += "Telefone inválido \n";
+			mensagemValidacao += "Telefone invï¿½lido \n";
 		}
 		
 		if(!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
+	}
+
+	public List<Usuario> consultarComFiltro(UsuarioSeletor usuarioSeletor) {
+		return usuarioBO.consultarComFiltro(usuarioSeletor);
 	}
 }
