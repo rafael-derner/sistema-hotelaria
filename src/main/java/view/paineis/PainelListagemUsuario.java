@@ -19,11 +19,16 @@ import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.text.MaskFormatter;
 import javax.swing.JComboBox;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.text.ParseException;
 import java.awt.event.ActionEvent;
+import javax.swing.JFormattedTextField;
 
 public class PainelListagemUsuario extends JPanel {
 
@@ -34,7 +39,8 @@ public class PainelListagemUsuario extends JPanel {
 	private JTable tblUsuarios;
 	private JTextField tfNome;
 	private JLabel lblCpf;
-	private JTextField tfCpf;
+	private JFormattedTextField tfCpf;
+	private MaskFormatter mascaraCpf;
 	private JLabel lblPerfil;
 	private JComboBox comboBox;
 	private String[] tiposDePerfil = {"", "Recepcionista", "Gerente"};
@@ -42,6 +48,7 @@ public class PainelListagemUsuario extends JPanel {
 	private JButton btnLimpar;
 	private JButton btnEditar;
 	private JButton btnExcluir;
+	private Usuario usuarioSelecionado;
 	
 	public PainelListagemUsuario() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -92,6 +99,14 @@ public class PainelListagemUsuario extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
+				
+		try {
+			mascaraCpf = new MaskFormatter("###.###.###-##");
+			mascaraCpf.setValueContainsLiteralCharacters(false);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usu\u00E1rios");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -110,7 +125,7 @@ public class PainelListagemUsuario extends JPanel {
 		add(tfNome, "4, 10, fill, default");
 		tfNome.setColumns(10);
 		
-		tfCpf = new JTextField();
+		tfCpf = new JFormattedTextField(mascaraCpf);
 		add(tfCpf, "6, 10, fill, default");
 		tfCpf.setColumns(10);
 		
@@ -128,11 +143,31 @@ public class PainelListagemUsuario extends JPanel {
 		add(btnConsultar, "10, 10");
 		
 		btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				tfNome.setText(null);
+				tfCpf.setText(null);
+				comboBox.setSelectedIndex(0);
+			}
+		});
 		add(btnLimpar, "12, 10");
 		
 		tblUsuarios = new JTable();
 		add(tblUsuarios, "4, 12, 9, 5, fill, fill");
 		this.limparTabelaUsuarios();
+		
+		tblUsuarios.addMouseListener(new MouseAdapter() {
+
+			public void mouseClicked(MouseEvent e) {
+				int elementoSelecionado = tblUsuarios.getSelectedRow();
+				
+				if(elementoSelecionado > 0) {
+					btnEditar.setEnabled(true);
+					btnExcluir.setEnabled(true);
+					usuarioSelecionado = usuarios.get(elementoSelecionado - 1);
+				}
+			}
+		});
 		
 		btnEditar = new JButton("Editar");
 		btnEditar.setBackground(new Color(50, 204, 233));
@@ -141,14 +176,25 @@ public class PainelListagemUsuario extends JPanel {
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setBackground(new Color(255, 0, 0));
 		add(btnExcluir, "12, 18");
+		
+		buscarUsuarioComFiltro();
 	} 
 	
 	protected void buscarUsuarioComFiltro() {
 		usuarioSeletor = new UsuarioSeletor();
 		
 		usuarioSeletor.setNome(tfNome.getText());
-		usuarioSeletor.setCpf(tfCpf.getText());
 		usuarioSeletor.setPerfil((String) comboBox.getSelectedItem());
+
+		if(!tfCpf.getText().contains("   .   .   -  ")) {
+			try {
+				String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
+				usuarioSeletor.setCpf(cpfSemMascara);
+			} catch (ParseException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
 		
 		usuarios = (ArrayList<Usuario>) usuarioController.consultarComFiltro(usuarioSeletor);
 		
@@ -161,10 +207,11 @@ public class PainelListagemUsuario extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) tblUsuarios.getModel();
 
 		for (Usuario usuario : usuarios) {
-			Object[] novaLinhaDaTabela = new Object[3];
+			Object[] novaLinhaDaTabela = new Object[4];
 			novaLinhaDaTabela[0] = usuario.getNome();
 			novaLinhaDaTabela[1] = usuario.getCpf();
-			novaLinhaDaTabela[2] = usuario.getPerfil();
+			novaLinhaDaTabela[2] = usuario.getTelefone();
+			novaLinhaDaTabela[3] = usuario.getPerfil();
 
 			model.addRow(novaLinhaDaTabela);
 		}
@@ -172,5 +219,13 @@ public class PainelListagemUsuario extends JPanel {
 	
 	private void limparTabelaUsuarios() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
+	}
+	
+	public JButton getBtnEditar() {
+		return this.btnEditar;
+	}
+	
+	public Usuario getUsuarioSelecionado() {
+		return this.usuarioSelecionado;
 	}
 }

@@ -114,7 +114,7 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");		
 		mnItemCadastrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelCadastroUsuario = new PainelCadastroUsuario();
+				painelCadastroUsuario = new PainelCadastroUsuario(null);
 				painelCadastroUsuario.setVisible(true);
 				// registra action do botao cancelar de dentro do painel
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
@@ -131,6 +131,7 @@ public class FramePrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				painelListagemUsuario = new PainelListagemUsuario();
 				painelListagemUsuario.setVisible(true);
+				registrarCliqueBtnEditarDoPainelListagemUsuario();
 				
 				//Atualiza a tela principal
 				setContentPane(painelListagemUsuario);
@@ -146,22 +147,32 @@ public class FramePrincipal extends JFrame {
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
 		if(painelCadastroUsuario == null) {
-			painelCadastroUsuario = new PainelCadastroUsuario();
+			painelCadastroUsuario = new PainelCadastroUsuario(null);
 		}
 		
 		painelCadastroUsuario.getBtnCancelar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				painelListagemUsuario = new PainelListagemUsuario();
 				painelListagemUsuario.setVisible(true);
-				registrarCliqueBotaoEditarDoPainelListagemUsuario();
+				registrarCliqueBtnEditarDoPainelListagemUsuario();
 				setContentPane(painelListagemUsuario);
 				revalidate();
 			}
 		});
 	}
 
-	protected void registrarCliqueBotaoEditarDoPainelListagemUsuario() {
-		// TODO Auto-generated method stub
+	protected void registrarCliqueBtnEditarDoPainelListagemUsuario() {
+		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroUsuario = new PainelCadastroUsuario(painelListagemUsuario.getUsuarioSelecionado());
+				painelCadastroUsuario.setVisible(true);
+				registrarCliqueBtnCancelarPainelCadastroUsuario();
+				
+				setContentPane(painelCadastroUsuario);
+				revalidate();
+			}
+		});
 		
 	}
 }

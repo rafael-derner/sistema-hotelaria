@@ -1,7 +1,7 @@
 package model.vo;
 
 public class Usuario {
-	private int idUsuario;
+	private Integer idUsuario;
 	private String nome;
 	private String cpf;
 	private String telefone;
@@ -12,7 +12,7 @@ public class Usuario {
 		// TODO Auto-generated constructor stub
 	}
 
-	public Usuario(int idUsuario, String nome, String cpf, String telefone, String perfil) {
+	public Usuario(Integer idUsuario, String nome, String cpf, String telefone, String perfil) {
 		super();
 		this.idUsuario = idUsuario;
 		this.nome = nome;
@@ -21,11 +21,11 @@ public class Usuario {
 		this.perfil = perfil;
 	}
 
-	public int getIdUsuario() {
+	public Integer getIdUsuario() {
 		return idUsuario;
 	}
 
-	public void setIdUsuario(int idUsuario) {
+	public void setIdUsuario(Integer idUsuario) {
 		this.idUsuario = idUsuario;
 	}
 

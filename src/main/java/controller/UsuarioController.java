@@ -5,6 +5,7 @@ import java.util.List;
 
 import model.bo.UsuarioBO;
 import model.exception.CampoInvalidoException;
+import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
@@ -39,5 +40,10 @@ public class UsuarioController {
 
 	public List<Usuario> consultarComFiltro(UsuarioSeletor usuarioSeletor) {
 		return usuarioBO.consultarComFiltro(usuarioSeletor);
+	}
+
+	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException {
+		this.validarCamposObrigatorios(usuario);
+		return usuarioBO.atualizar(usuario);
 	}
 }

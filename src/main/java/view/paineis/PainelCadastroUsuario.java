@@ -20,6 +20,7 @@ import java.awt.Color;
 import javax.swing.JFormattedTextField;
 
 import model.exception.CampoInvalidoException;
+import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.vo.Usuario;
 import controller.UsuarioController;
@@ -41,13 +42,20 @@ public class PainelCadastroUsuario extends JPanel {
 	private MaskFormatter mascaraCpf;
 	private MaskFormatter mascaraTelefone;
 	
-	private Usuario usuario = new Usuario();
+	private Usuario usuarioVO;
 	private UsuarioController usuarioController = new UsuarioController();
 
 	/**
 	 * Create the panel.
+	 * @param usuario 
 	 */
-	public PainelCadastroUsuario() {
+	public PainelCadastroUsuario(Usuario usuario) {
+		if(usuario != null) {
+			usuarioVO = usuario;
+		} else {
+			usuarioVO = new Usuario();
+		}
+		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),
@@ -135,26 +143,37 @@ public class PainelCadastroUsuario extends JPanel {
 		add(btnSalvar, "4, 28");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				usuario.setNome(tfNome.getText());
-				usuario.setPerfil((String) comboBox.getSelectedItem());
+				usuarioVO.setNome(tfNome.getText());
+				usuarioVO.setPerfil((String) comboBox.getSelectedItem());
 				try {
 					String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
-					usuario.setCpf(cpfSemMascara);
+					usuarioVO.setCpf(cpfSemMascara);
 
 					String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
-					usuario.setTelefone(telefoneSemMascara);
+					usuarioVO.setTelefone(telefoneSemMascara);
 				} catch (ParseException e1) {
 					JOptionPane.showMessageDialog(null, "Erro ao converter campos.", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 				
 				try {
-					usuarioController.inserir(usuario);
-					JOptionPane.showMessageDialog(null, "Usuário criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					if(usuarioVO.getIdUsuario() != null) {
+						if(usuarioController.atualizar(usuarioVO)) {
+							JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+						} else {
+							JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o usuário. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+						}
+					} else {
+						usuarioController.inserir(usuarioVO);
+						JOptionPane.showMessageDialog(null, "Usuário criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);	
+					}
 				} catch (CampoInvalidoException exceptionCampoInvalido) {
 					JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
 							"Erro", JOptionPane.ERROR_MESSAGE); 
 				} catch (CpfDuplicadoException exceptionCpfDuplicado) {
 					JOptionPane.showMessageDialog(null, exceptionCpfDuplicado.getMessage(), 
+							"Erro", JOptionPane.ERROR_MESSAGE); 
+				} catch (CpfAlteradoException exceptionCpfAlterado) {
+					JOptionPane.showMessageDialog(null, exceptionCpfAlterado.getMessage(), 
 							"Erro", JOptionPane.ERROR_MESSAGE); 
 				}
 				
@@ -165,6 +184,16 @@ public class PainelCadastroUsuario extends JPanel {
 		btnCancelar.setBackground(new Color(255, 0, 0));
 		add(btnCancelar, "6, 28");
 
+		if(this.usuarioVO.getIdUsuario() != null) {
+			preencherCamposDoFormulario();
+		}
+
+	}
+	
+	private void preencherCamposDoFormulario() {
+		this.tfNome.setText(this.usuarioVO.getNome());
+		this.tfCpf.setText(this.usuarioVO.getCpf());
+		this.tfTelefone.setText(this.usuarioVO.getTelefone());
 	}
 
 	//Usado para tornar o btnCancelar acessível externamente 
