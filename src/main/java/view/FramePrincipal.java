@@ -118,6 +118,7 @@ public class FramePrincipal extends JFrame {
 				painelCadastroUsuario.setVisible(true);
 				// registra action do botao cancelar de dentro do painel
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
+				registraCliqueBtnSalvarDoPainelCadastroUsuario();
 				
 				//Atualiza a tela principal
 				setContentPane(painelCadastroUsuario);
@@ -143,7 +144,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no bot�o de cancelar do PainelCadastroUsuario
+	 * Clique no bot�o de CANCELAR do PainelCadastroUsuario
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
 		if(painelCadastroUsuario == null) {
@@ -161,6 +162,9 @@ public class FramePrincipal extends JFrame {
 		});
 	}
 
+	/*
+	 * Clique no botão de EDITAR do PainelListagemUsuario
+	 */
 	protected void registrarCliqueBtnEditarDoPainelListagemUsuario() {
 		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
 			
@@ -168,11 +172,31 @@ public class FramePrincipal extends JFrame {
 				painelCadastroUsuario = new PainelCadastroUsuario(painelListagemUsuario.getUsuarioSelecionado());
 				painelCadastroUsuario.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
+				registraCliqueBtnSalvarDoPainelCadastroUsuario();
 				
 				setContentPane(painelCadastroUsuario);
 				revalidate();
 			}
 		});
-		
+	}
+	
+	/*
+	 * Clique no botão de SALVAR do PainelCadastroUsuario
+	 */
+	protected void registraCliqueBtnSalvarDoPainelCadastroUsuario() {
+		painelCadastroUsuario.getBtnSalvar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				if(painelCadastroUsuario.salvarUsuario()) {
+					painelListagemUsuario = new PainelListagemUsuario();
+					painelListagemUsuario.setVisible(true);
+					registrarCliqueBtnEditarDoPainelListagemUsuario();
+					
+					//Atualiza a tela principal
+					setContentPane(painelListagemUsuario);
+					revalidate();
+				}
+			}
+		});
 	}
 }
