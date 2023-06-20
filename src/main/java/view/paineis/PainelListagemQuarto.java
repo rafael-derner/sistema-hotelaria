@@ -1,72 +1,79 @@
 package view.paineis;
 
+import java.awt.BorderLayout;
+import java.awt.EventQueue;
+
+import javax.swing.JFrame;
 import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
-import com.jgoodies.forms.layout.FormSpecs;
+import javax.swing.border.EmptyBorder;
 
-import java.awt.Component;
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.layout.FormSpecs;
+import com.privatejgoodies.forms.layout.RowSpec;
 
-import javax.swing.ButtonGroup;
+import model.vo.Quarto;
+
 import javax.swing.JLabel;
-import javax.swing.JRadioButton;
+import java.awt.Font;
+import java.lang.ModuleLayer.Controller;
+import java.util.ArrayList;
+
 import javax.swing.JTextField;
+import javax.swing.JComboBox;
+import javax.swing.JButton;
+import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
-import javax.swing.JTable;
-import javax.swing.JButton;
+import java.awt.Color;
 
 public class PainelListagemQuarto extends JPanel {
-	private JTextField textField;
-	private ButtonGroup grupo;
-	private JRadioButton rdbtnIntermediario;
-	private JRadioButton rdbtnLuxo;
-	private JRadioButton rdbtnBasico;
-	private Component lblOpcaoModelo;
-	private JRadioButton rdbtnModeloQuarto;
-	private JLabel lblConsulta;
-	private JRadioButton rdbtnNumeroQuarto;
-	private JTextField txtNumeroQuarto;
-	private JLabel lblNumeroQuarto;
-	private JTextField textField_1;
-	private JTable table;
-	private JButton btnConsultar;
-	private JButton btnVoltar;
+
+	private JPanel contentPane;
+	private JTextField txtNumero;
+	private JTable tableListagemQuartos;
+	private JButton btnExcluir;
+	private JButton btnEditar;
+	private JButton btnGerarPlanilha;
 	private JButton btnLimpar;
+	private JButton btnBuscar;
+	private JComboBox cBValorQuarto;
+	private JComboBox cBTipoQuarto;
+	private String[] tipoDeQuarto = {"","Básico","Intemediário","Luxo"};
+	private String[] valoresQuarto = {"","Até R$ 249,99","De R$ 250,00 a R$ 499,99","De R$ 500,00 a R$ 1.000,00"};
+	private JLabel lblValorQuarto;
+	private JLabel lblTipoDeQuarto;
+	private JLabel lblNumero;
+	private JLabel lblListagemQuartos;
+	private ArrayList<Quarto> quartos;
+	
+	private Controller controller;
 
 	/**
-	 * Create the panel.
+	 * Launch the application.
 	 */
-	
 
-	
-	
-	public PainelListagemQuarto() {
+	/**
+	 * Create the frame.
+	 */
+	public PainelListagemQuarto(Quarto quarto) {
+		
 		setLayout(new FormLayout(new ColumnSpec[] {
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("100dlu"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(60dlu;default):grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(84dlu;default)"),
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
+				ColumnSpec.decode("100dlu"),},
 			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -76,98 +83,58 @@ public class PainelListagemQuarto extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				RowSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		grupo = new ButtonGroup();
+		lblListagemQuartos = new JLabel("Listagem de Quartos");
+		lblListagemQuartos.setFont(new Font("Tahoma", Font.BOLD, 25));
+		add(lblListagemQuartos, "4, 2, 9, 1, center, default");
 		
-		lblConsulta = new JLabel("Consultar por:");
-		add(lblConsulta, "4, 6");
+		lblNumero = new JLabel("Número:");
+		add(lblNumero, "4, 4");
 		
+		lblTipoDeQuarto = new JLabel("Tipo de Quarto:");
+		add(lblTipoDeQuarto, "6, 4");
 		
-		lblOpcaoModelo = new JLabel("Selecione o(s) modelo(s) de quarto:");
-		add(lblOpcaoModelo, "4, 12");
+		lblValorQuarto = new JLabel("Valor do Quarto:");
+		add(lblValorQuarto, "8, 4");
 		
+		txtNumero = new JTextField();
+		add(txtNumero, "4, 6, fill, default");
+		txtNumero.setColumns(10);
 		
-		rdbtnBasico = new JRadioButton("Básico");
-		add(rdbtnBasico, "4, 14");
+		cBTipoQuarto = new JComboBox(tipoDeQuarto);
+		add(cBTipoQuarto, "6, 6, fill, default");
 		
-		rdbtnIntermediario = new JRadioButton("Intermediário");
-		add(rdbtnIntermediario, "6, 14");
+		cBValorQuarto = new JComboBox(valoresQuarto);
+		add(cBValorQuarto, "8, 6, fill, default");
 		
-		rdbtnLuxo = new JRadioButton("Luxo");
-		add(rdbtnLuxo, "8, 14");
-		
-		lblNumeroQuarto = new JLabel("Digite o número do quarto:");
-		add(lblNumeroQuarto, "4, 10, fill, default");
-		
-		txtNumeroQuarto = new JTextField();
-		add(txtNumeroQuarto, "6, 10, fill, default");
-		txtNumeroQuarto.setColumns(10);
-		
-		
-		esconderTodosComponenstes();
-		
-		rdbtnNumeroQuarto = new JRadioButton("Número do Quarto");
-		rdbtnNumeroQuarto.addActionListener(new ActionListener() {
+		btnBuscar = new JButton("Buscar");
+		btnBuscar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				esconderTodosComponenstes();
-				mostarOpcaoNumeroQuarto();
+//				quartos = (ArrayList<Quarto>) controller.consultarTodos();
+				
 			}
 		});
-		add(rdbtnNumeroQuarto, "4, 8");
-		grupo.add(rdbtnNumeroQuarto);
-		
-		
-		rdbtnModeloQuarto = new JRadioButton("Modelo do Quarto");
-		rdbtnModeloQuarto.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				esconderTodosComponenstes();
-				mostrarOpcaoModeloQuarto();
-			}
-
-			
-		});
-		add(rdbtnModeloQuarto, "6, 8");
-		grupo.add(rdbtnModeloQuarto);
+		add(btnBuscar, "10, 6");
 		
 		btnLimpar = new JButton("Limpar");
-		btnLimpar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-			}
-		});
-		add(btnLimpar, "4, 18");
+		add(btnLimpar, "12, 6");
 		
-		btnConsultar = new JButton("Consultar");
-		add(btnConsultar, "8, 18");
+		tableListagemQuartos = new JTable();
+		add(tableListagemQuartos, "4, 8, 9, 1, fill, fill");
 		
-		table = new JTable();
-		add(table, "4, 20, 5, 1, fill, fill");
+		btnGerarPlanilha = new JButton("Gerar Planilha");
+		add(btnGerarPlanilha, "4, 10");
 		
-		btnVoltar = new JButton("Voltar");
-		add(btnVoltar, "4, 22");
+		btnEditar = new JButton("Editar");
+		btnEditar.setBackground(Color.BLUE);
+		add(btnEditar, "10, 10");
 		
-
-	}
-	
-	private void esconderTodosComponenstes() {
-		lblOpcaoModelo.setVisible(false);
-		rdbtnBasico.setVisible(false);
-		rdbtnIntermediario.setVisible(false);
-		rdbtnLuxo.setVisible(false);
-		txtNumeroQuarto.setVisible(false);
-		lblNumeroQuarto.setVisible(false);
-	}
-	
-	private void mostarOpcaoNumeroQuarto() {
-		txtNumeroQuarto.setVisible(true);
-		lblNumeroQuarto.setVisible(true);
-	}
-	
-	private void mostrarOpcaoModeloQuarto() {
-		lblOpcaoModelo.setVisible(true);
-		rdbtnBasico.setVisible(true);
-		rdbtnIntermediario.setVisible(true);
-		rdbtnLuxo.setVisible(true);
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.setBackground(Color.RED);
+		add(btnExcluir, "12, 10");
 	}
 
 }
