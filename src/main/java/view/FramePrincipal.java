@@ -23,6 +23,7 @@ public class FramePrincipal extends JFrame {
 	private PainelCadastroUsuario painelCadastroUsuario;
 	private PainelListagemUsuario painelListagemUsuario;
 	private PainelCadastroReserva cadastroReserva;
+	private PainelListagemQuarto painelListagemQuarto;
 	
 	/**
 	 * Launch the application.
@@ -71,10 +72,8 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemListarQuartos = new JMenuItem("Listar");
 		mnItemListarQuartos.addActionListener(new ActionListener() {
-			private PainelListagemQuarto painelListagemQuarto;
-
 			public void actionPerformed(ActionEvent e) {
-				painelListagemQuarto = new PainelListagemQuarto();
+				painelListagemQuarto = new PainelListagemQuarto(null);
 				painelListagemQuarto.setVisible(true);
 				setContentPane(painelListagemQuarto);
 				revalidate();
