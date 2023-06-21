@@ -141,44 +141,6 @@ public class PainelCadastroUsuario extends JPanel {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setBackground(new Color(128, 255, 128));
 		add(btnSalvar, "4, 28");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				usuarioVO.setNome(tfNome.getText());
-				usuarioVO.setPerfil((String) comboBox.getSelectedItem());
-				try {
-					String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
-					usuarioVO.setCpf(cpfSemMascara);
-
-					String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
-					usuarioVO.setTelefone(telefoneSemMascara);
-				} catch (ParseException e1) {
-					JOptionPane.showMessageDialog(null, "Erro ao converter campos.", "Erro", JOptionPane.ERROR_MESSAGE);
-				}
-				
-				try {
-					if(usuarioVO.getIdUsuario() != null) {
-						if(usuarioController.atualizar(usuarioVO)) {
-							JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
-						} else {
-							JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o usuário. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
-						}
-					} else {
-						usuarioController.inserir(usuarioVO);
-						JOptionPane.showMessageDialog(null, "Usuário criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);	
-					}
-				} catch (CampoInvalidoException exceptionCampoInvalido) {
-					JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (CpfDuplicadoException exceptionCpfDuplicado) {
-					JOptionPane.showMessageDialog(null, exceptionCpfDuplicado.getMessage(), 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
-				} catch (CpfAlteradoException exceptionCpfAlterado) {
-					JOptionPane.showMessageDialog(null, exceptionCpfAlterado.getMessage(), 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
-				}
-				
-			}
-		});
 		
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBackground(new Color(255, 0, 0));
@@ -196,8 +158,53 @@ public class PainelCadastroUsuario extends JPanel {
 		this.tfTelefone.setText(this.usuarioVO.getTelefone());
 	}
 
-	//Usado para tornar o btnCancelar acessível externamente 
+	//Usado para tornar o btnCancelar acessï¿½vel externamente 
 	public JButton getBtnCancelar() {
 		return btnCancelar;
+	}
+	
+	//Usado para tornar o btnCancelar acessï¿½vel externamente 
+	public JButton getBtnSalvar() {
+		return btnSalvar;
+	}
+	
+	public boolean salvarUsuario() {
+		boolean retorno = false;
+		usuarioVO.setNome(tfNome.getText());
+		usuarioVO.setPerfil((String) comboBox.getSelectedItem());
+		try {
+			String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
+			usuarioVO.setCpf(cpfSemMascara);
+
+			String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
+			usuarioVO.setTelefone(telefoneSemMascara);
+		} catch (ParseException e1) {
+			JOptionPane.showMessageDialog(null, "Erro ao converter campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		try {
+			if(usuarioVO.getIdUsuario() != null) {
+				if(usuarioController.atualizar(usuarioVO)) {
+					JOptionPane.showMessageDialog(null, "Usuï¿½rio atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					retorno = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o usuï¿½rio. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				usuarioController.inserir(usuarioVO);
+				JOptionPane.showMessageDialog(null, "Usuï¿½rio criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				retorno = true;
+			}
+		} catch (CampoInvalidoException exceptionCampoInvalido) {
+			JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} catch (CpfDuplicadoException exceptionCpfDuplicado) {
+			JOptionPane.showMessageDialog(null, exceptionCpfDuplicado.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} catch (CpfAlteradoException exceptionCpfAlterado) {
+			JOptionPane.showMessageDialog(null, exceptionCpfAlterado.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} 
+		return retorno;
 	}
 }
