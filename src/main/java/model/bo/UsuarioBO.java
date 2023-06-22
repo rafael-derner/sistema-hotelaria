@@ -34,4 +34,8 @@ public class UsuarioBO {
 		return usuarioDAO.atualizar(usuario);
 	}
 
+	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
+		return usuarioDAO.contarTotalRegistrosComFiltros(usuarioSeletor);
+	}
+
 }

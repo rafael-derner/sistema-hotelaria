@@ -46,4 +46,8 @@ public class UsuarioController {
 		this.validarCamposObrigatorios(usuario);
 		return usuarioBO.atualizar(usuario);
 	}
+
+	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
+		return usuarioBO.contarTotalRegistrosComFiltros(usuarioSeletor);
+	}
 }

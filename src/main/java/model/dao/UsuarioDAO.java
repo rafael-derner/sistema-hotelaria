@@ -14,7 +14,7 @@ import model.vo.Usuario;
 public class UsuarioDAO {
 
 	/*
-	 * INSERIR NOVO USUÁRIO
+	 * INSERIR NOVO USUï¿½RIO
 	 */
 	public Usuario inserir(Usuario novoUsuario) {
 		Connection conn = Banco.getConnection();
@@ -41,7 +41,7 @@ public class UsuarioDAO {
 	}
 
 	/*
-	 * ATUALIZAR USUÁRIO EXISTENTE
+	 * ATUALIZAR USUï¿½RIO EXISTENTE
 	 */
 	public boolean atualizar(Usuario usuario) {
 		int registroAlterado = 0;
@@ -150,7 +150,7 @@ public class UsuarioDAO {
 	}
 	
 	/*
-	 * COMPLETAR QUERY COM FILTROS DO USUÁRIO
+	 * COMPLETAR QUERY COM FILTROS DO USUï¿½RIO
 	 */
 	private String preencherFiltros(String query, UsuarioSeletor usuarioSeletor) {
 		
@@ -200,6 +200,33 @@ public class UsuarioDAO {
 		usuarioBuscado.setPerfil(resultado.getString("PERFIL"));
 		
 		return usuarioBuscado;
+	}
+
+	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
+		int total = 0;
+		Connection conn = Banco.getConnection();
+		String query = " SELECT COUNT(*) FROM USUARIO ";
+		
+		if(usuarioSeletor.temFiltro()) {
+			query = preencherFiltros(query, usuarioSeletor);
+		}
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de usuÃ¡rios" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return total;
 	}
 
 

@@ -21,6 +21,7 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JComboBox;
+import javax.swing.JComponent;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -33,8 +34,11 @@ import javax.swing.JFormattedTextField;
 public class PainelListagemUsuario extends JPanel {
 
 	private UsuarioController usuarioController = new UsuarioController();
-	private UsuarioSeletor usuarioSeletor;
+	private UsuarioSeletor usuarioSeletor = new UsuarioSeletor();
+	
 	private ArrayList<Usuario> usuarios;
+	private Usuario usuarioSelecionado;
+	
 	private String[] nomesColunas = { "Nome", "CPF", "Telefone", "Perfil" };
 	private JTable tblUsuarios;
 	private JTextField tfNome;
@@ -44,20 +48,31 @@ public class PainelListagemUsuario extends JPanel {
 	private JLabel lblPerfil;
 	private JComboBox comboBox;
 	private String[] tiposDePerfil = {"", "Recepcionista", "Gerente"};
+	
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JButton btnEditar;
 	private JButton btnExcluir;
-	private Usuario usuarioSelecionado;
+
+	private final int TAMANHO_PAGINA = 40;
+	private int paginaAtual = 1;
+	private int totalPaginas = 0;
+	private JLabel lblPaginacao;
+	private JButton btnVoltarPagina;
+	private JButton btnAvancarPagina;
 	
 	public PainelListagemUsuario() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
+				ColumnSpec.decode("20dlu:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
+				ColumnSpec.decode("max(20dlu;default):grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("20dlu:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("20dlu:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(40dlu;default):grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -110,27 +125,27 @@ public class PainelListagemUsuario extends JPanel {
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usu\u00E1rios");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
-		add(lblListagemUsuarios, "4, 4, 9, 1, center, default");
+		add(lblListagemUsuarios, "4, 4, 13, 1, center, default");
 		
 		JLabel lblNome = new JLabel("Nome:");
-		add(lblNome, "4, 8");
+		add(lblNome, "4, 8, 3, 1");
 		
 		lblCpf = new JLabel("CPF:");
-		add(lblCpf, "6, 8");
+		add(lblCpf, "8, 8, 3, 1");
 		
 		lblPerfil = new JLabel("Perfil");
-		add(lblPerfil, "8, 8");
+		add(lblPerfil, "12, 8");
 		
 		tfNome = new JTextField();
-		add(tfNome, "4, 10, fill, default");
+		add(tfNome, "4, 10, 3, 1, fill, default");
 		tfNome.setColumns(10);
 		
 		tfCpf = new JFormattedTextField(mascaraCpf);
-		add(tfCpf, "6, 10, fill, default");
+		add(tfCpf, "8, 10, 3, 1, fill, default");
 		tfCpf.setColumns(10);
 		
 		comboBox = new JComboBox(tiposDePerfil);
-		add(comboBox, "8, 10, fill, default");
+		add(comboBox, "12, 10, fill, default");
 		
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
@@ -140,7 +155,7 @@ public class PainelListagemUsuario extends JPanel {
 				buscarUsuarioComFiltro();
 			}
 		});
-		add(btnConsultar, "10, 10");
+		add(btnConsultar, "14, 10");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -150,10 +165,10 @@ public class PainelListagemUsuario extends JPanel {
 				comboBox.setSelectedIndex(0);
 			}
 		});
-		add(btnLimpar, "12, 10");
+		add(btnLimpar, "16, 10");
 		
 		tblUsuarios = new JTable();
-		add(tblUsuarios, "4, 12, 9, 5, fill, fill");
+		add(tblUsuarios, "4, 12, 13, 5, fill, fill");
 		this.limparTabelaUsuarios();
 		
 		tblUsuarios.addMouseListener(new MouseAdapter() {
@@ -167,21 +182,53 @@ public class PainelListagemUsuario extends JPanel {
 					usuarioSelecionado = usuarios.get(elementoSelecionado - 1);
 				}
 			}
-		});
+		});		
 		
 		btnEditar = new JButton("Editar");
 		btnEditar.setBackground(new Color(50, 204, 233));
-		add(btnEditar, "10, 18");
+		add(btnEditar, "14, 18");
 		
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setBackground(new Color(255, 0, 0));
-		add(btnExcluir, "12, 18");
+		add(btnExcluir, "16, 18");
+		
+		btnVoltarPagina = new JButton("<<");
+		btnVoltarPagina.addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				paginaAtual--;
+				buscarUsuarioComFiltro();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		add(btnVoltarPagina, "4, 18");
+		
+		btnAvancarPagina = new JButton(">>");
+		btnAvancarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paginaAtual++;
+				buscarUsuarioComFiltro();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		add(btnAvancarPagina, "8, 18");
+				
+		lblPaginacao = new JLabel("1 / " + totalPaginas);
+		add(lblPaginacao, "6, 18, center, default");
+
+		atualizarQuantidadePaginas();
 		
 		buscarUsuarioComFiltro();
 	} 
 	
 	protected void buscarUsuarioComFiltro() {
-		usuarioSeletor = new UsuarioSeletor();
+		usuarioSeletor = new UsuarioSeletor();		
+		usuarioSeletor.setLimite(TAMANHO_PAGINA);
+		usuarioSeletor.setPagina(paginaAtual);
 		
 		usuarioSeletor.setNome(tfNome.getText());
 		usuarioSeletor.setPerfil((String) comboBox.getSelectedItem());
@@ -199,6 +246,7 @@ public class PainelListagemUsuario extends JPanel {
 		usuarios = (ArrayList<Usuario>) usuarioController.consultarComFiltro(usuarioSeletor);
 		
 		atualizarTabelaUsuarios();
+		atualizarQuantidadePaginas();
 	}
 	
 	private void atualizarTabelaUsuarios() {
@@ -215,6 +263,17 @@ public class PainelListagemUsuario extends JPanel {
 
 			model.addRow(novaLinhaDaTabela);
 		}
+	}
+	
+	private void atualizarQuantidadePaginas() {
+		int totalRegistros = usuarioController.contarTotalRegistrosComFiltros(usuarioSeletor);
+
+		totalPaginas = totalRegistros / TAMANHO_PAGINA;
+		if(totalRegistros % TAMANHO_PAGINA > 0) { 
+			totalPaginas++;
+		}
+		
+		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
 	
 	private void limparTabelaUsuarios() {
