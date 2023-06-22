@@ -74,7 +74,7 @@ public class FramePrincipal extends JFrame {
 			private PainelListagemQuarto painelListagemQuarto;
 
 			public void actionPerformed(ActionEvent e) {
-				painelListagemQuarto = new PainelListagemQuarto();
+				painelListagemQuarto = new PainelListagemQuarto(null);
 				painelListagemQuarto.setVisible(true);
 				setContentPane(painelListagemQuarto);
 				revalidate();
@@ -97,7 +97,7 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemCadastrarReserva = new JMenuItem("Cadastrar");
 		mnItemCadastrarReserva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cadastroReserva = new PainelCadastroReserva();
+				cadastroReserva = new PainelCadastroReserva(null);
 				cadastroReserva.setVisible(true);
 				setContentPane(cadastroReserva);
 				revalidate();
