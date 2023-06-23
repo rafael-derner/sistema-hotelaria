@@ -7,6 +7,7 @@ import model.bo.UsuarioBO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
+import model.exception.UsuarioComReservaException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
@@ -16,6 +17,15 @@ public class UsuarioController {
 	public Usuario inserir(Usuario novoUsuario) throws CampoInvalidoException, CpfDuplicadoException{
 		this.validarCamposObrigatorios(novoUsuario);
 		return usuarioBO.inserir(novoUsuario);
+	}
+	
+	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException {
+		this.validarCamposObrigatorios(usuario);
+		return usuarioBO.atualizar(usuario);
+	}
+
+	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException {
+		return usuarioBO.excluir(idUsuario);	
 	}
 
 	private void validarCamposObrigatorios(Usuario novoUsuario) throws CampoInvalidoException{
@@ -42,12 +52,11 @@ public class UsuarioController {
 		return usuarioBO.consultarComFiltro(usuarioSeletor);
 	}
 
-	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException {
-		this.validarCamposObrigatorios(usuario);
-		return usuarioBO.atualizar(usuario);
-	}
-
 	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
 		return usuarioBO.contarTotalRegistrosComFiltros(usuarioSeletor);
+	}
+
+	public List<Usuario> consultarTodos() {
+		return usuarioBO.consultarTodos();
 	}
 }

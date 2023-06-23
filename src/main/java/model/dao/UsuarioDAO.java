@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,6 +63,54 @@ public class UsuarioDAO {
 			Banco.closeConnection(conn);
 		}
 		return registroAlterado > 0;
+	}
+	
+
+	/*
+	 * EXCLUIR REGISTRO DE USUÁRIO
+	 */
+	public boolean excluir(Integer idUsuario) {
+		Connection conn = Banco.getConnection();
+		String query = "DELETE FROM CLIENTE WHERE ID= " + idUsuario;
+		Statement stmt = Banco.getStatement(conn);
+		
+		int quantidadeLinhasAfetadas = 0;
+		try {
+			quantidadeLinhasAfetadas = stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir usuário.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+		
+		boolean excluiu = quantidadeLinhasAfetadas > 0;
+		return excluiu;
+	}
+	
+	/*
+	 * CONSULTAR TODOS OS USUÁRIOS
+	 */
+	public List<Usuario> consultarTodos() {
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		Connection conn = Banco.getConnection();
+		String query = " SELECT * FROM USUARIO ";
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			while(resultado.next()) {
+				Usuario usuarioBuscado = montarUsuarioComResultadoDoBanco(resultado);
+				usuarios.add(usuarioBuscado);
+			}
+			
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar todos os usuários. \n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return usuarios;
 	}
 
 	/*
@@ -228,6 +277,4 @@ public class UsuarioDAO {
 		
 		return total;
 	}
-
-
 }

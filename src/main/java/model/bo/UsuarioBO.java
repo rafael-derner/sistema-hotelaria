@@ -7,6 +7,7 @@ import Util.Formatador;
 import model.dao.UsuarioDAO;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
+import model.exception.UsuarioComReservaException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
@@ -36,6 +37,21 @@ public class UsuarioBO {
 
 	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
 		return usuarioDAO.contarTotalRegistrosComFiltros(usuarioSeletor);
+	}
+
+	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException{
+		Usuario usuario = usuarioDAO.consultarPorId(idUsuario);
+		
+		//NESSA ETAPA DEVE SER PEQUISADO NA TABELA DE RESERVA SE O USUÁRIO NÃO ESTÁ ASSOCIADO A ALGUMA RESERVA
+		//if(!usuario.getReservas().isEmpty()) {
+		//	throw new UsuarioComReservaException("O usuário possui reservas associadas. Não foi possível efetuar a exclusão.");
+		//}
+		
+		return usuarioDAO.excluir(idUsuario);
+	}
+
+	public List<Usuario> consultarTodos() {
+		return usuarioDAO.consultarTodos();
 	}
 
 }

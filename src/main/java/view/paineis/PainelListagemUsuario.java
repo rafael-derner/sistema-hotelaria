@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import model.exception.UsuarioComReservaException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
@@ -15,6 +16,8 @@ import controller.UsuarioController;
 
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+
 import java.awt.Font;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -190,6 +193,22 @@ public class PainelListagemUsuario extends JPanel {
 		
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setBackground(new Color(255, 0, 0));
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente excluir o usuário selecionado?");
+				
+				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
+					try {
+						usuarioController.excluir(usuarioSelecionado.getIdUsuario());
+						JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
+						usuarios = (ArrayList<Usuario>) usuarioController.consultarTodos();
+						atualizarTabelaUsuarios();
+					} catch (UsuarioComReservaException usuarioComReservaException) {
+						JOptionPane.showConfirmDialog(null, usuarioComReservaException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
 		add(btnExcluir, "16, 18");
 		
 		btnVoltarPagina = new JButton("<<");
