@@ -6,17 +6,20 @@ import java.awt.EventQueue;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import com.privatejgoodies.forms.layout.ColumnSpec;
 import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.layout.FormSpecs;
 import com.privatejgoodies.forms.layout.RowSpec;
 
+import controller.QuartoController;
+import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
+import model.vo.Usuario;
 
 import javax.swing.JLabel;
 import java.awt.Font;
-import java.lang.ModuleLayer.Controller;
 import java.util.ArrayList;
 
 import javax.swing.JTextField;
@@ -31,6 +34,7 @@ public class PainelListagemQuarto extends JPanel {
 
 	private JPanel contentPane;
 	private JTextField txtNumero;
+	
 	private JTable tableListagemQuartos;
 	private JButton btnExcluir;
 	private JButton btnEditar;
@@ -39,15 +43,17 @@ public class PainelListagemQuarto extends JPanel {
 	private JButton btnBuscar;
 	private JComboBox cBValorQuarto;
 	private JComboBox cBTipoQuarto;
-	private String[] tipoDeQuarto = {"","Básico","Intemediário","Luxo"};
+	private String[] tipoDeQuarto = {"","Básico","Intermediário","Luxo"};
 	private String[] valoresQuarto = {"","Até R$ 249,99","De R$ 250,00 a R$ 499,99","De R$ 500,00 a R$ 1.000,00"};
 	private JLabel lblValorQuarto;
 	private JLabel lblTipoDeQuarto;
 	private JLabel lblNumero;
+	private String[] colunas = {"Número do Quarto","Tipo do Quarto","Valor do Quarto"};
 	private JLabel lblListagemQuartos;
 	private ArrayList<Quarto> quartos;
+	private QuartoSeletor quartoSeletor;
 	
-	private Controller controller;
+	private QuartoController quartoController = new QuartoController();
 
 	/**
 	 * Launch the application.
@@ -56,7 +62,7 @@ public class PainelListagemQuarto extends JPanel {
 	/**
 	 * Create the frame.
 	 */
-	public PainelListagemQuarto(Quarto quarto) {
+	public PainelListagemQuarto() {
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -112,14 +118,23 @@ public class PainelListagemQuarto extends JPanel {
 		
 		btnBuscar = new JButton("Buscar");
 		btnBuscar.addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
-//				quartos = (ArrayList<Quarto>) controller.consultarTodos();
-				
+				buscarQuartos();
+
 			}
+			
 		});
 		add(btnBuscar, "10, 6");
 		
 		btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				txtNumero.setText(null);
+				cBTipoQuarto.setSelectedIndex(0);
+				cBValorQuarto.setSelectedIndex(0);
+			}
+		});
 		add(btnLimpar, "12, 6");
 		
 		tableListagemQuartos = new JTable();
@@ -135,6 +150,43 @@ public class PainelListagemQuarto extends JPanel {
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setBackground(Color.RED);
 		add(btnExcluir, "12, 10");
+	}
+	
+	private void buscarQuartos() {
+		
+		quartoSeletor = new QuartoSeletor();
+		String numeroQuarto = txtNumero.getText();
+		if (numeroQuarto.isEmpty()) {
+		} else {
+			try {
+				int numero = Integer.parseInt(numeroQuarto);
+				quartoSeletor.setNumeroQuarto(numero);
+			} catch (NumberFormatException e) {
+				e.printStackTrace();
+			}
+		}
+		quartoSeletor.setTipoQuarto((String) cBTipoQuarto.getSelectedItem());
+		quartos = (ArrayList<Quarto>) quartoController.consultarComFiltro(quartoSeletor);
+		atualizarTabelaQuartos();
+
+	}
+
+	private void atualizarTabelaQuartos() {
+		this.limparTabelaQuartos();
+		DefaultTableModel model = (DefaultTableModel) tableListagemQuartos.getModel();
+		
+		for (Quarto quarto : quartos) {
+			Object[] novaLinhaTabela = new Object[3];
+			novaLinhaTabela[0] = quarto.getNumeroQuarto();
+			novaLinhaTabela[1] = quarto.getTipoQuarto();
+			novaLinhaTabela[2] = quarto.getValorQuarto();
+			
+			model.addRow(novaLinhaTabela);
+		}
+	}
+
+	private void limparTabelaQuartos() {
+		tableListagemQuartos.setModel(new DefaultTableModel(new Object[][] {colunas,},colunas));
 	}
 
 }

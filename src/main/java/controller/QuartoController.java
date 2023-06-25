@@ -1,8 +1,12 @@
 package controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import model.bo.QuartoBO;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoJaUtilizadoException;
+import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
 
 public class QuartoController {
@@ -22,9 +26,8 @@ String mensagemValidacao = "";
 		}
 		
 		if(novoQuarto.getValorQuarto() == null) {
-			mensagemValidacao += "Preencher campo valor";
+			mensagemValidacao += "Preencher campo valor.";
 		}
-		
 		
 		if(!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
@@ -34,6 +37,11 @@ String mensagemValidacao = "";
 
 	public void atualizar(Quarto quartoVO) throws QuartoJaUtilizadoException{
 		// TODO Auto-generated method stub
+		
+	}
+
+	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {
+		return quartoBO.consultarComFiltro(quartoSeletor);
 		
 	}
 

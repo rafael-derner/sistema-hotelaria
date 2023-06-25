@@ -47,32 +47,32 @@ public class PainelCadastroQuarto extends JPanel {
 	 * Create the panel.
 	 */
 	public PainelCadastroQuarto() {
-		setLayout(new com.jgoodies.forms.layout.FormLayout(new com.jgoodies.forms.layout.ColumnSpec[] {
-				com.jgoodies.forms.layout.ColumnSpec.decode("32px:grow"),
-				com.jgoodies.forms.layout.ColumnSpec.decode("121px"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("130px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("127px"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("default:grow"),},
-			new com.jgoodies.forms.layout.RowSpec[] {
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("26px"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("16px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("23px"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("26px"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("29px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,}));
+		setLayout(new FormLayout(new ColumnSpec[] {
+				ColumnSpec.decode("32px:grow"),
+				ColumnSpec.decode("121px"),
+				FormSpecs.UNRELATED_GAP_COLSPEC,
+				ColumnSpec.decode("130px"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("127px"),
+				FormSpecs.UNRELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),},
+			new RowSpec[] {
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("26px"),
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("16px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("23px"),
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("26px"),
+				FormSpecs.UNRELATED_GAP_ROWSPEC,
+				RowSpec.decode("29px"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		buttonGroup = new ButtonGroup();
 		
@@ -106,28 +106,41 @@ public class PainelCadastroQuarto extends JPanel {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				quartoVO = new Quarto();
-				String numeroQuarto = textNumeroQuarto.getText();
-				int numero = Integer.parseInt(numeroQuarto);
-				quartoVO.setNumeroQuarto(numero);
-				quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());
-				String valorQuarto = ftfValorDiaria.getText();
-				try {
-					double valor = Double.parseDouble(valorQuarto);
-					quartoVO.setValorQuarto(valor);
-				}catch(NumberFormatException e1) {
-					JOptionPane.showMessageDialog(null,"Erro ao converter.","Erro",JOptionPane.ERROR_MESSAGE);
-				}
 				
-				try {
-				    try {
-						quartoController.inserir(quartoVO);
-					} catch (CampoInvalidoException e1) {
-						// TODO Auto-generated catch block
-						e1.printStackTrace();
+				String numeroQuarto = textNumeroQuarto.getText();
+				if(!numeroQuarto.isEmpty()) {
+					try {
+						int numero = Integer.parseInt(numeroQuarto);
+						quartoVO.setNumeroQuarto(numero);
+					}catch (NumberFormatException numeroIncorreto){
+						JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caracteres numéricos.",
+								"Erro",JOptionPane.ERROR_MESSAGE);
 					}
-				    JOptionPane.showMessageDialog(null,"Quarto cadastrado com Sucesso!","Sucesso",JOptionPane.INFORMATION_MESSAGE);
-				} catch (QuartoJaUtilizadoException e2) {
-				    JOptionPane.showMessageDialog(null,e2.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+
+				quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());			
+				
+				String valorQuarto = ftfValorDiaria.getText();
+				if (!valorQuarto.isEmpty()) {
+				    valorQuarto = valorQuarto.replace(',', '.'); // Replace comma with a point
+				    try {
+				        double valor = Double.parseDouble(valorQuarto);
+				        quartoVO.setValorQuarto(valor);
+				    } catch (NumberFormatException valorIncorreto) {
+				        JOptionPane.showMessageDialog(null, "Campo valor da diária deve receber caracteres numéricos.", "Erro", JOptionPane.ERROR_MESSAGE);
+				    }
+				}
+
+
+				try {
+					quartoController.inserir(quartoVO);
+					JOptionPane.showMessageDialog(null, "Quarto cadastrado com Sucesso!", "Sucesso",
+							JOptionPane.INFORMATION_MESSAGE);
+				}catch (QuartoJaUtilizadoException e2) {
+					JOptionPane.showMessageDialog(null, e2.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+				} catch (CampoInvalidoException exceptionCampoInvalido) {
+					JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
+							"Erro", JOptionPane.ERROR_MESSAGE); 
 				}
 			}
 			
