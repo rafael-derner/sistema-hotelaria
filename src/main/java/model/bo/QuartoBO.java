@@ -14,7 +14,7 @@ public class QuartoBO {
 
 	public Quarto inserir(Quarto novoQuarto) throws QuartoJaUtilizadoException {
 		if(quartoDAO.verificarNumeroJaUtilizado(novoQuarto.getNumeroQuarto())) {
-			throw new QuartoJaUtilizadoException("O número do quarto já foi utilizado!");
+			throw new QuartoJaUtilizadoException("O número do quarto já foi utilizado.");
 		}
 		
 		return quartoDAO.inserir(novoQuarto);

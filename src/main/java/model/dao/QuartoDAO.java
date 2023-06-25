@@ -46,6 +46,7 @@ public class QuartoDAO {
 		
 		List<Quarto> quartos = new ArrayList<Quarto>();
 		Connection conn = Banco.getConnection();
+		
 		String query = " SELECT * FROM QUARTO ";
 		
 		if(quartoSeletor.temFiltro()) {

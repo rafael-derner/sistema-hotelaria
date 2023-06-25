@@ -113,7 +113,7 @@ public class PainelCadastroQuarto extends JPanel {
 						int numero = Integer.parseInt(numeroQuarto);
 						quartoVO.setNumeroQuarto(numero);
 					}catch (NumberFormatException numeroIncorreto){
-						JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caracteres numéricos.",
+						JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caractéres numéricos.",
 								"Erro",JOptionPane.ERROR_MESSAGE);
 					}
 				}
