@@ -8,6 +8,7 @@ import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
+import model.exception.ExclusaoGerenteException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
@@ -24,7 +25,7 @@ public class UsuarioController {
 		return usuarioBO.atualizar(usuario);
 	}
 
-	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException {
+	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException, ExclusaoGerenteException {
 		return usuarioBO.excluir(idUsuario);	
 	}
 

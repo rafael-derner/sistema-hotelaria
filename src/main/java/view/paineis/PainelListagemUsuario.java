@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import model.exception.ExclusaoGerenteException;
 import model.exception.UsuarioComReservaException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
@@ -125,6 +126,21 @@ public class PainelListagemUsuario extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+
+		btnEditar = new JButton("Editar");
+		btnEditar.setEnabled(false);
+		btnEditar.setBackground(new Color(50, 204, 233));
+		add(btnEditar, "10, 18");
+		
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.setEnabled(false);
+		btnExcluir.setBackground(new Color(255, 0, 0));		
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// COMPLETAR ACTION LISTENER
+			}
+		});
+		add(btnExcluir, "12, 18");
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usu\u00E1rios");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -173,6 +189,7 @@ public class PainelListagemUsuario extends JPanel {
 		tblUsuarios = new JTable();
 		add(tblUsuarios, "4, 12, 13, 5, fill, fill");
 		this.limparTabelaUsuarios();
+		buscarUsuarioComFiltro();
 		
 		tblUsuarios.addMouseListener(new MouseAdapter() {
 
@@ -186,10 +203,6 @@ public class PainelListagemUsuario extends JPanel {
 				}
 			}
 		});		
-		
-		btnEditar = new JButton("Editar");
-		btnEditar.setBackground(new Color(50, 204, 233));
-		add(btnEditar, "14, 18");
 		
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setBackground(new Color(255, 0, 0));
@@ -205,6 +218,8 @@ public class PainelListagemUsuario extends JPanel {
 						atualizarTabelaUsuarios();
 					} catch (UsuarioComReservaException usuarioComReservaException) {
 						JOptionPane.showConfirmDialog(null, usuarioComReservaException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					} catch (ExclusaoGerenteException exclusaoGerenteException) {
+						JOptionPane.showConfirmDialog(null, exclusaoGerenteException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
@@ -297,6 +312,8 @@ public class PainelListagemUsuario extends JPanel {
 	
 	private void limparTabelaUsuarios() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
+		btnEditar.setEnabled(false);
+		btnExcluir.setEnabled(false);
 	}
 	
 	public JButton getBtnEditar() {
