@@ -34,7 +34,6 @@ public class PainelListagemQuarto extends JPanel {
 
 	private JPanel contentPane;
 	private JTextField txtNumero;
-	
 	private JTable tableListagemQuartos;
 	private JButton btnExcluir;
 	private JButton btnEditar;

@@ -37,7 +37,6 @@ String mensagemValidacao = "";
 
 	public void atualizar(Quarto quartoVO) throws QuartoJaUtilizadoException{
 		// TODO Auto-generated method stub
-		
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {

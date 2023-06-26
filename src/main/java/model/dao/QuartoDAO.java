@@ -98,6 +98,7 @@ public class QuartoDAO {
 			}
 			query += " TIPO_QUARTO LIKE '%" + quartoSeletor.getTipoQuarto() + "%'";
 		}
+		
 		return query;
 	}
 
