@@ -8,9 +8,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import view.paineis.PainelCadastroHospede;
 import view.paineis.PainelCadastroQuarto;
 import view.paineis.PainelCadastroReserva;
 import view.paineis.PainelCadastroUsuario;
+import view.paineis.PainelListagemHospede;
 import view.paineis.PainelListagemQuarto;
 import view.paineis.PainelListagemUsuario;
 
@@ -22,6 +24,8 @@ public class FramePrincipal extends JFrame {
 
 	private PainelCadastroUsuario painelCadastroUsuario;
 	private PainelListagemUsuario painelListagemUsuario;
+	private PainelCadastroHospede painelCadastroHospede;
+	private PainelListagemHospede painelListagemHospede;
 	private PainelCadastroReserva cadastroReserva;
 	private PainelListagemQuarto painelListagemQuarto;
 	
@@ -85,9 +89,33 @@ public class FramePrincipal extends JFrame {
 		menuBar.add(mnHospede);
 		
 		JMenuItem mnItemCadastrarHospede = new JMenuItem("Cadastrar");
+		mnItemCadastrarHospede.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroHospede = new PainelCadastroHospede(null);
+				painelCadastroHospede.setVisible(true);
+				// registra action do botao cancelar de dentro do painel
+				registrarCliqueBtnCancelarPainelCadastroHospede();
+				registraCliqueBtnSalvarDoPainelCadastroHospede();
+				
+				//Atualiza a tela principal
+				setContentPane(painelCadastroHospede);
+				revalidate();
+			}
+		});
 		mnHospede.add(mnItemCadastrarHospede);
 		
 		JMenuItem mnItemListarHospedes = new JMenuItem("Listar");
+		mnItemListarHospedes.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelListagemHospede = new PainelListagemHospede();
+				painelListagemHospede.setVisible(true);
+				registrarCliqueBtnEditarDoPainelListagemHospede();
+				
+				//Atualiza a tela principal
+				setContentPane(painelListagemHospede);
+				revalidate();
+			}
+		});
 		mnHospede.add(mnItemListarHospedes);
 		
 		JMenu mnReserva = new JMenu("Reserva");
@@ -96,7 +124,7 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemCadastrarReserva = new JMenuItem("Cadastrar");
 		mnItemCadastrarReserva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cadastroReserva = new PainelCadastroReserva();
+				cadastroReserva = new PainelCadastroReserva(null);
 				cadastroReserva.setVisible(true);
 				setContentPane(cadastroReserva);
 				revalidate();
@@ -193,6 +221,64 @@ public class FramePrincipal extends JFrame {
 					
 					//Atualiza a tela principal
 					setContentPane(painelListagemUsuario);
+					revalidate();
+				}
+			}
+		});
+	}
+	
+	/*
+	 * Clique no bot�o de CANCELAR do PainelCadastroHospede
+	 */
+	protected void registrarCliqueBtnCancelarPainelCadastroHospede() {
+		if(painelCadastroHospede == null) {
+			painelCadastroHospede = new PainelCadastroHospede(null);
+		}
+		
+		painelCadastroHospede.getBtnCancelar().addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				painelListagemHospede = new PainelListagemHospede();
+				painelListagemHospede.setVisible(true);
+				registrarCliqueBtnEditarDoPainelListagemHospede();
+				setContentPane(painelListagemHospede);
+				revalidate();
+			}
+		});
+	}
+
+	/*
+	 * Clique no botão de EDITAR do PainelListagemUsuario
+	 */
+	protected void registrarCliqueBtnEditarDoPainelListagemHospede() {
+		painelListagemHospede.getBtnEditar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroHospede = new PainelCadastroHospede(painelListagemHospede.getHospedeSelecionado());
+				painelCadastroHospede.setVisible(true);
+				registrarCliqueBtnCancelarPainelCadastroHospede();
+				registraCliqueBtnSalvarDoPainelCadastroHospede();
+				
+				setContentPane(painelCadastroHospede);
+				revalidate();
+			}
+		});
+	}
+	
+	/*
+	 * Clique no botão de SALVAR do PainelCadastroUsuario
+	 */
+	protected void registraCliqueBtnSalvarDoPainelCadastroHospede() {
+		painelCadastroHospede.getBtnSalvar().addActionListener(new ActionListener() {
+
+			public void actionPerformed(ActionEvent e) {
+				if(painelCadastroHospede.salvarHospede()) {
+					painelListagemHospede = new PainelListagemHospede();
+					painelListagemHospede.setVisible(true);
+					registrarCliqueBtnEditarDoPainelListagemHospede();
+					
+					//Atualiza a tela principal
+					setContentPane(painelListagemHospede);
 					revalidate();
 				}
 			}

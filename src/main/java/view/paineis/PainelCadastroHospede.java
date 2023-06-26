@@ -20,9 +20,10 @@ import java.awt.Color;
 import javax.swing.JFormattedTextField;
 
 import model.exception.CampoInvalidoException;
+import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
-import model.vo.Usuario;
-import controller.UsuarioController;
+import model.vo.Hospede;
+import controller.HospedeController;
 
 public class PainelCadastroHospede extends JPanel {
 	private JTextField tfNome;
@@ -37,11 +38,20 @@ public class PainelCadastroHospede extends JPanel {
 
 	private MaskFormatter mascaraCpf;
 	private MaskFormatter mascaraTelefone;
+	
+	private Hospede hospedeVO;
+	private HospedeController hospedeController = new HospedeController();
 
 	/**
 	 * Create the panel.
 	 */
-	public PainelCadastroHospede() {
+	public PainelCadastroHospede(Hospede hospede) {
+		if(hospede != null) {
+			hospedeVO = hospede;
+		} else {
+			hospedeVO = new Hospede();
+		}
+		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),
@@ -93,7 +103,7 @@ public class PainelCadastroHospede extends JPanel {
 			e.printStackTrace();
 		}
 		
-		lblCadastroHospede = new JLabel("Cadastro de H\u00F3spede");
+		lblCadastroHospede = new JLabel("Cadastro de H贸spede");
 		lblCadastroHospede.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblCadastroHospede, "4, 4, 3, 1, center, default");
 		
@@ -126,10 +136,64 @@ public class PainelCadastroHospede extends JPanel {
 		btnCancelar.setBackground(new Color(255, 0, 0));
 		add(btnCancelar, "6, 28");
 
+		if(this.hospedeVO.getIdHospede() != null) {
+			preencherCamposDoFormulario();
+		}
+
+	}
+	
+	private void preencherCamposDoFormulario() {
+		this.tfNome.setText(this.hospedeVO.getNome());
+		this.tfCpf.setText(this.hospedeVO.getCpf());
+		this.tfTelefone.setText(this.hospedeVO.getTelefone());
 	}
 
-	//Usado para tornar o btnCancelar acess韛el externamente 
+	//Usado para tornar o btnCancelar acess锟絭el externamente 
 	public JButton getBtnCancelar() {
 		return btnCancelar;
+	}
+	
+	//Usado para tornar o btnCancelar acess锟絭el externamente 
+	public JButton getBtnSalvar() {
+		return btnSalvar;
+	}
+	
+	public boolean salvarHospede() {
+		boolean retorno = false;
+		hospedeVO.setNome(tfNome.getText());
+		try {
+			String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
+			hospedeVO.setCpf(cpfSemMascara);
+
+			String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
+			hospedeVO.setTelefone(telefoneSemMascara);
+		} catch (ParseException e1) {
+			JOptionPane.showMessageDialog(null, "Erro ao converter campos.", "Erro", JOptionPane.ERROR_MESSAGE);
+		}
+		
+		try {
+			if(hospedeVO.getIdHospede() != null) {
+				if(hospedeController.atualizar(hospedeVO)) {
+					JOptionPane.showMessageDialog(null, "H贸spede atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					retorno = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar h贸spede. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				hospedeController.inserir(hospedeVO);
+				JOptionPane.showMessageDialog(null, "H贸spede criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				retorno = true;
+			}
+		} catch (CampoInvalidoException exceptionCampoInvalido) {
+			JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} catch (CpfDuplicadoException exceptionCpfDuplicado) {
+			JOptionPane.showMessageDialog(null, exceptionCpfDuplicado.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} catch (CpfAlteradoException exceptionCpfAlterado) {
+			JOptionPane.showMessageDialog(null, exceptionCpfAlterado.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		} 
+		return retorno;
 	}
 }

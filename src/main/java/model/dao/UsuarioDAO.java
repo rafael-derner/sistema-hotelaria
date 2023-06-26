@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ import model.vo.Usuario;
 public class UsuarioDAO {
 
 	/*
-	 * INSERIR NOVO USU¡RIO
+	 * INSERIR NOVO USUÔøΩRIO
 	 */
 	public Usuario inserir(Usuario novoUsuario) {
 		Connection conn = Banco.getConnection();
@@ -41,7 +42,7 @@ public class UsuarioDAO {
 	}
 
 	/*
-	 * ATUALIZAR USU¡RIO EXISTENTE
+	 * ATUALIZAR USUÔøΩRIO EXISTENTE
 	 */
 	public boolean atualizar(Usuario usuario) {
 		int registroAlterado = 0;
@@ -62,6 +63,54 @@ public class UsuarioDAO {
 			Banco.closeConnection(conn);
 		}
 		return registroAlterado > 0;
+	}
+	
+
+	/*
+	 * EXCLUIR REGISTRO DE USU√ÅRIO
+	 */
+	public boolean excluir(Integer idUsuario) {
+		Connection conn = Banco.getConnection();
+		String query = "DELETE FROM CLIENTE WHERE ID= " + idUsuario;
+		Statement stmt = Banco.getStatement(conn);
+		
+		int quantidadeLinhasAfetadas = 0;
+		try {
+			quantidadeLinhasAfetadas = stmt.executeUpdate(query);
+		} catch (SQLException e) {
+			System.out.println("Erro ao excluir usu√°rio.");
+			System.out.println("Erro: " + e.getMessage());
+		}
+		
+		boolean excluiu = quantidadeLinhasAfetadas > 0;
+		return excluiu;
+	}
+	
+	/*
+	 * CONSULTAR TODOS OS USU√ÅRIOS
+	 */
+	public List<Usuario> consultarTodos() {
+		List<Usuario> usuarios = new ArrayList<Usuario>();
+		Connection conn = Banco.getConnection();
+		String query = " SELECT * FROM USUARIO ";
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			while(resultado.next()) {
+				Usuario usuarioBuscado = montarUsuarioComResultadoDoBanco(resultado);
+				usuarios.add(usuarioBuscado);
+			}
+			
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar todos os usu√°rios. \n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return usuarios;
 	}
 
 	/*
@@ -150,7 +199,7 @@ public class UsuarioDAO {
 	}
 	
 	/*
-	 * COMPLETAR QUERY COM FILTROS DO USU¡RIO
+	 * COMPLETAR QUERY COM FILTROS DO USUÔøΩRIO
 	 */
 	private String preencherFiltros(String query, UsuarioSeletor usuarioSeletor) {
 		
@@ -202,5 +251,30 @@ public class UsuarioDAO {
 		return usuarioBuscado;
 	}
 
-
+	public int contarTotalRegistrosComFiltros(UsuarioSeletor usuarioSeletor) {
+		int total = 0;
+		Connection conn = Banco.getConnection();
+		String query = " SELECT COUNT(*) FROM USUARIO ";
+		
+		if(usuarioSeletor.temFiltro()) {
+			query = preencherFiltros(query, usuarioSeletor);
+		}
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de usu√°rios" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return total;
+	}
 }
