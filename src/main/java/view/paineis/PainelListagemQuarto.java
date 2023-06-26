@@ -121,6 +121,7 @@ public class PainelListagemQuarto extends JPanel {
 			
 			public void actionPerformed(ActionEvent e) {
 				buscarQuartos();
+				
 			}
 		});
 		add(btnBuscar, "10, 6");

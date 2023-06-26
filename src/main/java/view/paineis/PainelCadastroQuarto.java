@@ -106,7 +106,6 @@ public class PainelCadastroQuarto extends JPanel {
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				quartoVO = new Quarto();
-				
 				String numeroQuarto = textNumeroQuarto.getText();
 				if(!numeroQuarto.isEmpty()) {
 					try {
