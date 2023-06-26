@@ -77,7 +77,7 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemListarQuartos = new JMenuItem("Listar");
 		mnItemListarQuartos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				painelListagemQuarto = new PainelListagemQuarto(null);
+				painelListagemQuarto = new PainelListagemQuarto();
 				painelListagemQuarto.setVisible(true);
 				setContentPane(painelListagemQuarto);
 				revalidate();

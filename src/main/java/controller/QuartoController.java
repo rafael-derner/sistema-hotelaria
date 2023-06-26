@@ -35,7 +35,8 @@ String mensagemValidacao = "";
 		
 	}
 
-	public void atualizar(Quarto quartoVO) throws QuartoJaUtilizadoException{
+	public boolean atualizar(Quarto quartoVO){
+		return false;
 		// TODO Auto-generated method stub
 	}
 

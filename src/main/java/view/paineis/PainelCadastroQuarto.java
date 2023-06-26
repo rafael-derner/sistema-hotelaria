@@ -25,6 +25,7 @@ import javax.swing.JButton;
 import javax.swing.JComboBox;
 import java.awt.Font;
 import java.awt.event.ActionListener;
+import java.text.DecimalFormat;
 import java.awt.event.ActionEvent;
 
 public class PainelCadastroQuarto extends JPanel {
@@ -104,47 +105,64 @@ public class PainelCadastroQuarto extends JPanel {
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				quartoVO = new Quarto();
-				String numeroQuarto = textNumeroQuarto.getText();
-				if(!numeroQuarto.isEmpty()) {
-					try {
-						int numero = Integer.parseInt(numeroQuarto);
-						quartoVO.setNumeroQuarto(numero);
-					}catch (NumberFormatException numeroIncorreto){
-						JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caractéres numéricos.",
-								"Erro",JOptionPane.ERROR_MESSAGE);
-					}
-				}
-
-				quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());			
-				
-				String valorQuarto = ftfValorDiaria.getText();
-				if (!valorQuarto.isEmpty()) {
-				    valorQuarto = valorQuarto.replace(',', '.'); // Replace comma with a point
-				    try {
-				        double valor = Double.parseDouble(valorQuarto);
-				        quartoVO.setValorQuarto(valor);
-				    } catch (NumberFormatException valorIncorreto) {
-				        JOptionPane.showMessageDialog(null, "Campo valor da diária deve receber caracteres numéricos.", "Erro", JOptionPane.ERROR_MESSAGE);
-				    }
-				}
-
-
-				try {
-					quartoController.inserir(quartoVO);
-					JOptionPane.showMessageDialog(null, "Quarto cadastrado com Sucesso!", "Sucesso",
-							JOptionPane.INFORMATION_MESSAGE);
-				}catch (QuartoJaUtilizadoException e2) {
-					JOptionPane.showMessageDialog(null, e2.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
-				} catch (CampoInvalidoException exceptionCampoInvalido) {
-					JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
-							"Erro", JOptionPane.ERROR_MESSAGE); 
-				}
+				salvarQuarto();
 			}
-			
 		});
 		add(btnSalvar, "6, 16, fill, top");
 
+	}
+
+	protected boolean salvarQuarto() {
+		// TODO Auto-generated method stub
+		quartoVO = new Quarto();
+		String numeroQuarto = textNumeroQuarto.getText();
+		if(!numeroQuarto.isEmpty()) {
+			try {
+				int numero = Integer.parseInt(numeroQuarto);
+				quartoVO.setNumeroQuarto(numero);
+			}catch (NumberFormatException numeroIncorreto){
+				JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caractéres numéricos.",
+						"Erro",JOptionPane.ERROR_MESSAGE);
+				
+			}
+		}
+		quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());			
+		String valorQuarto = ftfValorDiaria.getText();
+		if (!valorQuarto.isEmpty()) {
+		    valorQuarto = valorQuarto.replace(',', '.'); // Replace comma with a point
+		    try {
+		        double valor = Double.parseDouble(valorQuarto);
+		        DecimalFormat valorFormatado = new DecimalFormat("#.00");
+		        quartoVO.setValorQuarto(valor);
+		    } catch (NumberFormatException valorIncorreto) {
+		        JOptionPane.showMessageDialog(null, "Campo valor da diária deve receber caracteres numéricos.", "Erro", JOptionPane.ERROR_MESSAGE);
+		    }
+		}
+
+		boolean retorno = false;
+		try {
+			if(quartoVO.getIdQuarto()!= null) {
+				if(quartoController.atualizar(quartoVO)) {
+					JOptionPane.showMessageDialog(null, "Quarto atualizado com sucesso!",
+							"Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					retorno = true;
+				}else {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o quarto. Verifique os dados e tente novamente",
+							"Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			}else {
+				quartoController.inserir(quartoVO);
+				JOptionPane.showMessageDialog(null, "Quarto cadastrado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				retorno = true;
+			}
+		}catch (QuartoJaUtilizadoException e2) {
+			JOptionPane.showMessageDialog(null, e2.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		} catch (CampoInvalidoException exceptionCampoInvalido) {
+			JOptionPane.showMessageDialog(null, exceptionCampoInvalido.getMessage(), 
+					"Erro", JOptionPane.ERROR_MESSAGE); 
+		}
+		return retorno; 
+		
 	}
 
 }
