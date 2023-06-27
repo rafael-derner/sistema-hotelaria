@@ -38,3 +38,15 @@ FOREIGN KEY (ID_HOSPEDE) REFERENCES HOSPEDE (ID_HOSPEDE),
 FOREIGN KEY (ID_QUARTO) REFERENCES QUARTO (ID_QUARTO),
 FOREIGN KEY (ID_USUARIO) REFERENCES USUARIO (ID_USUARIO)
 );
+
+insert into reserva (ID_hospede,id_quarto, id_usuario, DTHR_CHECK_IN, DTHR_CHECK_OUT)
+	values (1, 1, 1, '2023-01-01', '2023-01-15');
+    
+select * from hospede;
+select * from quarto;
+select * from usuario;
+    
+select quarto.*, reserva.*
+from quarto 
+	join reserva on reserva.id_quarto = quarto.id_quarto
+where '2023-01-02' not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT or '2023-01-15' not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT ;
