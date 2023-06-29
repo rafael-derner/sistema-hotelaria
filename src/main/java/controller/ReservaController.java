@@ -18,12 +18,30 @@ public class ReservaController {
 	String mensagemValidacao = "";
 	
 
-	public void inserir(Reserva novaReserva) {
-		
+	public void inserir(Reserva novaReserva) throws CampoInvalidoException {
+		if(novaReserva.getHospede() == null) {
+			mensagemValidacao += "\nUm hospede dever ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(novaReserva.getDtCheckIn() == null) {
+			mensagemValidacao += "\nUm periodo deve ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(novaReserva.getQuarto() == null) {
+			mensagemValidacao += "\nUm quarto deve ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(novaReserva.getQuarto() == null) {
+			mensagemValidacao += "\nUm quarto deve ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(mensagemValidacao == null) {
+			reservaBO.inserir(novaReserva);
+		}
 		
 	}
 
-	public ArrayList<Quarto> consultarQuartos(LocalDate dataInicio, LocalDate dataFim, ButtonModel categoria) throws CampoInvalidoException {
+	public ArrayList<Quarto> consultarQuartos(LocalDate dataInicio, LocalDate dataFim, String categoria) throws CampoInvalidoException {
 		if(dataInicio == null) {
 			mensagemValidacao += "Data dever ser preenchido";
 			throw new CampoInvalidoException(mensagemValidacao);

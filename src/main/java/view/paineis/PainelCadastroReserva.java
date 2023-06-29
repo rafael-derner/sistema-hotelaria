@@ -128,7 +128,7 @@ public class PainelCadastroReserva extends JPanel {
 				seletor.setNome(tfNomeHospede.getText());
 				listaHospedes = hospedeController.consultarComFiltro(seletor);
 				for(Hospede l : listaHospedes) {
-					cbxNomeHospede.addItem(l.getNome());
+					cbxNomeHospede.addItem(l.getNome() + " - CPF:" + l.getCpf());
 				}
 				cbxNomeHospede.setSelectedItem(null);
 			}
@@ -197,7 +197,7 @@ public class PainelCadastroReserva extends JPanel {
 				if(dataInicio.getDate().lengthOfYear() > 0) {
 					try {
 						listaQuartos = new ArrayList<Quarto>();
-						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), buttonGroup.getSelection());
+						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), buttonGroup.getSelection().getSelectedObjects());
 					} catch (CampoInvalidoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -239,7 +239,11 @@ public class PainelCadastroReserva extends JPanel {
 		btnSalvar.setEnabled(false);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				inserirReserva();
+				try {
+					inserirReserva();
+				} catch (CampoInvalidoException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		add(btnSalvar, "8, 22, right, default");
@@ -274,14 +278,19 @@ public class PainelCadastroReserva extends JPanel {
 		rdbtnBasico.setSelected(true);
 	}
 
-	private void inserirReserva() {
+	private void inserirReserva() throws CampoInvalidoException {
 		novaReserva = new Reserva();
-		//novaReserva.setQuarto(); criar uma forma de buscar o quarto selecionado a partir da 'tabelaResultados'
+		novaReserva.setQuarto(listaQuartos.get(tabelaQuartos.getSelectedRow() - 1));
 		novaReserva.setHospede((Hospede) cbxNomeHospede.getSelectedItem());
 		novaReserva.setUsuario(usuarioVO);
-		//Criar um Enum para status da reserva;
 		novaReserva.setDtCheckIn(dataInicio.getDate());
 		novaReserva.setDtCheckOut(dataFim.getDate());
-		reservaController.inserir(novaReserva);
+		try {
+				reservaController.inserir(novaReserva);
+		}catch(Exception e2){
+			
+		}
+			
+		
 	}
 }

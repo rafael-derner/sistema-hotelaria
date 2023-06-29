@@ -8,6 +8,7 @@ import javax.swing.ButtonModel;
 import model.dao.HospedeDAO;
 import model.dao.ReservaDAO;
 import model.vo.Quarto;
+import model.vo.Reserva;
 
 public class ReservaBO {
 	
@@ -15,8 +16,13 @@ public class ReservaBO {
 	ReservaDAO reservaDAO = new ReservaDAO();
 	
 
-	public ArrayList<Quarto> consultaQuartos(LocalDate dataInicio, LocalDate dataFim, ButtonModel categoria) {
+	public ArrayList<Quarto> consultaQuartos(LocalDate dataInicio, LocalDate dataFim, String categoria) {
 		return reservaDAO.consultaQuartosVagos(dataInicio, dataFim, categoria);
+	}
+
+
+	public void inserir(Reserva novaReserva) {
+		reservaDAO.inserir(novaReserva);
 	}
 
 }
