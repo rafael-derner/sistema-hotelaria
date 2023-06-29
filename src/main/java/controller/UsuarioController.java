@@ -25,8 +25,8 @@ public class UsuarioController {
 		return usuarioBO.atualizar(usuario);
 	}
 
-	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException, ExclusaoGerenteException {
-		return usuarioBO.excluir(idUsuario);	
+	public boolean inativar(Integer idUsuario) throws UsuarioComReservaException {
+		return usuarioBO.inativar(idUsuario);
 	}
 
 	private void validarCamposObrigatorios(Usuario novoUsuario) throws CampoInvalidoException{
