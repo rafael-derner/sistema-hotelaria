@@ -102,7 +102,7 @@ public class QuartoDAO {
 		return query;
 	}
 
-	private Quarto montarQuartoComResultadoDoBanco(ResultSet resultado) throws SQLException {
+	public Quarto montarQuartoComResultadoDoBanco(ResultSet resultado) throws SQLException {
 		Quarto quartoBuscado = new Quarto();
 		quartoBuscado.setIdQuarto(resultado.getInt("ID_QUARTO"));
 		quartoBuscado.setNumeroQuarto(resultado.getInt("NUMERO"));
