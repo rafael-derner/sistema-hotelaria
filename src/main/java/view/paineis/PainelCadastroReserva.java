@@ -15,12 +15,14 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import controller.HospedeController;
 import controller.ReservaController;
 import model.exception.CampoInvalidoException;
 import model.vo.Hospede;
 import model.vo.Quarto;
 import model.vo.Reserva;
 import model.vo.Usuario;
+import model.seletor.HospedeSeletor;
 
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
@@ -30,6 +32,7 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.List;
 import java.awt.event.ActionEvent;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
@@ -45,10 +48,10 @@ public class PainelCadastroReserva extends JPanel {
 	private DatePicker dataFim;
 	private JTable tabelaQuartos;
 	private JTextField tfNomeHospede;
-	private JComboBox<Hospede> cbxNomeHospede;
+	private JComboBox<String> cbxNomeHospede;
 	private String nomeHospede;
-	private ReservaController reservaController;
-	private ArrayList<String> listaNomesHospedes;
+	private HospedeController hospedeController;
+	private List<Hospede> listaHospedes;
 	private ArrayList<Quarto> listaQuartos;
 	private Quarto quartoSelecionado;
 	private int primeiraData;
@@ -60,6 +63,7 @@ public class PainelCadastroReserva extends JPanel {
 	private JLabel lblTitulo;
 	private Usuario usuarioVO;
 	private JButton btnBuscarQuartos;
+	private ReservaController reservaController = new ReservaController();;
 	
 	public PainelCadastroReserva(Usuario usuario) {
 		
@@ -106,7 +110,6 @@ public class PainelCadastroReserva extends JPanel {
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblTitulo, "2, 2, 7, 1, center, default");
 		
-		
 		JLabel lblReservaHospede = new JLabel("Buscar hospede:");
 		add(lblReservaHospede, "4, 4, 3, 1");
 		
@@ -114,27 +117,23 @@ public class PainelCadastroReserva extends JPanel {
 		add(tfNomeHospede, "4, 6, 3, 1, fill, default");
 		tfNomeHospede.setColumns(10);
 		
-		reservaController = new ReservaController();
+		cbxNomeHospede = new JComboBox();
+		add(cbxNomeHospede, "4, 8, 3, 1, fill, default");
+		
 		JButton btnBuscarHospede = new JButton("Buscar");
 		btnBuscarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				nomeHospede = tfNomeHospede.getText();
-				try {
-					listaNomesHospedes = reservaController.buscarHospedePorNome(nomeHospede);
-					
-					cbxNomeHospede = new JComboBox<Hospede>((Hospede[]) listaNomesHospedes.toArray());
-					add(cbxNomeHospede, "4, 8, 3, 1, fill, default");
-					cbxNomeHospede.setSelectedItem(null);
-					
-				} catch (CampoInvalidoException e1) {
-					//JOptionPane.showMessageDialog(e1.getMessage(), null);
-					e1.printStackTrace();
+				hospedeController = new HospedeController();
+				HospedeSeletor seletor = new HospedeSeletor();
+				seletor.setNome(tfNomeHospede.getText());
+				listaHospedes = hospedeController.consultarComFiltro(seletor);
+				for(Hospede l : listaHospedes) {
+					cbxNomeHospede.addItem(l.getNome() + " - CPF:" + l.getCpf());
 				}
+				cbxNomeHospede.setSelectedItem(null);
 			}
 		});
 		add(btnBuscarHospede, "8, 6, left, default");
-		
-		
 		
 		JLabel lblModeloQuarto = new JLabel("Selecione o modelo de quarto:");
 		add(lblModeloQuarto, "4, 10, 3, 1");
@@ -198,11 +197,12 @@ public class PainelCadastroReserva extends JPanel {
 				if(dataInicio.getDate().lengthOfYear() > 0) {
 					try {
 						listaQuartos = new ArrayList<Quarto>();
-						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), buttonGroup.getSelection());
+						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), buttonGroup.getSelection().getSelectedObjects());
 					} catch (CampoInvalidoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					atualizarTabelaUsuarios();
 				}
 			}
 		});
@@ -239,7 +239,11 @@ public class PainelCadastroReserva extends JPanel {
 		btnSalvar.setEnabled(false);
 		btnSalvar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				inserirReserva();
+				try {
+					inserirReserva();
+				} catch (CampoInvalidoException e1) {
+					e1.printStackTrace();
+				}
 			}
 		});
 		add(btnSalvar, "8, 22, right, default");
@@ -274,14 +278,19 @@ public class PainelCadastroReserva extends JPanel {
 		rdbtnBasico.setSelected(true);
 	}
 
-	private void inserirReserva() {
+	private void inserirReserva() throws CampoInvalidoException {
 		novaReserva = new Reserva();
-		//novaReserva.setQuarto(); criar uma forma de buscar o quarto selecionado a partir da 'tabelaResultados'
+		novaReserva.setQuarto(listaQuartos.get(tabelaQuartos.getSelectedRow() - 1));
 		novaReserva.setHospede((Hospede) cbxNomeHospede.getSelectedItem());
 		novaReserva.setUsuario(usuarioVO);
-		//Criar um Enum para status da reserva;
 		novaReserva.setDtCheckIn(dataInicio.getDate());
 		novaReserva.setDtCheckOut(dataFim.getDate());
-		reservaController.inserir(novaReserva);
+		try {
+				reservaController.inserir(novaReserva);
+		}catch(Exception e2){
+			
+		}
+			
+		
 	}
 }

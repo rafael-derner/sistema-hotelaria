@@ -184,8 +184,8 @@ public class HospedeDAO {
 		Hospede hospedeBuscado = new Hospede();
 		hospedeBuscado.setIdHospede(resultado.getInt("ID_HOSPEDE"));
 		hospedeBuscado.setNome(resultado.getString("NOME"));
-		hospedeBuscado.setCpf(Formatador.formatarCpf(resultado.getString("CPF")));
-		hospedeBuscado.setTelefone(Formatador.formatarTelefoneMovel(resultado.getString("TELEFONE")));
+		hospedeBuscado.setCpf(Formatador.formatarCpfParaView(resultado.getString("CPF")));
+		hospedeBuscado.setTelefone(Formatador.formatarTelefoneMovelParaView(resultado.getString("TELEFONE")));
 		
 		return hospedeBuscado;
 	}

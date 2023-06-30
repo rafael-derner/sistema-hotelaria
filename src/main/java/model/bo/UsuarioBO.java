@@ -25,7 +25,7 @@ public class UsuarioBO {
 
 	public boolean atualizar(Usuario usuario) throws CpfAlteradoException {
 		Usuario usuarioOld = usuarioDAO.consultarPorId(usuario.getIdUsuario());
-		if(!Formatador.formatarCpf(usuario.getCpf()).equals(usuarioOld.getCpf())) {
+		if(!Formatador.formatarCpfParaView(usuario.getCpf()).equals(usuarioOld.getCpf())) {
 			throw new CpfAlteradoException("O CPF n�o pode ser alterado");
 		}
 		
@@ -36,15 +36,16 @@ public class UsuarioBO {
 		return usuarioDAO.contarTotalRegistrosComFiltros(usuarioSeletor);
 	}
 
-	public boolean excluir(Integer idUsuario) throws UsuarioComReservaException, ExclusaoGerenteException{
+	public boolean inativar(Integer idUsuario) throws UsuarioComReservaException{
 		Usuario usuario = usuarioDAO.consultarPorId(idUsuario);
+		usuario.setCpf(Formatador.formatarCpfParaBanco(usuario.getCpf()));
+		usuario.setTelefone(Formatador.formatarTelefoneMovelParaBanco(usuario.getTelefone()));
 		
-		//NESSA ETAPA DEVE SER PEQUISADO NA TABELA DE RESERVA SE O USUÁRIO NÃO ESTÁ ASSOCIADO A ALGUMA RESERVA
-		//E TAMBÉM SE O USUÁRIO NÃO É GERENTE
-		//if(!usuario.getReservas().isEmpty()) {
-		//	throw new UsuarioComReservaException("O usuário possui reservas associadas. Não foi possível efetuar a exclusão.");
-		//}
-		return usuarioDAO.excluir(idUsuario);
+		//NESSA ETAPA DEVE SER PEQUISADO NA TABELA DE RESERVA SE O USUÁRIO NÃO ESTÁ ASSOCIADO A ALGUMA RESERVA ATIVA
+		// Utilizar o seletor de reservas para pesquisar se existe alguma reserva com o Usuario
+
+		usuario.setAtivo(false);
+		return usuarioDAO.atualizar(usuario);
 	}
 
 	public List<Usuario> consultarTodos() {

@@ -6,6 +6,7 @@ public class Usuario {
 	private String cpf;
 	private String telefone;
 	private String perfil;
+	private boolean ativo;
 	
 	public Usuario() {
 		super();
@@ -59,5 +60,13 @@ public class Usuario {
 
 	public void setPerfil(String perfil) {
 		this.perfil = perfil;
+	}
+
+	public boolean isAtivo() {
+		return ativo;
+	}
+
+	public void setAtivo(boolean ativo) {
+		this.ativo = ativo;
 	}
 }

@@ -43,7 +43,7 @@ public class PainelListagemUsuario extends JPanel {
 	private ArrayList<Usuario> usuarios;
 	private Usuario usuarioSelecionado;
 	
-	private String[] nomesColunas = { "Nome", "CPF", "Telefone", "Perfil" };
+	private String[] nomesColunas = { "Nome", "CPF", "Telefone", "Perfil", "Ativo" };
 	private JTable tblUsuarios;
 	private JTextField tfNome;
 	private JLabel lblCpf;
@@ -56,12 +56,12 @@ public class PainelListagemUsuario extends JPanel {
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JButton btnEditar;
-	private JButton btnExcluir;
+	private JButton btnInativar;
 
 	private final int TAMANHO_PAGINA = 40;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
-	private JLabel lblPaginacao;
+	private JLabel lblPaginacao = new JLabel();
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	
@@ -126,21 +126,41 @@ public class PainelListagemUsuario extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		btnEditar = new JButton("Editar");
-		btnEditar.setEnabled(false);
-		btnEditar.setBackground(new Color(50, 204, 233));
-		add(btnEditar, "10, 18");
 		
-		btnExcluir = new JButton("Excluir");
-		btnExcluir.setEnabled(false);
-		btnExcluir.setBackground(new Color(255, 0, 0));		
-		btnExcluir.addActionListener(new ActionListener() {
+//		btnInativar = new JButton("Inativar");
+//		btnInativar.setEnabled(false);
+//		btnInativar.setBackground(new Color(255, 0, 0));		
+//		btnInativar.addActionListener(new ActionListener() {
+//			public void actionPerformed(ActionEvent e) {
+//				// COMPLETAR ACTION LISTENER
+//			}
+//		});
+//		add(btnInativar, "12, 18");
+		
+		btnInativar = new JButton("Inativar");
+		btnInativar.setBackground(new Color(255, 0, 0));
+		btnInativar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				// COMPLETAR ACTION LISTENER
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente Inativar o usuário selecionado?");
+				
+				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
+					try {
+						usuarioController.inativar(usuarioSelecionado.getIdUsuario());
+						JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
+						usuarios = (ArrayList<Usuario>) usuarioController.consultarTodos();
+						atualizarTabelaUsuarios();
+					} catch (UsuarioComReservaException usuarioComReservaException) {
+						JOptionPane.showConfirmDialog(null, usuarioComReservaException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					}
+				}
 			}
 		});
-		add(btnExcluir, "12, 18");
+		
+				btnEditar = new JButton("Editar");
+				btnEditar.setEnabled(false);
+				btnEditar.setBackground(new Color(50, 204, 233));
+				add(btnEditar, "14, 18");
+		add(btnInativar, "16, 18");
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usu\u00E1rios");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
@@ -198,33 +218,11 @@ public class PainelListagemUsuario extends JPanel {
 				
 				if(elementoSelecionado > 0) {
 					btnEditar.setEnabled(true);
-					btnExcluir.setEnabled(true);
+					btnInativar.setEnabled(true);
 					usuarioSelecionado = usuarios.get(elementoSelecionado - 1);
 				}
 			}
 		});		
-		
-		btnExcluir = new JButton("Excluir");
-		btnExcluir.setBackground(new Color(255, 0, 0));
-		btnExcluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente excluir o usuário selecionado?");
-				
-				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
-					try {
-						usuarioController.excluir(usuarioSelecionado.getIdUsuario());
-						JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
-						usuarios = (ArrayList<Usuario>) usuarioController.consultarTodos();
-						atualizarTabelaUsuarios();
-					} catch (UsuarioComReservaException usuarioComReservaException) {
-						JOptionPane.showConfirmDialog(null, usuarioComReservaException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-					} catch (ExclusaoGerenteException exclusaoGerenteException) {
-						JOptionPane.showConfirmDialog(null, exclusaoGerenteException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-					}
-				}
-			}
-		});
-		add(btnExcluir, "16, 18");
 		
 		btnVoltarPagina = new JButton("<<");
 		btnVoltarPagina.addActionListener(new ActionListener() {
@@ -251,7 +249,7 @@ public class PainelListagemUsuario extends JPanel {
 		});
 		add(btnAvancarPagina, "8, 18");
 				
-		lblPaginacao = new JLabel("1 / " + totalPaginas);
+		lblPaginacao.setText("1 / " + totalPaginas);
 		add(lblPaginacao, "6, 18, center, default");
 
 		atualizarQuantidadePaginas();
@@ -289,11 +287,12 @@ public class PainelListagemUsuario extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) tblUsuarios.getModel();
 
 		for (Usuario usuario : usuarios) {
-			Object[] novaLinhaDaTabela = new Object[4];
+			Object[] novaLinhaDaTabela = new Object[5];
 			novaLinhaDaTabela[0] = usuario.getNome();
 			novaLinhaDaTabela[1] = usuario.getCpf();
 			novaLinhaDaTabela[2] = usuario.getTelefone();
 			novaLinhaDaTabela[3] = usuario.getPerfil();
+			novaLinhaDaTabela[4] = usuario.isAtivo() ? "Sim" : "Não";
 
 			model.addRow(novaLinhaDaTabela);
 		}
@@ -313,7 +312,7 @@ public class PainelListagemUsuario extends JPanel {
 	private void limparTabelaUsuarios() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 		btnEditar.setEnabled(false);
-		btnExcluir.setEnabled(false);
+		btnInativar.setEnabled(false);
 	}
 	
 	public JButton getBtnEditar() {

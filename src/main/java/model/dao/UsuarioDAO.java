@@ -19,7 +19,7 @@ public class UsuarioDAO {
 	 */
 	public Usuario inserir(Usuario novoUsuario) {
 		Connection conn = Banco.getConnection();
-		String query = "INSERT INTO USUARIO(NOME, CPF, TELEFONE, PERFIL) VALUES (?, ?, ?, ?)";
+		String query = "INSERT INTO USUARIO(NOME, CPF, TELEFONE, PERFIL, ATIVO) VALUES (?, ?, ?, ?, TRUE)";
 		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
 		try {
 			pstmt.setString(1, novoUsuario.getNome());
@@ -47,17 +47,18 @@ public class UsuarioDAO {
 	public boolean atualizar(Usuario usuario) {
 		int registroAlterado = 0;
 		Connection conn = Banco.getConnection();
-		String query = "UPDATE USUARIO SET NOME = ?, CPF = ?, TELEFONE = ?, PERFIL = ? WHERE ID_USUARIO = ?";
+		String query = "UPDATE USUARIO SET NOME = ?, CPF = ?, TELEFONE = ?, PERFIL = ?, ATIVO = ? WHERE ID_USUARIO = ?";
 		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
 		try {
 			pstmt.setString(1, usuario.getNome());
 			pstmt.setString(2, usuario.getCpf());
 			pstmt.setString(3, usuario.getTelefone());
 			pstmt.setString(4, usuario.getPerfil());
-			pstmt.setInt(5, usuario.getIdUsuario());
+			pstmt.setBoolean(5, usuario.isAtivo());
+			pstmt.setInt(6, usuario.getIdUsuario());
 			registroAlterado = pstmt.executeUpdate();
 		} catch (SQLException e) {
-			System.out.println("Ocorreu um erro no m�todo inserir. \n Causa: " + e.getMessage());
+			System.out.println("Ocorreu um erro no m�todo atualizar. \n Causa: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
@@ -244,9 +245,10 @@ public class UsuarioDAO {
 		Usuario usuarioBuscado = new Usuario();
 		usuarioBuscado.setIdUsuario(resultado.getInt("ID_USUARIO"));
 		usuarioBuscado.setNome(resultado.getString("NOME"));
-		usuarioBuscado.setCpf(Formatador.formatarCpf(resultado.getString("CPF")));
-		usuarioBuscado.setTelefone(Formatador.formatarTelefoneMovel(resultado.getString("TELEFONE")));
+		usuarioBuscado.setCpf(Formatador.formatarCpfParaView(resultado.getString("CPF")));
+		usuarioBuscado.setTelefone(Formatador.formatarTelefoneMovelParaView(resultado.getString("TELEFONE")));
 		usuarioBuscado.setPerfil(resultado.getString("PERFIL"));
+		usuarioBuscado.setAtivo(resultado.getBoolean("ATIVO"));
 		
 		return usuarioBuscado;
 	}

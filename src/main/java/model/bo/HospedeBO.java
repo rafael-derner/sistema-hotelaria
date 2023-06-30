@@ -23,7 +23,7 @@ public class HospedeBO {
 
 	public boolean atualizar(Hospede hospede) throws CpfAlteradoException {
 		Hospede hospedeOld = hospedeDAO.consultarPorId(hospede.getIdHospede());
-		if(!Formatador.formatarCpf(hospede.getCpf()).equals(hospedeOld.getCpf())) {
+		if(!Formatador.formatarCpfParaView(hospede.getCpf()).equals(hospedeOld.getCpf())) {
 			throw new CpfAlteradoException("O CPF n�o pode ser alterado");
 		}
 		
