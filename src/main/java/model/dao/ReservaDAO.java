@@ -17,12 +17,13 @@ public class ReservaDAO {
 		ArrayList<Quarto> listaQuartos = new ArrayList<Quarto>();
 		Connection conexao = Banco.getConnection();
 		QuartoDAO quartoDAO = new QuartoDAO();
-		String sql = "select quarto.* "
+		String sql = "select distinct(quarto.id_quarto), quarto.* "
 				+ "from quarto "
 				+ "left join reserva on reserva.id_quarto = quarto.id_quarto "
-			+ "where ((' " + dataInicio + "' not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT) "
+				+ "and ((' " + dataInicio + "' not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT) "
 				+ "and ('" + dataFim + "' not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT))"
-				+ " and quarto.tipo_quarto = '" + categoria + "'";
+			+ "where "
+				+ " quarto.tipo_quarto = '" + categoria + "'";
 				
 		PreparedStatement query = Banco.getPreparedStatement(conexao, sql);
 		try {
@@ -46,14 +47,18 @@ public class ReservaDAO {
 		String query = "INSERT INTO reserva(ID_hospede,id_quarto, id_usuario, DTHR_CHECK_IN, DTHR_CHECK_OUT) VALUES (?, ?, ?, ?, ?)";
 		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
 		try {
+			
 			pstmt.setInt(1, novaReserva.getHospede().getIdHospede());
 			pstmt.setInt(2, novaReserva.getQuarto().getIdQuarto());
-			pstmt.setInt(3, novaReserva.getUsuario().getIdUsuario());
+			pstmt.setInt(3, 1); // novaReserva.getUsuario().getIdUsuario());
 			pstmt.setDate(4, java.sql.Date.valueOf(novaReserva.getDtCheckIn()));
 			pstmt.setDate(5, java.sql.Date.valueOf(novaReserva.getDtCheckOut()));
 			pstmt.execute();
 			
 			ResultSet resultado = pstmt.getGeneratedKeys();
+			if(resultado.next()) {
+				System.out.println("Não inseriu");
+			}
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro no método inserir. \n Causa: " + e.getMessage());
 		} finally {
