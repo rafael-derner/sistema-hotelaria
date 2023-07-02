@@ -48,7 +48,7 @@ public class PainelCadastroReserva extends JPanel {
 	private DatePicker dataFim;
 	private JTable tabelaQuartos;
 	private JTextField tfNomeHospede;
-	private JComboBox<String> cbxNomeHospede;
+	private JComboBox<Hospede> cbxNomeHospede;
 	private String nomeHospede;
 	private HospedeController hospedeController;
 	private List<Hospede> listaHospedes;
@@ -128,7 +128,7 @@ public class PainelCadastroReserva extends JPanel {
 				seletor.setNome(tfNomeHospede.getText());
 				listaHospedes = hospedeController.consultarComFiltro(seletor);
 				for(Hospede l : listaHospedes) {
-					cbxNomeHospede.addItem(l.getNome() + " - CPF:" + l.getCpf());
+					cbxNomeHospede.addItem(l);
 				}
 				cbxNomeHospede.setSelectedItem(null);
 			}
@@ -197,7 +197,8 @@ public class PainelCadastroReserva extends JPanel {
 				if(dataInicio.getDate().lengthOfYear() > 0) {
 					try {
 						listaQuartos = new ArrayList<Quarto>();
-						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), buttonGroup.getSelection().getSelectedObjects());
+						String rdbSelecionado = consultaRadioBurronSelecionado(rdbtnBasico, rdbtnIntermediario, rdbtnLuxo);
+						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), rdbSelecionado);
 					} catch (CampoInvalidoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -242,7 +243,7 @@ public class PainelCadastroReserva extends JPanel {
 				try {
 					inserirReserva();
 				} catch (CampoInvalidoException e1) {
-					e1.printStackTrace();
+					JOptionPane.showMessageDialog(null, e1.getMessage());;
 				}
 			}
 		});
@@ -269,7 +270,6 @@ public class PainelCadastroReserva extends JPanel {
 		tabelaQuartos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
 	
-	
 	private void limparCampos() {
 		tfNomeHospede.setText("");
 		cbxNomeHospede.removeAllItems();
@@ -288,9 +288,21 @@ public class PainelCadastroReserva extends JPanel {
 		try {
 				reservaController.inserir(novaReserva);
 		}catch(Exception e2){
-			
+			JOptionPane.showMessageDialog(null, e2.getMessage());
 		}
-			
-		
+	}
+	
+	private String consultaRadioBurronSelecionado(JRadioButton rdbtnBasico, JRadioButton rdbtnIntermediario, JRadioButton rdbtnLuxo) {
+		String botao = "";
+		if(rdbtnBasico.isSelected()) {
+			botao += "BÁSICO";
+		}
+		if(rdbtnIntermediario.isSelected()) {
+			botao += "INTERMEDIÁRIO";
+		}
+		if(rdbtnLuxo.isSelected()) {
+			botao += "LUXO";
+		}
+		return botao;
 	}
 }

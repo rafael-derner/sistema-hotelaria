@@ -107,7 +107,7 @@ public class PainelCadastroUsuario extends JPanel {
 			e.printStackTrace();
 		}
 		
-		lblNewLabel = new JLabel("Cadastro de Usu\u00E1rio");
+		lblNewLabel = new JLabel("Cadastro de Usuário");
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblNewLabel, "4, 4, 3, 1, center, default");
 		
@@ -185,14 +185,14 @@ public class PainelCadastroUsuario extends JPanel {
 		try {
 			if(usuarioVO.getIdUsuario() != null) {
 				if(usuarioController.atualizar(usuarioVO)) {
-					JOptionPane.showMessageDialog(null, "Usu�rio atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Usuário atualizado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 					retorno = true;
 				} else {
-					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o usu�rio. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar o usuário. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				usuarioController.inserir(usuarioVO);
-				JOptionPane.showMessageDialog(null, "Usu�rio criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Usuário criado com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
 				retorno = true;
 			}
 		} catch (CampoInvalidoException exceptionCampoInvalido) {

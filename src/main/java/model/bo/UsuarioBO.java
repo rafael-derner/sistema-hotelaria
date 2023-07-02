@@ -8,6 +8,7 @@ import model.dao.UsuarioDAO;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
+import model.exception.UsuarioInativoException;
 import model.exception.ExclusaoGerenteException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
@@ -17,7 +18,7 @@ public class UsuarioBO {
 
 	public Usuario inserir(Usuario novoUsuario) throws CpfDuplicadoException{
 		if(usuarioDAO.verificarCpfDuplicado(novoUsuario.getCpf())) {
-			throw new CpfDuplicadoException("O CPF informado j� foi utilizado.");
+			throw new CpfDuplicadoException("O CPF informado já foi utilizado.");
 		}
 		
 		return usuarioDAO.inserir(novoUsuario);
@@ -26,7 +27,7 @@ public class UsuarioBO {
 	public boolean atualizar(Usuario usuario) throws CpfAlteradoException {
 		Usuario usuarioOld = usuarioDAO.consultarPorId(usuario.getIdUsuario());
 		if(!Formatador.formatarCpfParaView(usuario.getCpf()).equals(usuarioOld.getCpf())) {
-			throw new CpfAlteradoException("O CPF n�o pode ser alterado");
+			throw new CpfAlteradoException("O CPF não pode ser alterado");
 		}
 		
 		return usuarioDAO.atualizar(usuario);
@@ -36,13 +37,14 @@ public class UsuarioBO {
 		return usuarioDAO.contarTotalRegistrosComFiltros(usuarioSeletor);
 	}
 
-	public boolean inativar(Integer idUsuario) throws UsuarioComReservaException{
+	public boolean inativar(Integer idUsuario) throws UsuarioInativoException{
 		Usuario usuario = usuarioDAO.consultarPorId(idUsuario);
+		
+		if(!usuario.isAtivo()) {
+			throw new UsuarioInativoException("O usuário já se encontra inativo.");
+		}
 		usuario.setCpf(Formatador.formatarCpfParaBanco(usuario.getCpf()));
 		usuario.setTelefone(Formatador.formatarTelefoneMovelParaBanco(usuario.getTelefone()));
-		
-		//NESSA ETAPA DEVE SER PEQUISADO NA TABELA DE RESERVA SE O USUÁRIO NÃO ESTÁ ASSOCIADO A ALGUMA RESERVA ATIVA
-		// Utilizar o seletor de reservas para pesquisar se existe alguma reserva com o Usuario
 
 		usuario.setAtivo(false);
 		return usuarioDAO.atualizar(usuario);

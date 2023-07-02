@@ -59,6 +59,12 @@ public class Reserva {
 	public void setDtCheckOut(LocalDate dtCheckOut) {
 		this.dtCheckOut = dtCheckOut;
 	}
+
+	@Override
+	public String toString() {
+		return "Reserva [hospede=" + hospede + ", quarto=" + quarto + ", usuario=" + usuario + ", dtCheckIn="
+				+ dtCheckIn + ", dtCheckOut=" + dtCheckOut + "]";
+	}
 	
 }
 

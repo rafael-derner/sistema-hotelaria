@@ -8,6 +8,7 @@ import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
+import model.exception.UsuarioInativoException;
 import model.exception.ExclusaoGerenteException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
@@ -25,23 +26,23 @@ public class UsuarioController {
 		return usuarioBO.atualizar(usuario);
 	}
 
-	public boolean inativar(Integer idUsuario) throws UsuarioComReservaException {
+	public boolean inativar(Integer idUsuario) throws UsuarioInativoException {
 		return usuarioBO.inativar(idUsuario);
 	}
 
 	private void validarCamposObrigatorios(Usuario novoUsuario) throws CampoInvalidoException{
 		String mensagemValidacao = "";
 		
-		if(novoUsuario.getNome() == null || novoUsuario.getNome().trim().length() < 2) {
-			mensagemValidacao += "Nome inv�lido \n";
+		if(novoUsuario.getNome() == null || novoUsuario.getNome().trim().length() < 2 || novoUsuario.getNome().matches(".*\\d+.*")) {
+			mensagemValidacao += "Nome inválido \n";
 		}
 		
 		if(novoUsuario.getCpf() == null || novoUsuario.getCpf().trim().length() < 2) {
-			mensagemValidacao += "Telefone inv�lido \n";
+			mensagemValidacao += "Telefone inválido \n";
 		}
 		
 		if(novoUsuario.getTelefone() == null || novoUsuario.getTelefone().trim().length() < 2) {
-			mensagemValidacao += "Telefone inv�lido \n";
+			mensagemValidacao += "Telefone inválido \n";
 		}
 		
 		if(!mensagemValidacao.isEmpty()) {

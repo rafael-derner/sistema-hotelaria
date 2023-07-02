@@ -31,11 +31,7 @@ public class ReservaController {
 			mensagemValidacao += "\nUm quarto deve ser selecionado";
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
-		if(novaReserva.getQuarto() == null) {
-			mensagemValidacao += "\nUm quarto deve ser selecionado";
-			throw new CampoInvalidoException(mensagemValidacao);
-		}
-		if(mensagemValidacao == null) {
+		if(mensagemValidacao.trim().isEmpty()) {
 			reservaBO.inserir(novaReserva);
 		}
 		
@@ -44,6 +40,10 @@ public class ReservaController {
 	public ArrayList<Quarto> consultarQuartos(LocalDate dataInicio, LocalDate dataFim, String categoria) throws CampoInvalidoException {
 		if(dataInicio == null) {
 			mensagemValidacao += "Data dever ser preenchido";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(categoria.trim().isEmpty()) {
+			mensagemValidacao += "Uma categoria deve ser selecionada";
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
 		return reservaBO.consultaQuartos(dataInicio, dataFim, categoria);

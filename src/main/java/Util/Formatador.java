@@ -19,7 +19,7 @@ public class Formatador {
 	 * Altera a string para não ter formatação
 	 */
 	public static String formatarCpfParaBanco(String cpf) {
-		return cpf.replaceAll(".", "").replaceAll("-", "");
+		return cpf.replaceAll("[()\\-.\\s]", "");
 	}
 	
 	/*
@@ -34,7 +34,7 @@ public class Formatador {
 	 * Altera a string para não ter formatação
 	 */
 	public static String formatarTelefoneMovelParaBanco(String telefone) {
-		return telefone.replaceAll("(", "").replaceAll(")", "").replaceAll("-", "");
+		return telefone.replaceAll("[()\\-.\\s]", "");
 	}
 
 //	public static Object formatarValorQuartoParaView(Quarto valorDiaria) {

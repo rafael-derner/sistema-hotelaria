@@ -164,6 +164,7 @@ public class FramePrincipal extends JFrame {
 				painelListagemUsuario = new PainelListagemUsuario();
 				painelListagemUsuario.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemUsuario();
+				registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario();
 				
 				//Atualiza a tela principal
 				setContentPane(painelListagemUsuario);
@@ -200,6 +201,24 @@ public class FramePrincipal extends JFrame {
 			
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroUsuario = new PainelCadastroUsuario(painelListagemUsuario.getUsuarioSelecionado());
+				painelCadastroUsuario.setVisible(true);
+				registrarCliqueBtnCancelarPainelCadastroUsuario();
+				registraCliqueBtnSalvarDoPainelCadastroUsuario();
+				
+				setContentPane(painelCadastroUsuario);
+				revalidate();
+			}
+		});
+	}
+	
+	/*
+	 * Clique no botão de ADICIONAR NOVO USUARIO do PainelListagemUsuario
+	 */
+	protected void registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario() {
+		painelListagemUsuario.getBtnAdicionarNovoUsuario().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroUsuario = new PainelCadastroUsuario(null);
 				painelCadastroUsuario.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
 				registraCliqueBtnSalvarDoPainelCadastroUsuario();
