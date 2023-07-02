@@ -45,8 +45,9 @@ public class PainelCadastroQuarto extends JPanel {
 
 	/**
 	 * Create the panel.
+	 * @param quarto 
 	 */
-	public PainelCadastroQuarto() {
+	public PainelCadastroQuarto(Quarto quarto) {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("32px:grow"),
 				ColumnSpec.decode("121px"),
@@ -103,17 +104,13 @@ public class PainelCadastroQuarto extends JPanel {
 		add(btnCancelar, "2, 16, fill, top");
 		
 		btnSalvar = new JButton("Salvar");
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				salvarQuarto();
-			}
-		});
 		add(btnSalvar, "6, 16, fill, top");
 
 	}
 
-	protected boolean salvarQuarto() {
+	public boolean salvarQuarto() {
 		// TODO Auto-generated method stub
+		boolean retorno = false;
 		quartoVO = new Quarto();
 		String numeroQuarto = textNumeroQuarto.getText();
 		if(!numeroQuarto.isEmpty()) {
@@ -138,8 +135,7 @@ public class PainelCadastroQuarto extends JPanel {
 		        JOptionPane.showMessageDialog(null, "Campo valor da diária deve receber caracteres numéricos.", "Erro", JOptionPane.ERROR_MESSAGE);
 		    }
 		}
-
-		boolean retorno = false;
+		
 		try {
 			if(quartoVO.getIdQuarto()!= null) {
 				if(quartoController.atualizar(quartoVO)) {
@@ -164,5 +160,14 @@ public class PainelCadastroQuarto extends JPanel {
 		return retorno; 
 		
 	}
+
+	public JButton getBtnSalvar() {
+		return btnSalvar;
+	}
+	
+	public JButton getBtnCancelar() {
+		return btnCancelar;
+	}
+
 
 }

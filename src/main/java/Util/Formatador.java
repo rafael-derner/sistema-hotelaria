@@ -1,5 +1,10 @@
 package Util;
 
+import java.text.NumberFormat;
+import java.util.Locale;
+
+import model.vo.Quarto;
+
 public class Formatador {
 	
 	/*
@@ -30,6 +35,18 @@ public class Formatador {
 	 */
 	public static String formatarTelefoneMovelParaBanco(String telefone) {
 		return telefone.replaceAll("(", "").replaceAll(")", "").replaceAll("-", "");
+	}
+
+//	public static Object formatarValorQuartoParaView(Quarto valorDiaria) {
+//		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+//        String valorFormatado = nf.format(valorDiaria);
+//        return Double.parseDouble(valorFormatado.replace("R$", "").trim());
+//	}
+
+	public static String formatarValorQuartoParaView(Quarto quarto) {
+		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
+        return nf.format(quarto);
+   
 	}
 
 }

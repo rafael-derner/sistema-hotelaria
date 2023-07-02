@@ -5,6 +5,7 @@ import java.util.List;
 
 import model.bo.QuartoBO;
 import model.exception.CampoInvalidoException;
+import model.exception.QuartoComReservaException;
 import model.exception.QuartoJaUtilizadoException;
 import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
@@ -35,14 +36,24 @@ String mensagemValidacao = "";
 		
 	}
 
-	public boolean atualizar(Quarto quartoVO){
-		return false;
-		// TODO Auto-generated method stub
+	public boolean atualizar(Quarto quartoVO) throws CampoInvalidoException, QuartoJaUtilizadoException{
+		this.validarCamposObrigatorios(quartoVO);
+		return quartoBO.atualizar(quartoVO);
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {
 		return quartoBO.consultarComFiltro(quartoSeletor);
 		
+	}
+
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException{
+		// TODO Auto-generated method stub
+		return quartoBO.inativar(idQuarto);
+	}
+
+	public ArrayList<Quarto> consultarTodos() {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }
