@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 
 import model.exception.ExclusaoGerenteException;
 import model.exception.UsuarioComReservaException;
+import model.exception.UsuarioInativoException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
@@ -64,6 +65,7 @@ public class PainelListagemUsuario extends JPanel {
 	private JLabel lblPaginacao = new JLabel();
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
+	private JButton btnAdicionarNovoUsuario;
 	
 	public PainelListagemUsuario() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -141,20 +143,24 @@ public class PainelListagemUsuario extends JPanel {
 		btnInativar.setBackground(new Color(255, 0, 0));
 		btnInativar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente Inativar o usuário selecionado?");
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente inativar o usuário selecionado?");
 				
 				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						usuarioController.inativar(usuarioSelecionado.getIdUsuario());
-						JOptionPane.showMessageDialog(null, "Usuário excluído com sucesso");
+						JOptionPane.showMessageDialog(null, "Usuário inativado com sucesso");
 						usuarios = (ArrayList<Usuario>) usuarioController.consultarTodos();
 						atualizarTabelaUsuarios();
-					} catch (UsuarioComReservaException usuarioComReservaException) {
-						JOptionPane.showConfirmDialog(null, usuarioComReservaException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					} catch (UsuarioInativoException usuarioInativoException) {
+						JOptionPane.showMessageDialog(null, usuarioInativoException.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 		});
+				
+				btnAdicionarNovoUsuario = new JButton("Adicionar novo Usuário");
+				btnAdicionarNovoUsuario.setBackground(new Color(128, 255, 128));
+				add(btnAdicionarNovoUsuario, "12, 18");
 		
 				btnEditar = new JButton("Editar");
 				btnEditar.setEnabled(false);
@@ -162,7 +168,7 @@ public class PainelListagemUsuario extends JPanel {
 				add(btnEditar, "14, 18");
 		add(btnInativar, "16, 18");
 		
-		JLabel lblListagemUsuarios = new JLabel("Listagem de Usu\u00E1rios");
+		JLabel lblListagemUsuarios = new JLabel("Listagem de Usuários");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblListagemUsuarios, "4, 4, 13, 1, center, default");
 		
@@ -321,5 +327,9 @@ public class PainelListagemUsuario extends JPanel {
 	
 	public Usuario getUsuarioSelecionado() {
 		return this.usuarioSelecionado;
+	}
+
+	public JButton getBtnAdicionarNovoUsuario() {
+		return this.btnAdicionarNovoUsuario;
 	}
 }
