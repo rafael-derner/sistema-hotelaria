@@ -139,6 +139,30 @@ public class UsuarioDAO {
 	}
 	
 	/*
+	 * CONSULTAR REIGSTRO POR CPF
+	 */
+	public Usuario consultarPorCpf(String cpf) {
+		Usuario usuario = null;
+		Connection conn = Banco.getConnection();
+		String query = " SELECT * FROM USUARIO WHERE CPF LIKE ? ";
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			pstmt.setString(1, cpf);
+			ResultSet resultado = pstmt.executeQuery();
+			if(resultado.next()) {
+				usuario = montarUsuarioComResultadoDoBanco(resultado);
+			}	
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar usuario com CPF: " + cpf 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		return usuario;
+	}
+	
+	/*
 	 * CONSULTAR REGISTROS POR FILTRO
 	 */
 	public List<Usuario> consultarComFiltro(UsuarioSeletor usuarioSeletor) {
@@ -191,7 +215,7 @@ public class UsuarioDAO {
 				cpfDuplicado = resultado.getInt(1) > 0;
 			}
 		} catch (Exception e) {
-			System.out.println("Ocorreu um erro no m�todo verificarCpfDuplicado. \n Causa: " + e.getMessage());
+			System.out.println("Ocorreu um erro no método verificarCpfDuplicado. \n Causa: " + e.getMessage());
 		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);

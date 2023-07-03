@@ -8,6 +8,10 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
+import controller.UsuarioController;
+import model.exception.CampoInvalidoException;
+import model.exception.UsuarioInativoException;
+import model.vo.Usuario;
 import view.paineis.PainelCadastroHospede;
 import view.paineis.PainelCadastroQuarto;
 import view.paineis.PainelCadastroReserva;
@@ -15,10 +19,12 @@ import view.paineis.PainelCadastroUsuario;
 import view.paineis.PainelListagemHospede;
 import view.paineis.PainelListagemQuarto;
 import view.paineis.PainelListagemUsuario;
+import view.paineis.PainelLogin;
 
 import javax.swing.JMenuBar;
 import javax.swing.JMenu;
 import javax.swing.JMenuItem;
+import javax.swing.JOptionPane;
 
 public class FramePrincipal extends JFrame {
 
@@ -28,6 +34,11 @@ public class FramePrincipal extends JFrame {
 	private PainelListagemHospede painelListagemHospede;
 	private PainelCadastroReserva cadastroReserva;
 	private PainelListagemQuarto painelListagemQuarto;
+	private PainelLogin painelLogin;
+	
+	private UsuarioController usuarioController = new UsuarioController();
+	private Usuario usuarioAutenticado;
+	private JPanel contentPaneVazio;
 	
 	/**
 	 * Launch the application.
@@ -44,16 +55,45 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 	}
-
-	/**
-	 * Create the frame.
+	
+	/*
+	 * Renderiza tela de login
 	 */
 	public FramePrincipal() {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
+		setTitle("Sistema de Telefonia");
+		setLocationRelativeTo(null);
+		
+		painelLogin = new PainelLogin();
+		setContentPane(painelLogin);
+		painelLogin.getBtnAcessar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					usuarioAutenticado = usuarioController.login(painelLogin.getTfCodigoAcesso().getText());
+					initialize();
+				} catch (CampoInvalidoException campoInvalidoException) {
+					JOptionPane.showMessageDialog(null, campoInvalidoException.getMessage());
+				} catch (UsuarioInativoException usuarioInativoException) {
+					JOptionPane.showMessageDialog(null, usuarioInativoException.getMessage());
+				}
+			}
+		});
+	}
+
+	/**
+	 * Create the frame.
+	 */
+	public void initialize() {
+		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setBounds(100, 100, 450, 300);
+		getContentPane().setLayout(null);
 		setTitle("Sistema de Hotelaria");
 		setExtendedState(JFrame.MAXIMIZED_BOTH);
+
+		contentPaneVazio = new JPanel();
+		setContentPane(contentPaneVazio);
 		
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
