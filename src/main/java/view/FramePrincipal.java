@@ -137,6 +137,14 @@ public class FramePrincipal extends JFrame {
 		mnReserva.add(mnItemCadastrarReserva);
 		
 		JMenuItem mnItemListarReservas = new JMenuItem("Listar");
+		mnItemListarReservas.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				cadastroReserva = new PainelCadastroReserva(null);
+				cadastroReserva.setVisible(true);
+				setContentPane(cadastroReserva);
+				revalidate();
+			}
+		});
 		mnReserva.add(mnItemListarReservas);
 		
 		JMenu mnUsuario = new JMenu("Usuário");
