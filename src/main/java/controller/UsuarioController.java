@@ -61,4 +61,11 @@ public class UsuarioController {
 	public List<Usuario> consultarTodos() {
 		return usuarioBO.consultarTodos();
 	}
+
+	public Usuario login(String codigoAcesso) throws CampoInvalidoException, UsuarioInativoException {
+		if(codigoAcesso == null || codigoAcesso.trim().length() < 2) {
+			throw new CampoInvalidoException("Código de acesso inválido.");
+		}
+		return usuarioBO.login(codigoAcesso);		
+	}
 }

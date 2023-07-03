@@ -5,6 +5,7 @@ import java.util.List;
 
 import Util.Formatador;
 import model.dao.UsuarioDAO;
+import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
@@ -56,6 +57,17 @@ public class UsuarioBO {
 
 	public List<Usuario> consultarComFiltro(UsuarioSeletor usuarioSeletor) {
 		return usuarioDAO.consultarComFiltro(usuarioSeletor);
+	}
+
+	public Usuario login(String codigoAcesso) throws UsuarioInativoException, CampoInvalidoException {
+		Usuario usuario = usuarioDAO.consultarPorCpf(codigoAcesso);
+		if(usuario == null) {
+			throw new CampoInvalidoException("Não foi encontrado nenhum usuário com esse código de acesso");
+		}
+		if(!usuario.isAtivo()) {
+			throw new UsuarioInativoException("Esse usuário se encontra inativo.");
+		}
+		return usuario;
 	}
 
 }
