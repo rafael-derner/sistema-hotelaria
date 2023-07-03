@@ -32,6 +32,7 @@ public class FramePrincipal extends JFrame {
 	private PainelListagemUsuario painelListagemUsuario;
 	private PainelCadastroHospede painelCadastroHospede;
 	private PainelListagemHospede painelListagemHospede;
+	private PainelCadastroQuarto painelCadastroQuarto;
 	private PainelCadastroReserva cadastroReserva;
 	private PainelListagemQuarto painelListagemQuarto;
 	private PainelLogin painelLogin;
@@ -103,11 +104,12 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemCadastrarQuarto = new JMenuItem("Cadastrar");
 		mnItemCadastrarQuarto.addActionListener(new ActionListener() {
-			private PainelCadastroQuarto painelCadastroQuarto;
-
+			
 			public void actionPerformed(ActionEvent e) {
-				painelCadastroQuarto = new PainelCadastroQuarto();
+				painelCadastroQuarto = new PainelCadastroQuarto(null);
 				painelCadastroQuarto.setVisible(true);
+				registrarCliqueBtnSalvarDoPainelCadastroQuarto();
+				registrarCliqueBtnCancelarDoPainelCadastroQuarto();
 				setContentPane(painelCadastroQuarto);
 				revalidate();
 			}
@@ -119,6 +121,8 @@ public class FramePrincipal extends JFrame {
 			public void actionPerformed(ActionEvent e) {
 				painelListagemQuarto = new PainelListagemQuarto();
 				painelListagemQuarto.setVisible(true);
+				registrarCliqueBtnCancelarDoPainelCadastroQuarto();
+				registrarCliqueBtnEditarDoPainelListagemQuarto();
 				setContentPane(painelListagemQuarto);
 				revalidate();
 			}
@@ -208,9 +212,8 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 		mnUsuario.add(mnItemListarUsuarios);
-
 	}
-	
+
 	/*
 	 * Clique no bot�o de CANCELAR do PainelCadastroUsuario
 	 */
@@ -342,5 +345,56 @@ public class FramePrincipal extends JFrame {
 				}
 			}
 		});
+	}
+	
+	protected void registrarCliqueBtnSalvarDoPainelCadastroQuarto() {
+		painelCadastroQuarto.getBtnSalvar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				if(painelCadastroQuarto.salvarQuarto()) {
+					painelListagemQuarto = new PainelListagemQuarto();
+					painelListagemQuarto.setVisible(true);
+					registrarCliqueBtnEditarDoPainelListagemQuarto();
+					setContentPane(painelListagemQuarto);
+					revalidate();
+					}
+				
+			}
+		});
+	}
+	
+	protected void registrarCliqueBtnCancelarDoPainelCadastroQuarto() {
+		// TODO Auto-generated method stub
+		if(painelCadastroQuarto == null) {
+			painelCadastroQuarto = new PainelCadastroQuarto(null);
+		}
+		
+		painelCadastroQuarto.getBtnCancelar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				painelListagemQuarto = new PainelListagemQuarto();
+				painelListagemQuarto.setVisible(true);
+				registrarCliqueBtnEditarDoPainelListagemQuarto();
+				setContentPane(painelListagemHospede);
+				revalidate();
+			}
+		});
+		
+	}
+
+	protected void registrarCliqueBtnEditarDoPainelListagemQuarto() {
+		painelListagemQuarto.getBtnEditar().addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroQuarto = new PainelCadastroQuarto(painelListagemQuarto.getQuartoSelecionado());
+				painelCadastroQuarto.setVisible(true);
+				registrarCliqueBtnCancelarDoPainelCadastroQuarto();
+				registrarCliqueBtnSalvarDoPainelCadastroQuarto();
+				
+				setContentPane(painelCadastroQuarto);
+				revalidate();
+				
+			}
+		});		
 	}
 }
