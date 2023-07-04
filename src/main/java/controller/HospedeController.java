@@ -1,5 +1,6 @@
 package controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import model.bo.HospedeBO;
@@ -7,7 +8,9 @@ import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.ExclusaoGerenteException;
+import model.gerador.GeradorPlanilha;
 import model.seletor.HospedeSeletor;
+import model.seletor.UsuarioSeletor;
 import model.vo.Hospede;
 
 public class HospedeController {
@@ -47,7 +50,19 @@ public class HospedeController {
 		}
 	}
 
-	public List<Hospede> consultarComFiltro(HospedeSeletor HospedeSeletor) {
-		return hospedeBO.consultarComFiltro(HospedeSeletor);
+	public List<Hospede> consultarComFiltro(HospedeSeletor hospedeSeletor) {
+		return hospedeBO.consultarComFiltro(hospedeSeletor);
+	}
+	
+	public int contarTotalRegistrosComFiltros(HospedeSeletor hospedeSeletor) {
+		return hospedeBO.contarTotalRegistrosComFiltros(hospedeSeletor);
+	}
+
+	public String gerarPlanilha(ArrayList<Hospede> hospedes, String caminhoEscolhido) throws CampoInvalidoException{
+		if(hospedes == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
+			throw new CampoInvalidoException("Preencha todos os campos!");
+		}
+		GeradorPlanilha gerador = new GeradorPlanilha();
+		return gerador.geradorPlanilhaHospedes(hospedes, caminhoEscolhido);
 	}
 }

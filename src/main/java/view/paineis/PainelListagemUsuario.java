@@ -60,6 +60,8 @@ public class PainelListagemUsuario extends JPanel {
 	private JButton btnLimpar;
 	private JButton btnEditar;
 	private JButton btnInativar;
+	private JButton btnAdicionarNovoUsuario;
+	private JButton btnGerarRelatorio;
 
 	private final int TAMANHO_PAGINA = 40;
 	private int paginaAtual = 1;
@@ -67,27 +69,27 @@ public class PainelListagemUsuario extends JPanel {
 	private JLabel lblPaginacao = new JLabel();
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
-	private JButton btnAdicionarNovoUsuario;
-	private JButton btnGerarRelatorio;
 	
 	public PainelListagemUsuario() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("50px"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("50px"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("50px"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("20dlu:grow"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),},
 			new RowSpec[] {
@@ -169,41 +171,41 @@ public class PainelListagemUsuario extends JPanel {
 				}
 			}
 		});
-		add(btnGerarRelatorio, "10, 18");
+		add(btnGerarRelatorio, "12, 18");
 		
 		btnAdicionarNovoUsuario = new JButton("Adicionar novo Usuário");
 		btnAdicionarNovoUsuario.setBackground(new Color(128, 255, 128));
-		add(btnAdicionarNovoUsuario, "12, 18");
+		add(btnAdicionarNovoUsuario, "14, 18");
 	
 		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
 		btnEditar.setBackground(new Color(50, 204, 233));
-		add(btnEditar, "14, 18");
-		add(btnInativar, "16, 18");
+		add(btnEditar, "16, 18");
+		add(btnInativar, "18, 18");
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usuários");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
-		add(lblListagemUsuarios, "4, 4, 13, 1, center, default");
+		add(lblListagemUsuarios, "4, 4, 15, 1, center, default");
 		
 		JLabel lblNome = new JLabel("Nome:");
 		add(lblNome, "4, 8, 3, 1");
 		
 		lblCpf = new JLabel("CPF:");
-		add(lblCpf, "8, 8, 3, 1");
+		add(lblCpf, "12, 8");
 		
 		lblPerfil = new JLabel("Perfil");
-		add(lblPerfil, "12, 8");
+		add(lblPerfil, "14, 8");
 		
 		tfNome = new JTextField();
-		add(tfNome, "4, 10, 3, 1, fill, default");
+		add(tfNome, "4, 10, 7, 1, fill, default");
 		tfNome.setColumns(10);
 		
 		tfCpf = new JFormattedTextField(mascaraCpf);
-		add(tfCpf, "8, 10, 3, 1, fill, default");
+		add(tfCpf, "12, 10, fill, default");
 		tfCpf.setColumns(10);
 		
 		comboBox = new JComboBox(tiposDePerfil);
-		add(comboBox, "12, 10, fill, default");
+		add(comboBox, "14, 10, fill, default");
 		
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
@@ -213,7 +215,7 @@ public class PainelListagemUsuario extends JPanel {
 				buscarUsuarioComFiltro();
 			}
 		});
-		add(btnConsultar, "14, 10");
+		add(btnConsultar, "16, 10");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -223,10 +225,10 @@ public class PainelListagemUsuario extends JPanel {
 				comboBox.setSelectedIndex(0);
 			}
 		});
-		add(btnLimpar, "16, 10");
+		add(btnLimpar, "18, 10");
 		
 		tblUsuarios = new JTable();
-		add(tblUsuarios, "4, 12, 13, 5, fill, fill");
+		add(tblUsuarios, "4, 12, 15, 5, fill, fill");
 		this.limparTabelaUsuarios();
 		buscarUsuarioComFiltro();
 		
@@ -272,7 +274,6 @@ public class PainelListagemUsuario extends JPanel {
 		add(lblPaginacao, "6, 18, center, default");
 
 		atualizarQuantidadePaginas();
-		
 		buscarUsuarioComFiltro();
 	} 
 	

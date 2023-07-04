@@ -8,6 +8,7 @@ import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.ExclusaoGerenteException;
 import model.seletor.HospedeSeletor;
+import model.seletor.UsuarioSeletor;
 import model.vo.Hospede;
 
 public class HospedeBO {
@@ -37,6 +38,10 @@ public class HospedeBO {
 
 	public List<Hospede> consultarComFiltro(HospedeSeletor hospedeSeletor) {
 		return hospedeDAO.consultarComFiltro(hospedeSeletor);
+	}
+	
+	public int contarTotalRegistrosComFiltros(HospedeSeletor hospedeSeletor) {
+		return hospedeDAO.contarTotalRegistrosComFiltros(hospedeSeletor);
 	}
 
 }

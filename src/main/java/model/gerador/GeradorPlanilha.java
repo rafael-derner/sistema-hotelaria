@@ -11,6 +11,7 @@ import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import Util.Formatador;
+import model.vo.Hospede;
 import model.vo.Quarto;
 import model.vo.Usuario;
 
@@ -67,6 +68,29 @@ public class GeradorPlanilha {
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
 
+	public String geradorPlanilhaHospedes(ArrayList<Hospede> hospedes, String destinoArquivo) {
+		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Hóspedes");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		linhaCabecalho.createCell(0).setCellValue("ID");
+		linhaCabecalho.createCell(1).setCellValue("Nome");
+		linhaCabecalho.createCell(2).setCellValue("CPF");
+		linhaCabecalho.createCell(3).setCellValue("Telefone");
+		
+		int contadorLinhas = 1;
+		for(Hospede hospede: hospedes) {
+			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
+			novaLinha.createCell(0).setCellValue(hospede.getIdHospede());
+			novaLinha.createCell(1).setCellValue(hospede.getNome());
+			novaLinha.createCell(2).setCellValue(hospede.getCpf());
+			novaLinha.createCell(3).setCellValue(hospede.getTelefone());
+			contadorLinhas++;
+		}
+		
+		return salvarNoDisco(arquivoExcel, destinoArquivo);
+	}
+
 	private String salvarNoDisco(HSSFWorkbook planilha, String caminhoArquivo) {
 		// TODO Auto-generated method stub
 		String mensagem = "";
@@ -76,11 +100,11 @@ public class GeradorPlanilha {
 		try {
 			saida = new FileOutputStream(new File(caminhoArquivo + extensao));
 			planilha.write(saida);
-			mensagem = "Planilha gerada com sucesso";
+			mensagem = "Relatório gerado com sucesso";
 		}catch (FileNotFoundException e) {
-			mensagem = "Erro ao tentar salvar planilha (sem acesso) : " + caminhoArquivo + extensao;
+			mensagem = "Erro ao tentar salvar relatório (sem acesso) : " + caminhoArquivo + extensao;
 		}catch (IOException e) {
-			mensagem = "Erro de I/O ao tentar salvar planilha em : " + caminhoArquivo + extensao;
+			mensagem = "Erro de I/O ao tentar salvar relatório em : " + caminhoArquivo + extensao;
 			System.out.println("Causa: " + e.getMessage());
 		}finally {
 			if (saida != null) {
@@ -88,7 +112,7 @@ public class GeradorPlanilha {
 					saida.close();
 					planilha.close();
 				}catch (IOException e) {
-					mensagem = "Erro ao tentar salvar planilha em: " + caminhoArquivo + extensao;
+					mensagem = "Erro ao tentar salvar relatório em: " + caminhoArquivo + extensao;
 					System.out.println("Causa: " + e.getMessage());
 				}
 			}

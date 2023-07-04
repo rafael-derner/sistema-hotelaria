@@ -172,6 +172,7 @@ public class FramePrincipal extends JFrame {
 				painelListagemHospede = new PainelListagemHospede();
 				painelListagemHospede.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemHospede();
+				registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede();
 				
 				//Atualiza a tela principal
 				setContentPane(painelListagemHospede);
@@ -314,6 +315,24 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
+	 * Clique no botão de ADICIONAR NOVO USUARIO do PainelListagemHospede
+	 */
+	protected void registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede() {
+		painelListagemHospede.getBtnAdicionarNovoHospede().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				painelCadastroHospede = new PainelCadastroHospede(null);
+				painelCadastroHospede.setVisible(true);
+				registrarCliqueBtnCancelarPainelCadastroHospede();
+				registraCliqueBtnSalvarDoPainelCadastroHospede();
+				
+				setContentPane(painelCadastroHospede);
+				revalidate();
+			}
+		});
+	}
+	
+	/*
 	 * Clique no botão de SALVAR do PainelCadastroUsuario
 	 */
 	protected void registraCliqueBtnSalvarDoPainelCadastroUsuario() {
@@ -347,6 +366,7 @@ public class FramePrincipal extends JFrame {
 				painelListagemHospede = new PainelListagemHospede();
 				painelListagemHospede.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemHospede();
+				registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede();
 				setContentPane(painelListagemHospede);
 				revalidate();
 			}

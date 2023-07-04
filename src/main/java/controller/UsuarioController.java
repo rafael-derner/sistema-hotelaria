@@ -72,7 +72,7 @@ public class UsuarioController {
 
 	public String gerarPlanilha(ArrayList<Usuario> usuarios, String caminhoEscolhido) throws CampoInvalidoException {
 		if(usuarios == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
-			throw new CampoInvalidoException("Preencha todos os campos");
+			throw new CampoInvalidoException("Preencha todos os campos!");
 		}
 		GeradorPlanilha gerador = new GeradorPlanilha();
 		return gerador.geradorPlanilhaUsuario(usuarios, caminhoEscolhido);

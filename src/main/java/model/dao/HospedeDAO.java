@@ -9,6 +9,7 @@ import java.util.List;
 
 import Util.Formatador;
 import model.seletor.HospedeSeletor;
+import model.seletor.UsuarioSeletor;
 import model.vo.Hospede;
 
 public class HospedeDAO {
@@ -188,6 +189,33 @@ public class HospedeDAO {
 		hospedeBuscado.setTelefone(Formatador.formatarTelefoneMovelParaView(resultado.getString("TELEFONE")));
 		
 		return hospedeBuscado;
+	}
+
+	public int contarTotalRegistrosComFiltros(HospedeSeletor hospedeSeletor) {
+		int total = 0;
+		Connection conn = Banco.getConnection();
+		String query = " SELECT COUNT(*) FROM HOSPEDE ";
+		
+		if(hospedeSeletor.temFiltro()) {
+			query = preencherFiltros(query, hospedeSeletor);
+		}
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de hóspedes" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return total;
 	}
 
 }
