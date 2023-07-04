@@ -38,9 +38,9 @@ String mensagemValidacao = "";
 		
 	}
 
-	public boolean atualizar(Quarto quartoVO) throws CampoInvalidoException, QuartoJaUtilizadoException{
-		this.validarCamposObrigatorios(quartoVO);
-		return quartoBO.atualizar(quartoVO);
+	public boolean atualizar(Quarto quartoAlterado) throws CampoInvalidoException, QuartoJaUtilizadoException{
+		this.validarCamposObrigatorios(quartoAlterado);
+		return quartoBO.atualizar(quartoAlterado);
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {

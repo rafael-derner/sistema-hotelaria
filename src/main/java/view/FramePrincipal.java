@@ -414,6 +414,7 @@ public class FramePrincipal extends JFrame {
 
 	protected void registrarCliqueBtnEditarDoPainelListagemQuarto() {
 		painelListagemQuarto.getBtnEditar().addActionListener(new ActionListener() {
+			
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroQuarto = new PainelCadastroQuarto(painelListagemQuarto.getQuartoSelecionado());
 				painelCadastroQuarto.setVisible(true);
