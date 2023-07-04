@@ -17,6 +17,7 @@ import controller.QuartoController;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoJaUtilizadoException;
 import model.vo.Quarto;
+import model.vo.Usuario;
 
 import javax.swing.JRadioButton;
 import javax.swing.JFormattedTextField;
@@ -48,6 +49,12 @@ public class PainelCadastroQuarto extends JPanel {
 	 * @param quarto 
 	 */
 	public PainelCadastroQuarto(Quarto quarto) {
+		if(quarto != null) {
+			quartoVO = quarto;
+		} else {
+			quartoVO = new Quarto();
+		}
+		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				ColumnSpec.decode("32px:grow"),
 				ColumnSpec.decode("121px"),
@@ -105,7 +112,17 @@ public class PainelCadastroQuarto extends JPanel {
 		
 		btnSalvar = new JButton("Salvar");
 		add(btnSalvar, "6, 16, fill, top");
+		
 
+		if(this.quartoVO.getIdQuarto() != null) {
+			preencherCamposDoFormulario();
+		}
+
+	}
+
+	private void preencherCamposDoFormulario() {
+		this.textNumeroQuarto.setText(this.quartoVO.getNumeroQuarto().toString());
+		this.ftfValorDiaria.setText(this.quartoVO.getValorQuarto().toString().replace('.', ','));;
 	}
 
 	public boolean salvarQuarto() {
@@ -129,7 +146,6 @@ public class PainelCadastroQuarto extends JPanel {
 		    valorQuarto = valorQuarto.replace(',', '.'); // Replace comma with a point
 		    try {
 		        double valor = Double.parseDouble(valorQuarto);
-		        DecimalFormat valorFormatado = new DecimalFormat("#.00");
 		        quartoVO.setValorQuarto(valor);
 		    } catch (NumberFormatException valorIncorreto) {
 		        JOptionPane.showMessageDialog(null, "Campo valor da diária deve receber caracteres numéricos.", "Erro", JOptionPane.ERROR_MESSAGE);
@@ -158,8 +174,10 @@ public class PainelCadastroQuarto extends JPanel {
 					"Erro", JOptionPane.ERROR_MESSAGE); 
 		}
 		return retorno; 
-		
+
 	}
+
+	
 
 	public JButton getBtnSalvar() {
 		return btnSalvar;

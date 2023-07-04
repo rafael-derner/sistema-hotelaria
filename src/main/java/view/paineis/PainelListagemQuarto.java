@@ -16,6 +16,7 @@ import com.privatejgoodies.forms.layout.RowSpec;
 import Util.Formatador;
 import controller.QuartoController;
 import model.exception.QuartoComReservaException;
+import model.exception.QuartoInativoException;
 import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
 import model.vo.Usuario;
@@ -50,7 +51,7 @@ public class PainelListagemQuarto extends JPanel {
 	private JComboBox cBValorQuarto;
 	private JComboBox cBTipoQuarto;
 	private String[] tipoDeQuarto = {"","Básico","Intermediário","Luxo"};
-	private String[] valoresQuarto = {"Ativo","Inativo"};
+	private String[] valoresQuarto = {"","Ativo","Inativo"};
 	private JLabel lblValorQuarto;
 	private JLabel lblTipoDeQuarto;
 	private JLabel lblNumero;
@@ -180,12 +181,19 @@ public class PainelListagemQuarto extends JPanel {
 						quartos = (ArrayList<Quarto>) quartoController.consultarTodos();
 					}catch (QuartoComReservaException quartoComReservaException) {
 						JOptionPane.showConfirmDialog(null, quartoComReservaException.getMessage(), "Atenção" , JOptionPane.WARNING_MESSAGE);
+					}catch (QuartoInativoException quartoInativoException) {
+						JOptionPane.showConfirmDialog(null, quartoInativoException.getMessage(), "Atenção" , JOptionPane.WARNING_MESSAGE);
 					}
 				}
+				buscarQuartos();
+				atualizarTabelaQuartos();
 			}
+		
 		});
 		btnInativar.setBackground(Color.RED);
 		add(btnInativar, "12, 10");
+		
+		buscarQuartos();
 	}
 	
 	private void buscarQuartos() {
@@ -215,7 +223,7 @@ public class PainelListagemQuarto extends JPanel {
 			Object[] novaLinhaTabela = new Object[4];
 			novaLinhaTabela[0] = quarto.getNumeroQuarto();
 			novaLinhaTabela[1] = quarto.getTipoQuarto();
-			novaLinhaTabela[2] = quarto.getValorQuarto();
+			novaLinhaTabela[2] = Formatador.formatarValorQuartoParaView(quarto.getValorQuarto());
 			novaLinhaTabela[3] = quarto.isAtivo() ? "Sim" : "Não";
 			model.addRow(novaLinhaTabela);
 		}
@@ -226,8 +234,6 @@ public class PainelListagemQuarto extends JPanel {
 		btnEditar.setEnabled(false);
 		btnInativar.setEnabled(false);
 	}
-	
-	
 	
 	public Quarto getQuartoSelecionado() {
 		return this.quartoSelecionado;
