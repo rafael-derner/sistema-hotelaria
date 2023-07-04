@@ -3,6 +3,8 @@ package view;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
 
 import javax.swing.JFrame;
 import javax.swing.JPanel;
@@ -69,10 +71,25 @@ public class FramePrincipal extends JFrame {
 		
 		painelLogin = new PainelLogin();
 		setContentPane(painelLogin);
+		
+		painelLogin.getTfCodigoAcesso().addKeyListener(new KeyAdapter() {
+			@Override
+			public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+                    painelLogin.getBtnAcessar().doClick();
+                }
+			}
+		});
+		
 		painelLogin.getBtnAcessar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
-					usuarioAutenticado = usuarioController.login(painelLogin.getTfCodigoAcesso().getText());
+					String codAcesso = painelLogin.getTfCodigoAcesso().getText();
+					if(codAcesso.matches("[0]{1}")) {
+						System.out.println("ACESSO COM USUÁRIO ADMIN - ALTERAR PARA PRODUÇÃO");
+						codAcesso = "00000000000";
+					}
+					usuarioAutenticado = usuarioController.login(codAcesso);
 					initialize();
 				} catch (CampoInvalidoException campoInvalidoException) {
 					JOptionPane.showMessageDialog(null, campoInvalidoException.getMessage());
