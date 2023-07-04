@@ -46,4 +46,8 @@ public class QuartoBO {
 		return quartoDAO.atualizar(quarto);
 	}
 
+	public int contarTotalRegistrosComFiltros(QuartoSeletor quartoSeletor) {
+		return quartoDAO.contarTotalRegistrosComFiltros(quartoSeletor);
+	}
+
 }

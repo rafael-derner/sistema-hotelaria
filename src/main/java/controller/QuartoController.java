@@ -68,4 +68,8 @@ String mensagemValidacao = "";
 		return gerador.geradorPlanilhaQuarto(quartos, destinoArquivo);
 	}
 
+	public int contarTotalRegistrosComFiltros(QuartoSeletor quartoSeletor) {
+		return quartoBO.contarTotalRegistrosComFiltros(quartoSeletor);
+	}
+
 }
