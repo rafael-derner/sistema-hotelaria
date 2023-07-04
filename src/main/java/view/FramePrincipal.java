@@ -123,7 +123,6 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemCadastrarQuarto = new JMenuItem("Cadastrar");
 		mnItemCadastrarQuarto.addActionListener(new ActionListener() {
-			
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroQuarto = new PainelCadastroQuarto(null);
 				painelCadastroQuarto.setVisible(true);
@@ -197,17 +196,19 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemListarReservas = new JMenuItem("Listar");
 		mnItemListarReservas.addActionListener(new ActionListener() {
-			
-
 			public void actionPerformed(ActionEvent e) {
 				listaReserva = new PainelListagemReserva();
 				listaReserva.setVisible(true);
+				
+				registraCliqueBtnEditarPainelListagemReserva();
+				
 				setContentPane(listaReserva);
 				revalidate();
 			}
 		});
 		mnReserva.add(mnItemListarReservas);
 		
+				
 		JMenu mnUsuario = new JMenu("Usuário");
 		menuBar.add(mnUsuario);
 		
@@ -227,6 +228,7 @@ public class FramePrincipal extends JFrame {
 		});
 		mnUsuario.add(mnItemCadastrarUsuario);
 		
+		
 		JMenuItem mnItemListarUsuarios = new JMenuItem("Listar");
 		mnItemListarUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -241,6 +243,18 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 		mnUsuario.add(mnItemListarUsuarios);
+	}
+	
+	private void registraCliqueBtnEditarPainelListagemReserva() {
+		listaReserva.getBtnEditar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				cadastroReserva = new PainelCadastroReserva(listaReserva.getReservaSelecionada());
+				cadastroReserva.setVisible(true);
+				setContentPane(cadastroReserva);
+				revalidate();
+			}
+		});
 	}
 
 	/*

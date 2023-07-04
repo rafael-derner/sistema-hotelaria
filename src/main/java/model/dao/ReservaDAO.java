@@ -64,7 +64,7 @@ public class ReservaDAO {
 			
 			ResultSet resultado = pstmt.getGeneratedKeys();
 			if(resultado.next()) {
-				System.out.println("Não inseriu");
+				System.out.println("Tem que ver onde vai lançar essa mensagem, mas e apareceu funcionou! uhul!!");
 			}
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro no método inserir. \n Causa: " + e.getMessage());

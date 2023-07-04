@@ -63,11 +63,18 @@ public class PainelCadastroReserva extends JPanel {
 	private JLabel lblTitulo;
 	private Usuario usuarioVO;
 	private JButton btnBuscarQuartos;
-	private ReservaController reservaController = new ReservaController();;
+	private ReservaController reservaController = new ReservaController();
+	private Reserva reservaVO;;
 	
-	public PainelCadastroReserva(Usuario usuario) {
+	public PainelCadastroReserva(Reserva reserva) {
+		if(reserva != null) {
+			reservaVO = new Reserva();
+			reservaVO = reserva;
+			prencherCampos();
+		} else {
+			reservaVO = new Reserva();
+		}
 		
-		usuarioVO = usuario;
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -242,6 +249,7 @@ public class PainelCadastroReserva extends JPanel {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					inserirReserva();
+					limparCampos();
 				} catch (CampoInvalidoException e1) {
 					JOptionPane.showMessageDialog(null, e1.getMessage());;
 				}
@@ -251,6 +259,35 @@ public class PainelCadastroReserva extends JPanel {
 		
 	}
 	
+	private void prencherCampos() {
+		tfNomeHospede.setText(reservaVO.getHospede().getNome());
+		//cbxNomeHospede.add(reservaVO.getHospede().getNome());
+		this.limparTabelaQuartos();
+		//this.setDataInicio(reservaVO.getDtCheckIn());
+		//this.setDataFim(reservaVO.getDtCheckOut());
+		rdbtnBasico.setSelected(true);
+	}
+
+	public DatePicker getDataInicio() {
+		return dataInicio;
+	}
+
+	public void setDataInicio(DatePicker dataInicio) {
+		this.dataInicio = dataInicio;
+	}
+
+	public DatePicker getDataFim() {
+		return dataFim;
+	}
+
+	public void setDataFim(DatePicker dataFim) {
+		this.dataFim = dataFim;
+	}
+
+	private void editarReserva() {
+				
+	}
+
 	private void atualizarTabelaUsuarios() {
 		this.limparTabelaQuartos();
 
