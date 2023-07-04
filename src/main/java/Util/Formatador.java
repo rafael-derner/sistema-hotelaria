@@ -1,11 +1,13 @@
 package Util;
 
+import java.text.DecimalFormat;
 import java.text.NumberFormat;
+import java.util.ArrayList;
 import java.util.Locale;
 
 import model.vo.Quarto;
 
-public class Formatador {
+public abstract class Formatador {
 	
 	/*
 	 * Formata a string passada para o formato ###.###.###-##
@@ -37,16 +39,13 @@ public class Formatador {
 		return telefone.replaceAll("[()\\-.\\s]", "");
 	}
 
-//	public static Object formatarValorQuartoParaView(Quarto valorDiaria) {
-//		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-//        String valorFormatado = nf.format(valorDiaria);
-//        return Double.parseDouble(valorFormatado.replace("R$", "").trim());
-//	}
 
-	public static String formatarValorQuartoParaView(Quarto quarto) {
-		NumberFormat nf = NumberFormat.getCurrencyInstance(new Locale("pt", "BR"));
-        return nf.format(quarto);
-   
+	public static String formatarValorQuartoParaView(Double valor) {
+		DecimalFormat formatador = new DecimalFormat("0.00");
+		
+		return "R$ " + formatador.format(valor);
 	}
+
+	
 
 }

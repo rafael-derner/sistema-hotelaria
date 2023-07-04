@@ -7,6 +7,7 @@ import javax.swing.ButtonModel;
 
 import model.dao.HospedeDAO;
 import model.dao.ReservaDAO;
+import model.seletor.ReservaSeletor;
 import model.vo.Quarto;
 import model.vo.Reserva;
 
@@ -23,6 +24,11 @@ public class ReservaBO {
 
 	public void inserir(Reserva novaReserva) {
 		reservaDAO.inserir(novaReserva);
+	}
+
+
+	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
+		return reservaDAO.consultarComFiltro(reservaSeletor);
 	}
 
 }

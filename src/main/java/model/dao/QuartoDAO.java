@@ -174,4 +174,28 @@ public class QuartoDAO {
 		return registroAlterado > 0;
 	}
 
+	public int contarTotalRegistrosComFiltros(QuartoSeletor quartoSeletor) {
+		int total = 0;
+		Connection conn = Banco.getConnection();
+		String query = "SELECT COUNT(*) FROM QUARTO ";
+		
+		if(quartoSeletor.temFiltro()) {
+			query = preencherFiltros(query, quartoSeletor);
+		}
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch(Exception e) {
+			System.out.println("Erro ao contar o total de quartos " + "\nCausa: " + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		return total;
+	}
+
 }

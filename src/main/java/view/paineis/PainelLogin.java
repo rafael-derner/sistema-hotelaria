@@ -1,6 +1,8 @@
 package view.paineis;
 
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
@@ -12,7 +14,7 @@ import javax.swing.SwingConstants;
 import javax.swing.JButton;
 
 public class PainelLogin extends JPanel {
-	private JTextField tfCodigoAcesso;
+	private JPasswordField tfCodigoAcesso;
 	private JLabel lblBemVindo;
 	private JLabel lblCodigoAcesso;
 	private JButton btnAcessar;
@@ -52,7 +54,7 @@ public class PainelLogin extends JPanel {
 		lblCodigoAcesso = new JLabel("Código de Acesso");
 		add(lblCodigoAcesso, "4, 8");
 		
-		tfCodigoAcesso = new JTextField();
+		tfCodigoAcesso = new JPasswordField();
 		add(tfCodigoAcesso, "4, 10, fill, default");
 		tfCodigoAcesso.setColumns(10);
 		

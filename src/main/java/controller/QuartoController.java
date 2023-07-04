@@ -6,7 +6,9 @@ import java.util.List;
 import model.bo.QuartoBO;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoComReservaException;
+import model.exception.QuartoInativoException;
 import model.exception.QuartoJaUtilizadoException;
+import model.gerador.GeradorPlanilha;
 import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
 
@@ -46,7 +48,7 @@ String mensagemValidacao = "";
 		
 	}
 
-	public boolean inativar(Integer idQuarto) throws QuartoComReservaException{
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{
 		// TODO Auto-generated method stub
 		return quartoBO.inativar(idQuarto);
 	}
@@ -54,6 +56,20 @@ String mensagemValidacao = "";
 	public ArrayList<Quarto> consultarTodos() {
 		// TODO Auto-generated method stub
 		return null;
+	}
+
+	public String gerarPlanilha(ArrayList<Quarto> quartos, String destinoArquivo) throws CampoInvalidoException {
+		
+		if(quartos == null || destinoArquivo == null || destinoArquivo.trim().isEmpty()) {
+			throw new CampoInvalidoException("Preencha todos os campos");
+		}
+		
+		GeradorPlanilha gerador = new GeradorPlanilha();
+		return gerador.geradorPlanilhaQuarto(quartos, destinoArquivo);
+	}
+
+	public int contarTotalRegistrosComFiltros(QuartoSeletor quartoSeletor) {
+		return quartoBO.contarTotalRegistrosComFiltros(quartoSeletor);
 	}
 
 }
