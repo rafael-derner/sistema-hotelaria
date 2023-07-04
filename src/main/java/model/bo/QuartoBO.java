@@ -7,7 +7,9 @@ import Util.Formatador;
 import model.dao.QuartoDAO;
 import model.exception.CpfAlteradoException;
 import model.exception.QuartoComReservaException;
+import model.exception.QuartoInativoException;
 import model.exception.QuartoJaUtilizadoException;
+import model.exception.UsuarioInativoException;
 import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
 import model.vo.Usuario;
@@ -33,8 +35,14 @@ public class QuartoBO {
 		return quartoDAO.atualizar(quartoVO);
 	}
 
-	public boolean inativar(Integer idQuarto) throws QuartoComReservaException{
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{
 		Quarto quarto = quartoDAO.consultarPorId(idQuarto);
+		
+		if(!quarto.isAtivo()) {
+			throw new QuartoInativoException("O quarto já se encontra inativo.");
+		}
+
+		quarto.setAtivo(false);
 		return quartoDAO.atualizar(quarto);
 	}
 

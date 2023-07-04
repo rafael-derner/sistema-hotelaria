@@ -6,6 +6,7 @@ import java.util.List;
 import model.bo.QuartoBO;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoComReservaException;
+import model.exception.QuartoInativoException;
 import model.exception.QuartoJaUtilizadoException;
 import model.seletor.QuartoSeletor;
 import model.vo.Quarto;
@@ -46,7 +47,7 @@ String mensagemValidacao = "";
 		
 	}
 
-	public boolean inativar(Integer idQuarto) throws QuartoComReservaException{
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{
 		// TODO Auto-generated method stub
 		return quartoBO.inativar(idQuarto);
 	}
