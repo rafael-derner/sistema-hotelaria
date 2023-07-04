@@ -10,6 +10,7 @@ import model.exception.CampoInvalidoException;
 import model.vo.Quarto;
 import model.vo.Reserva;
 import model.seletor.HospedeSeletor;
+import model.seletor.ReservaSeletor;
 
 public class ReservaController {
 	
@@ -48,6 +49,10 @@ public class ReservaController {
 		}
 		return reservaBO.consultaQuartos(dataInicio, dataFim, categoria);
 		
+	}
+
+	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
+		return reservaBO.consultarComFiltro(reservaSeletor);
 	}
 
 

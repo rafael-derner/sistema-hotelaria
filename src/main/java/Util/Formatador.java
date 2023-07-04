@@ -7,7 +7,7 @@ import java.util.Locale;
 
 import model.vo.Quarto;
 
-public class Formatador {
+public abstract class Formatador {
 	
 	/*
 	 * Formata a string passada para o formato ###.###.###-##
