@@ -15,6 +15,7 @@ import com.privatejgoodies.forms.layout.RowSpec;
 
 import Util.Formatador;
 import controller.QuartoController;
+import model.exception.CampoInvalidoException;
 import model.exception.QuartoComReservaException;
 import model.exception.QuartoInativoException;
 import model.seletor.QuartoSeletor;
@@ -29,6 +30,7 @@ import java.util.ArrayList;
 
 import javax.swing.JTextField;
 import javax.swing.JComboBox;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
@@ -163,6 +165,24 @@ public class PainelListagemQuarto extends JPanel {
 		});
 		
 		btnGerarPlanilha = new JButton("Gerar Planilha");
+		btnGerarPlanilha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para a planilha...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = quartoController.gerarPlanilha(quartos, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null,resultado);
+					}catch (CampoInvalidoException e1) {
+						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+						
+					}
+				}
+			}
+		});
 		add(btnGerarPlanilha, "4, 10");
 		
 		btnEditar = new JButton("Editar");
