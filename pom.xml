@@ -3,7 +3,7 @@
   <groupId>sistema-hotelaria</groupId>
   <artifactId>sistema-hotelaria</artifactId>
   <version>0.0.1-SNAPSHOT</version>
-  
+    
   <dependencies>
     <dependency>
       <groupId>mysql</groupId>
@@ -30,5 +30,20 @@
 	  <artifactId>LGoodDatePicker</artifactId>
 	  <version>10.3.1</version>
 	</dependency>
+	
+	<!-- Dependências para a geração de planilhas (Apache POI) -->
+	<!-- arquivos .xls -->
+	<dependency>
+	  <groupId>org.apache.poi</groupId>
+	  <artifactId>poi</artifactId>
+      <version>5.2.3</version>
+	</dependency>
+	
+	<!-- arquivos .xlsx -->
+		<dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>5.2.3</version>
+		</dependency>
   </dependencies>
 </project>
