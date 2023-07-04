@@ -28,7 +28,7 @@ public class ReservaBO {
 
 
 	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
-		return reservaDAO.consultarComFiltro();
+		return reservaDAO.consultarComFiltro(reservaSeletor);
 	}
 
 }

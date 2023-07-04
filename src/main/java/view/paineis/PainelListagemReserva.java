@@ -21,6 +21,8 @@ import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
 import javax.swing.JTable;
+import java.awt.event.ActionListener;
+import java.awt.event.ActionEvent;
 
 public class PainelListagemReserva extends JPanel {
 	private ReservaController controller = new ReservaController();
@@ -29,7 +31,8 @@ public class PainelListagemReserva extends JPanel {
 	private String[] nomesColunas = {"Hospede", "Quarto", "Check-in previsto", "Check-Out previsto", "Total da estadia"};
 	private JTextField tfNomeHospede;
 	private JTextField tfQuarto;
-	private DatePickerSettings dateSettings;
+	private DatePickerSettings pickerInicial;
+	private DatePickerSettings pickerFinal;
 	private DatePicker dataInicio;
 	private DatePicker dataFim;
 	private JButton btnConsultar;
@@ -85,7 +88,8 @@ public class PainelListagemReserva extends JPanel {
 		tfQuarto.setColumns(10);
 		add(tfQuarto, "4, 10, fill, default");
 		
-		dateSettings = new DatePickerSettings();
+		pickerInicial = new DatePickerSettings();
+		pickerFinal = new DatePickerSettings();
 		
 		JLabel lblInicioPeridodo = new JLabel("Inicio:");
 		add(lblInicioPeridodo, "4, 12, 2, 1, left, default");
@@ -93,10 +97,10 @@ public class PainelListagemReserva extends JPanel {
 		JLabel lblFimPeridodo = new JLabel("Fim:");
 		add(lblFimPeridodo, "6, 12, 3, 1");
 		
-		dataInicio = new DatePicker(dateSettings);
+		dataInicio = new DatePicker(pickerInicial);
 		add(dataInicio, "4, 14");
 		
-		dataFim = new DatePicker(dateSettings);
+		dataFim = new DatePicker(pickerFinal);
 		add(dataFim, "6, 14, fill, default");
 		
 		tabelaResultado = new JTable();
@@ -109,23 +113,31 @@ public class PainelListagemReserva extends JPanel {
 		add(btnEditar, "6, 18, center, default");
 		
 		btnConsultar = new JButton("Consultar");
+		btnConsultar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				consultarReservasComFiltro();
+			}
+
+		});
 		add(btnConsultar, "8, 18, right, default");
 
 	}
-	protected void buscarHospedeComFiltro() {
+	protected void consultarReservasComFiltro() {
 		reservaSeletor = new ReservaSeletor();
 		
 		reservaSeletor.setNomeHospede(tfNomeHospede.getText());
-		reservaSeletor.setNumQuarto(Integer.parseInt(tfQuarto.getText()));
+		if(!tfQuarto.getText().isEmpty()) {
+			reservaSeletor.setNumQuarto(Integer.parseInt(tfQuarto.getText()));
+		}
 		reservaSeletor.setDataEntrada(dataInicio.getDate());
 		reservaSeletor.setDataSaida(dataFim.getDate());
 		
 		listaReservas = (ArrayList<Reserva>) controller.consultarComFiltro(reservaSeletor);
 		
-		atualizarTabelaHospedes();
+		atualizarTabela();
 	}
 	
-	private void atualizarTabelaHospedes() {
+	private void atualizarTabela() {
 		this.limparTabelaHospedes();
 		DefaultTableModel model = (DefaultTableModel) tabelaResultado.getModel();
 

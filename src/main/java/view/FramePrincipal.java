@@ -18,6 +18,7 @@ import view.paineis.PainelCadastroReserva;
 import view.paineis.PainelCadastroUsuario;
 import view.paineis.PainelListagemHospede;
 import view.paineis.PainelListagemQuarto;
+import view.paineis.PainelListagemReserva;
 import view.paineis.PainelListagemUsuario;
 import view.paineis.PainelLogin;
 
@@ -34,6 +35,7 @@ public class FramePrincipal extends JFrame {
 	private PainelListagemHospede painelListagemHospede;
 	private PainelCadastroQuarto painelCadastroQuarto;
 	private PainelCadastroReserva cadastroReserva;
+	private PainelListagemReserva listaReserva;
 	private PainelListagemQuarto painelListagemQuarto;
 	private PainelLogin painelLogin;
 	
@@ -178,10 +180,12 @@ public class FramePrincipal extends JFrame {
 		
 		JMenuItem mnItemListarReservas = new JMenuItem("Listar");
 		mnItemListarReservas.addActionListener(new ActionListener() {
+			
+
 			public void actionPerformed(ActionEvent e) {
-				cadastroReserva = new PainelCadastroReserva(null);
-				cadastroReserva.setVisible(true);
-				setContentPane(cadastroReserva);
+				listaReserva = new PainelListagemReserva();
+				listaReserva.setVisible(true);
+				setContentPane(listaReserva);
 				revalidate();
 			}
 		});

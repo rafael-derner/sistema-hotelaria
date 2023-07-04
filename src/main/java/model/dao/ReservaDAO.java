@@ -10,6 +10,7 @@ import java.util.List;
 
 import javax.swing.ButtonModel;
 
+import Util.Formatador;
 import model.seletor.HospedeSeletor;
 import model.seletor.ReservaSeletor;
 import model.vo.Hospede;
@@ -73,17 +74,53 @@ public class ReservaDAO {
 		}
 	}
 
-	public ArrayList<Reserva> consultarComFiltro() {
+	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
 		ArrayList<Reserva> listaReservas = new ArrayList<Reserva>();
 		Connection conn = Banco.getConnection();
-		String query = "SELECT RESERVA.ID_RESERVA, HOSPEDE.NOME, QUARTO.NUMERO, RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT, (SELECT DATEDIFF(RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT) * QUARTO.VALOR_DIARIA) AS VALOR_TOTAL"
+		String query = "SELECT RESERVA.ID_RESERVA,RESERVA.ID_HOSPEDE,RESERVA.ID_QUARTO, HOSPEDE.NOME, QUARTO.NUMERO, RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT, (SELECT DATEDIFF(RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT) * QUARTO.VALOR_DIARIA) AS VALOR_TOTAL"
 		+ " FROM RESERVA"
 		+ "	JOIN QUARTO ON RESERVA.ID_QUARTO = QUARTO.iD_QUARTO"
 		+ "    JOIN HOSPEDE ON RESERVA.ID_HOSPEDE = HOSPEDE.ID_HOSPEDE";
-		return null;
+		
+		if(reservaSeletor.temFiltro()) {
+			query = preencherFiltros(query, reservaSeletor);
+		}
+		
+				PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			while(resultado.next()) {
+				HospedeDAO hospedeDAO = new HospedeDAO();
+				QuartoDAO quartoDAO = new QuartoDAO();
+				Hospede hospede = hospedeDAO.consultarPorId(resultado.getInt(2));
+				Quarto quarto = quartoDAO.consultarPorId(resultado.getInt(3));
+				Reserva reservaBanco = montarReservaComResultadoDoBanco(resultado, hospede, quarto);
+				listaReservas.add(reservaBanco);
+			}
+			
+		}catch (Exception e) {
+			System.out.println("Erro ao buscar reserva. \n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return listaReservas;
 	}
 	
-private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
+	private Reserva montarReservaComResultadoDoBanco(ResultSet resultado, Hospede hospede, Quarto quarto) throws SQLException {
+		Reserva reservaBanco = new Reserva();
+		reservaBanco.setIdReserva(resultado.getInt("RESERVA.ID_RESERVA"));
+		reservaBanco.setHospede(hospede);
+		reservaBanco.setQuarto(quarto);
+		reservaBanco.setDtCheckIn(java.time.LocalDate.parse(resultado.getString("RESERVA.DTHR_CHECK_IN")));
+		reservaBanco.setDtCheckOut(java.time.LocalDate.parse(resultado.getString(("RESERVA.DTHR_CHECK_OUT"))));
+		
+		return reservaBanco;
+	}
+	
+	private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
 		
 		boolean primeiro = true;
 		if(reservaSeletor.getNomeHospede() != null && !reservaSeletor.getNomeHospede().trim().isEmpty()) {
@@ -93,7 +130,7 @@ private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
 				query += " AND ";
 			}
 			
-			query += " nome LIKE '%" + reservaSeletor.getNomeHospede() + "%'";
+			query += " HOSPEDE.NOME LIKE '%" + reservaSeletor.getNomeHospede() + "%'";
 			primeiro = false;
 		}
 		
@@ -103,7 +140,7 @@ private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
 			} else {
 				query += " AND ";
 			}
-			query += " cpf LIKE '%" + reservaSeletor.getNumQuarto() + "%'";
+			query += " QUARTO.NUMERO = '" + reservaSeletor.getNumQuarto() + "'";
 			primeiro = false;
 		}
 		
@@ -113,7 +150,7 @@ private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
 			} else {
 				query += " AND ";
 			}
-			query += " cpf LIKE '%" + reservaSeletor.getDataEntrada() + "%'";
+			query += " RESERVA.DTHR_CHECK_IN = '" + reservaSeletor.getDataEntrada() + "'";
 			primeiro = false;
 		}
 		
@@ -123,7 +160,7 @@ private String preencherFiltros(String query, ReservaSeletor reservaSeletor) {
 			} else {
 				query += " AND ";
 			}
-			query += " cpf LIKE '%" + reservaSeletor.getDataSaida() + "%'";
+			query += " RESERVA.DTHR_CHECK_OUT = '" + reservaSeletor.getDataSaida() + "'";
 			primeiro = false;
 		}
 		
