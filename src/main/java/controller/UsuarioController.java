@@ -9,6 +9,7 @@ import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
 import model.exception.UsuarioInativoException;
+import model.gerador.GeradorPlanilha;
 import model.exception.ExclusaoGerenteException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
@@ -67,5 +68,13 @@ public class UsuarioController {
 			throw new CampoInvalidoException("Código de acesso inválido.");
 		}
 		return usuarioBO.login(codigoAcesso);		
+	}
+
+	public String gerarPlanilha(ArrayList<Usuario> usuarios, String caminhoEscolhido) throws CampoInvalidoException {
+		if(usuarios == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
+			throw new CampoInvalidoException("Preencha todos os campos");
+		}
+		GeradorPlanilha gerador = new GeradorPlanilha();
+		return gerador.geradorPlanilhaUsuario(usuarios, caminhoEscolhido);
 	}
 }

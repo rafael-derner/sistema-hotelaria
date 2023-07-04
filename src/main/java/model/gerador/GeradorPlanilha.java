@@ -12,6 +12,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 
 import Util.Formatador;
 import model.vo.Quarto;
+import model.vo.Usuario;
 
 public class GeradorPlanilha {
 
@@ -34,6 +35,33 @@ public class GeradorPlanilha {
 			novaLinha.createCell(3).setCellValue(q.isAtivo() ? "Sim" : "Não");
 			contadorLinhas++;
 			
+		}
+		
+		return salvarNoDisco(arquivoExcel, destinoArquivo);
+	}
+	
+	public String geradorPlanilhaUsuario(ArrayList<Usuario> usuarios, String destinoArquivo) {
+		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		linhaCabecalho.createCell(0).setCellValue("ID");
+		linhaCabecalho.createCell(1).setCellValue("Nome");
+		linhaCabecalho.createCell(2).setCellValue("CPF");
+		linhaCabecalho.createCell(3).setCellValue("Telefone");
+		linhaCabecalho.createCell(4).setCellValue("Perfil");
+		linhaCabecalho.createCell(5).setCellValue("Ativo");
+		
+		int contadorLinhas = 1;
+		for(Usuario usuario: usuarios) {
+			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
+			novaLinha.createCell(0).setCellValue(usuario.getIdUsuario());
+			novaLinha.createCell(1).setCellValue(usuario.getNome());
+			novaLinha.createCell(2).setCellValue(usuario.getCpf());
+			novaLinha.createCell(3).setCellValue(usuario.getTelefone());
+			novaLinha.createCell(4).setCellValue(usuario.getPerfil());
+			novaLinha.createCell(5).setCellValue(usuario.isAtivo() ? "Sim" : "Não");
+			contadorLinhas++;
 		}
 		
 		return salvarNoDisco(arquivoExcel, destinoArquivo);

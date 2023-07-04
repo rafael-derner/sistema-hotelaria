@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.swing.JPanel;
 
+import model.exception.CampoInvalidoException;
 import model.exception.ExclusaoGerenteException;
 import model.exception.UsuarioComReservaException;
 import model.exception.UsuarioInativoException;
@@ -27,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.text.MaskFormatter;
 import javax.swing.JComboBox;
 import javax.swing.JComponent;
+import javax.swing.JFileChooser;
 import javax.swing.JButton;
 import java.awt.Color;
 import java.awt.event.ActionListener;
@@ -66,17 +68,18 @@ public class PainelListagemUsuario extends JPanel {
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	private JButton btnAdicionarNovoUsuario;
+	private JButton btnGerarRelatorio;
 	
 	public PainelListagemUsuario() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("max(100dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("20dlu:grow"),
+				ColumnSpec.decode("50px"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(20dlu;default):grow"),
+				ColumnSpec.decode("50px"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("20dlu:grow"),
+				ColumnSpec.decode("50px"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("20dlu:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -129,16 +132,6 @@ public class PainelListagemUsuario extends JPanel {
 			e.printStackTrace();
 		}
 		
-//		btnInativar = new JButton("Inativar");
-//		btnInativar.setEnabled(false);
-//		btnInativar.setBackground(new Color(255, 0, 0));		
-//		btnInativar.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e) {
-//				// COMPLETAR ACTION LISTENER
-//			}
-//		});
-//		add(btnInativar, "12, 18");
-		
 		btnInativar = new JButton("Inativar");
 		btnInativar.setBackground(new Color(255, 0, 0));
 		btnInativar.addActionListener(new ActionListener() {
@@ -158,14 +151,34 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 				
-				btnAdicionarNovoUsuario = new JButton("Adicionar novo Usuário");
-				btnAdicionarNovoUsuario.setBackground(new Color(128, 255, 128));
-				add(btnAdicionarNovoUsuario, "12, 18");
+		btnGerarRelatorio = new JButton("Gerar Relatório");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = usuarioController.gerarPlanilha(usuarios, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null,resultado);
+					} catch (CampoInvalidoException campoInvalidoException) {
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
+		add(btnGerarRelatorio, "10, 18");
 		
-				btnEditar = new JButton("Editar");
-				btnEditar.setEnabled(false);
-				btnEditar.setBackground(new Color(50, 204, 233));
-				add(btnEditar, "14, 18");
+		btnAdicionarNovoUsuario = new JButton("Adicionar novo Usuário");
+		btnAdicionarNovoUsuario.setBackground(new Color(128, 255, 128));
+		add(btnAdicionarNovoUsuario, "12, 18");
+	
+		btnEditar = new JButton("Editar");
+		btnEditar.setEnabled(false);
+		btnEditar.setBackground(new Color(50, 204, 233));
+		add(btnEditar, "14, 18");
 		add(btnInativar, "16, 18");
 		
 		JLabel lblListagemUsuarios = new JLabel("Listagem de Usuários");
