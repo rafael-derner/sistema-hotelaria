@@ -31,8 +31,8 @@ public class QuartoBO {
 		return quartoDAO.consultarComFiltro(quartoSeletor);
 	}
 
-	public boolean atualizar(Quarto quartoVO) {
-		return quartoDAO.atualizar(quartoVO);
+	public boolean atualizar(Quarto quartoAlterado) {
+		return quartoDAO.atualizar(quartoAlterado);
 	}
 
 	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{

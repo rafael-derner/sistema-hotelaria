@@ -63,7 +63,7 @@ public class PainelListagemQuarto extends JPanel {
 	
 	private QuartoController quartoController = new QuartoController();
 	
-	private final int TAMANHO_PAGINA = 40;
+	private final int TAMANHO_PAGINA = 38;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
 	private JButton btnVoltarPagina;
@@ -208,7 +208,7 @@ public class PainelListagemQuarto extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-		btnAvancarPagina.setEnabled(false);
+//		btnAvancarPagina.setEnabled(false);
 		add(btnAvancarPagina, "8, 10, left, default");
 		
 		btnEditar = new JButton("Editar");
@@ -239,11 +239,11 @@ public class PainelListagemQuarto extends JPanel {
 		btnInativar.setBackground(Color.RED);
 		add(btnInativar, "12, 10, left, top");
 		
-		
 		buscarQuartos();
+		atualizarQuantidadePaginas();
 	}
 	
-	private void atualizarQuatidadePaginas() {
+	private void atualizarQuantidadePaginas() {
 		int totalRegistros = quartoController.contarTotalRegistrosComFiltros(quartoSeletor);
 		
 		totalPaginas = totalRegistros / TAMANHO_PAGINA;
@@ -256,6 +256,9 @@ public class PainelListagemQuarto extends JPanel {
 	private void buscarQuartos() {
 		
 		quartoSeletor = new QuartoSeletor();
+		quartoSeletor.setLimite(TAMANHO_PAGINA);
+		quartoSeletor.setPagina(paginaAtual);
+		
 		String numeroQuarto = txtNumero.getText();
 		if (numeroQuarto.isEmpty()) {
 		} else {
@@ -269,7 +272,7 @@ public class PainelListagemQuarto extends JPanel {
 		quartoSeletor.setTipoQuarto((String) cBTipoQuarto.getSelectedItem());
 		quartos = (ArrayList<Quarto>) quartoController.consultarComFiltro(quartoSeletor);
 		atualizarTabelaQuartos();
-		atualizarQuatidadePaginas();
+		atualizarQuantidadePaginas();
 
 	}
 
