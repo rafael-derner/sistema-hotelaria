@@ -7,6 +7,7 @@ import java.time.LocalDate;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
+import model.exception.CampoInvalidoException;
 import model.seletor.HospedeSeletor;
 import model.seletor.ReservaSeletor;
 import model.vo.Hospede;
@@ -19,9 +20,11 @@ import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.JButton;
+import javax.swing.JFileChooser;
 import javax.swing.JTable;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -44,6 +47,7 @@ public class PainelListagemReserva extends JPanel {
 	private JTable tabelaResultado;
 	private JButton btnEditar;
 	private Reserva reservaSelecionada;
+	private JButton btnGerarRelatorio;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -120,7 +124,6 @@ public class PainelListagemReserva extends JPanel {
 				}
 			}
 		});
-		add(tabelaResultado, "4, 16, 5, 1, fill, fill");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -128,7 +131,28 @@ public class PainelListagemReserva extends JPanel {
 				limparTabelaHospedes();
 			}
 		});
-		add(btnLimpar, "4, 18, left, default");
+		add(btnLimpar, "8, 14, left, default");
+		add(tabelaResultado, "4, 16, 5, 1, fill, fill");
+		
+		btnGerarRelatorio = new JButton("Gerar Relatório");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = controller.gerarPlanilha(listaReservas, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null,resultado);
+					} catch (CampoInvalidoException campoInvalidoException) {
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
+		add(btnGerarRelatorio, "4, 18, left, default");
 		
 		btnEditar = new JButton("Editar");
 		add(btnEditar, "6, 18, center, default");
@@ -187,7 +211,7 @@ public class PainelListagemReserva extends JPanel {
 			novaLinha[1] = reserva.getQuarto().getNumeroQuarto();
 			novaLinha[2] = reserva.getDtCheckIn();
 			novaLinha[3] = reserva.getDtCheckOut();
-			novaLinha[4] = calcularDuracaoReserva(reserva.getDtCheckIn(), reserva.getDtCheckOut(), reserva.getQuarto().getValorQuarto());
+			novaLinha[4] = reserva.calcularValorReserva(reserva);
 
 			model.addRow(novaLinha);
 		}

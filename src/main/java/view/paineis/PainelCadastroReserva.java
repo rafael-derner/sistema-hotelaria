@@ -59,22 +59,23 @@ public class PainelCadastroReserva extends JPanel {
 	private JRadioButton rdbtnIntermediario;
 	private JRadioButton rdbtnLuxo;
 	private JButton btnLimpar;
-	private Reserva novaReserva;
 	private JLabel lblTitulo;
 	private Usuario usuarioVO;
 	private JButton btnBuscarQuartos;
 	private ReservaController reservaController = new ReservaController();
 	private Reserva reservaVO;;
 	
-	public PainelCadastroReserva(Reserva reserva) {
+	public PainelCadastroReserva(Reserva reserva, Usuario usuarioAutenticado) {
 		if(reserva != null) {
-			reservaVO = new Reserva();
 			reservaVO = reserva;
-			prencherCampos();
+			listaQuartos = new ArrayList<Quarto>();
+			listaQuartos.add(reservaVO.getQuarto());
+			listaHospedes = new ArrayList<Hospede>();
+			listaHospedes.add(reservaVO.getHospede());
 		} else {
 			reservaVO = new Reserva();
 		}
-		
+		usuarioVO = usuarioAutenticado;
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -130,6 +131,7 @@ public class PainelCadastroReserva extends JPanel {
 		JButton btnBuscarHospede = new JButton("Buscar");
 		btnBuscarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+				cbxNomeHospede.removeAllItems();
 				hospedeController = new HospedeController();
 				HospedeSeletor seletor = new HospedeSeletor();
 				seletor.setNome(tfNomeHospede.getText());
@@ -230,7 +232,6 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		
-		
 		btnCancelar = new JButton("Cancelar");
 		add(btnCancelar, "4, 22, left, default");
 		
@@ -241,33 +242,20 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		add(btnLimpar, "6, 22, center, default");
-		
 
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setEnabled(false);
-		btnSalvar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					inserirReserva();
-					limparCampos();
-				} catch (CampoInvalidoException e1) {
-					JOptionPane.showMessageDialog(null, e1.getMessage());;
-				}
-			}
-		});
 		add(btnSalvar, "8, 22, right, default");
 		
+		if(reservaVO.getIdReserva() != null) {
+			quartoSelecionado = reservaVO.getQuarto();
+			btnSalvar.setEnabled(true);
+			cbxNomeHospede.addItem(listaHospedes.get(0));
+			prencherCampos();
+			atualizarTabelaUsuarios();
+		}
 	}
 	
-	private void prencherCampos() {
-		tfNomeHospede.setText(reservaVO.getHospede().getNome());
-		//cbxNomeHospede.add(reservaVO.getHospede().getNome());
-		this.limparTabelaQuartos();
-		//this.setDataInicio(reservaVO.getDtCheckIn());
-		//this.setDataFim(reservaVO.getDtCheckOut());
-		rdbtnBasico.setSelected(true);
-	}
-
 	public DatePicker getDataInicio() {
 		return dataInicio;
 	}
@@ -287,10 +275,36 @@ public class PainelCadastroReserva extends JPanel {
 	private void editarReserva() {
 				
 	}
+	
+	public JButton getBtnSalvar() {
+		return btnSalvar;
+	}
+
+	public void setBtnSalvar(JButton btnSalvar) {
+		this.btnSalvar = btnSalvar;
+	}
+
+	private void prencherCampos() {
+		tfNomeHospede.setText(reservaVO.getHospede().getNome());
+		cbxNomeHospede.setSelectedItem(0);
+		this.limparTabelaQuartos();
+		this.dataInicio.setDate(reservaVO.getDtCheckIn());
+		this.dataFim.setDate(reservaVO.getDtCheckOut());
+		switch (reservaVO.getQuarto().getTipoQuarto()) {
+			case "BÁSICO": 
+				rdbtnBasico.setSelected(true);
+				break;
+			case "INTERMEDIÁRIO":
+				rdbtnIntermediario.setSelected(true);
+				break;
+			case "LUXO":
+				rdbtnLuxo.setSelected(true);
+				break;
+		}
+	}
 
 	private void atualizarTabelaUsuarios() {
 		this.limparTabelaQuartos();
-
 		DefaultTableModel model = (DefaultTableModel) tabelaQuartos.getModel();
 
 		for (Quarto quarto : listaQuartos) {
@@ -315,18 +329,30 @@ public class PainelCadastroReserva extends JPanel {
 		rdbtnBasico.setSelected(true);
 	}
 
-	private void inserirReserva() throws CampoInvalidoException {
-		novaReserva = new Reserva();
-		novaReserva.setQuarto(listaQuartos.get(tabelaQuartos.getSelectedRow() - 1));
-		novaReserva.setHospede((Hospede) cbxNomeHospede.getSelectedItem());
-		novaReserva.setUsuario(usuarioVO);
-		novaReserva.setDtCheckIn(dataInicio.getDate());
-		novaReserva.setDtCheckOut(dataFim.getDate());
+	public boolean inserirReserva() throws CampoInvalidoException {
+		boolean retorno = false;
+		reservaVO.setQuarto(quartoSelecionado);
+		reservaVO.setHospede((Hospede) cbxNomeHospede.getSelectedItem());
+		reservaVO.setUsuario(usuarioVO);
+		reservaVO.setDtCheckIn(dataInicio.getDate());
+		reservaVO.setDtCheckOut(dataFim.getDate());
 		try {
-				reservaController.inserir(novaReserva);
+			if(reservaVO.getIdReserva() != null) {
+				if(reservaController.atualizar(reservaVO)) {
+					JOptionPane.showMessageDialog(null, "Reserva atualizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+					retorno = true;
+				} else {
+					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar a reserva. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+				}
+			} else {
+				reservaController.inserir(reservaVO);
+				JOptionPane.showMessageDialog(null, "Reserva criada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				retorno = true;
+			}
 		}catch(Exception e2){
 			JOptionPane.showMessageDialog(null, e2.getMessage());
 		}
+		return retorno;
 	}
 	
 	private String consultaRadioBurronSelecionado(JRadioButton rdbtnBasico, JRadioButton rdbtnIntermediario, JRadioButton rdbtnLuxo) {

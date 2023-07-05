@@ -1,9 +1,10 @@
 package model.vo;
 
 import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
 
 public class Reserva {
-	private int idReserva;
+	private Integer idReserva;
 	private Hospede hospede;
 	private Quarto quarto;
 	private Usuario usuario;
@@ -14,7 +15,7 @@ public class Reserva {
 		super();
 	}
 
-	public Reserva(int idReserva, Hospede hospede, Quarto quarto, Usuario usuario, LocalDate dtCheckIn,
+	public Reserva(Integer idReserva, Hospede hospede, Quarto quarto, Usuario usuario, LocalDate dtCheckIn,
 			LocalDate dtCheckOut) {
 		super();
 		this.idReserva = idReserva;
@@ -26,12 +27,12 @@ public class Reserva {
 	}
 
 
-	public int getIdReserva() {
+	public Integer getIdReserva() {
 		return idReserva;
 	}
 
 
-	public void setIdReserva(int idReserva) {
+	public void setIdReserva(Integer idReserva) {
 		this.idReserva = idReserva;
 	}
 
@@ -84,6 +85,17 @@ public class Reserva {
 	public void setDtCheckOut(LocalDate dtCheckOut) {
 		this.dtCheckOut = dtCheckOut;
 	}
+	
+	public double calcularValorReserva(Reserva reserva) {
+		double valor = 0;
+		long dias = ChronoUnit.DAYS.between(reserva.getDtCheckIn(), reserva.getDtCheckOut());
+        int diasFormatados = Math.toIntExact(dias);
+        valor = diasFormatados * reserva.getQuarto().getValorQuarto();
+        if(valor == 0) {
+        	valor = reserva.getQuarto().getValorQuarto();
+        }
+        return valor;
+    }
 	
 }
 
