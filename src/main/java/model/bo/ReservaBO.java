@@ -31,4 +31,9 @@ public class ReservaBO {
 		return reservaDAO.consultarComFiltro(reservaSeletor);
 	}
 
+
+	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
+		return reservaDAO.contarTotalRegistrosComFiltros(reservaSeletor);
+	}
+
 }

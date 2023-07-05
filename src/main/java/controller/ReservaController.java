@@ -55,6 +55,10 @@ public class ReservaController {
 		return reservaBO.consultarComFiltro(reservaSeletor);
 	}
 
+	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
+		return reservaBO.contarTotalRegistrosComFiltros(reservaSeletor);
+	}
+
 
 	
 	

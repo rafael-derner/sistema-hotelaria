@@ -167,4 +167,31 @@ public class ReservaDAO {
 		return query;
 	}
 
+	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
+		int total = 0;
+		Connection conn = Banco.getConnection();
+		String query = " SELECT COUNT(*) FROM RESERVA ";
+		
+		if(reservaSeletor.temFiltro()) {
+			query = preencherFiltros(query, reservaSeletor);
+		}
+		
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			ResultSet resultado = pstmt.executeQuery();
+			
+			if(resultado.next()) {
+				total = resultado.getInt(1);
+			}
+		}catch (Exception e) {
+			System.out.println("Erro contar o total de reservas" 
+					+ "\n Causa:" + e.getMessage());
+		}finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		
+		return total;
+	}
+
 }

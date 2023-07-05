@@ -30,8 +30,11 @@ import java.awt.event.MouseEvent;
 
 public class PainelListagemReserva extends JPanel {
 	private ReservaController controller = new ReservaController();
+	private ReservaSeletor reservaSeletor = new ReservaSeletor();
+	
 	private ArrayList<Reserva> listaReservas;
-	private ReservaSeletor reservaSeletor;
+	private Reserva reservaSelecionada;
+	
 	private String[] nomesColunas = {"Hospede", "Quarto", "Check-in previsto", "Check-Out previsto", "Total da estadia"};
 	private JTextField tfNomeHospede;
 	private JTextField tfQuarto;
@@ -39,16 +42,24 @@ public class PainelListagemReserva extends JPanel {
 	private DatePickerSettings pickerFinal;
 	private DatePicker dataInicio;
 	private DatePicker dataFim;
-	private JButton btnConsultar;
-	private JButton btnLimpar;
 	private JTable tabelaResultado;
 	private JButton btnEditar;
-	private Reserva reservaSelecionada;
+	private JButton btnConsultar;
+	private JButton btnLimpar;
+	
+	private final int TAMANHO_PAGINA = 40;
+	private int paginaAtual = 1;
+	private int totalPaginas = 0;
+	private JLabel lblPaginacao = new JLabel();
+	private JButton btnVoltarPagina;
+	private JButton btnAvancarPagina;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -80,33 +91,33 @@ public class PainelListagemReserva extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblNome = new JLabel("Nome do hospede:");
-		add(lblNome, "4, 4, 5, 1");
+		add(lblNome, "4, 4, 7, 1");
 		
 		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 6, 5, 1, fill, default");
+		add(tfNomeHospede, "4, 6, 7, 1, fill, default");
 		tfNomeHospede.setColumns(10);
 		
 		JLabel lblQuarto = new JLabel("Numero do quarto");
-		add(lblQuarto, "4, 8, 5, 1");
+		add(lblQuarto, "4, 8, 7, 1");
 		
 		tfQuarto = new JTextField();
 		tfQuarto.setColumns(10);
-		add(tfQuarto, "4, 10, fill, default");
+		add(tfQuarto, "4, 10, 3, 1, fill, default");
 		
 		pickerInicial = new DatePickerSettings();
 		pickerFinal = new DatePickerSettings();
 		
 		JLabel lblInicioPeridodo = new JLabel("Inicio:");
-		add(lblInicioPeridodo, "4, 12, 2, 1, left, default");
+		add(lblInicioPeridodo, "4, 12, 4, 1, left, default");
 		
 		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "6, 12, 3, 1");
+		add(lblFimPeridodo, "8, 12, 3, 1");
 		
 		dataInicio = new DatePicker(pickerInicial);
-		add(dataInicio, "4, 14");
+		add(dataInicio, "4, 14, 3, 1");
 		
 		dataFim = new DatePicker(pickerFinal);
-		add(dataFim, "6, 14, fill, default");
+		add(dataFim, "8, 14, fill, default");
 		
 		tabelaResultado = new JTable();
 		tabelaResultado.addMouseListener(new MouseAdapter() {
@@ -120,7 +131,7 @@ public class PainelListagemReserva extends JPanel {
 				}
 			}
 		});
-		add(tabelaResultado, "4, 16, 5, 1, fill, fill");
+		add(tabelaResultado, "4, 16, 7, 1, fill, fill");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -128,13 +139,11 @@ public class PainelListagemReserva extends JPanel {
 				limparTabelaHospedes();
 			}
 		});
-		add(btnLimpar, "4, 18, left, default");
+		add(btnLimpar, "4, 18, 3, 1, left, default");
 		
 		btnEditar = new JButton("Editar");
-		add(btnEditar, "6, 18, center, default");
+		add(btnEditar, "8, 18, center, default");
 		btnEditar.setEnabled(false);
-		
-		consultarReservasComFiltro();
 		
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
@@ -143,8 +152,39 @@ public class PainelListagemReserva extends JPanel {
 			}
 
 		});
-		add(btnConsultar, "8, 18, right, default");
+		add(btnConsultar, "10, 18, right, default");
+		
+		btnVoltarPagina = new JButton("<<");
+		btnVoltarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paginaAtual--;
+				consultarReservasComFiltro();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		add(btnVoltarPagina, "4, 20");
+		
+		lblPaginacao = new JLabel();
+		lblPaginacao.setText("1 / " + totalPaginas);
+		add(lblPaginacao, "6, 20, center, default");
+		
+		btnAvancarPagina = new JButton(">>");
+		btnAvancarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+				paginaAtual++;
+				consultarReservasComFiltro();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		add(btnAvancarPagina, "8, 20");
+		
 
+		atualizarQuantidadePaginas();
+		consultarReservasComFiltro();
 	}
 	
 	
@@ -175,6 +215,7 @@ public class PainelListagemReserva extends JPanel {
 		listaReservas = (ArrayList<Reserva>) controller.consultarComFiltro(reservaSeletor);
 		
 		atualizarTabela();
+		atualizarQuantidadePaginas();
 	}
 	
 	private void atualizarTabela() {
@@ -191,6 +232,17 @@ public class PainelListagemReserva extends JPanel {
 
 			model.addRow(novaLinha);
 		}
+	}
+	
+	private void atualizarQuantidadePaginas() {
+		int totalRegistros = controller.contarTotalRegistrosComFiltros(reservaSeletor);
+
+		totalPaginas = totalRegistros / TAMANHO_PAGINA;
+		if(totalRegistros % TAMANHO_PAGINA > 0) { 
+			totalPaginas++;
+		}
+		
+		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
 	
 	private void limparTabelaHospedes() {

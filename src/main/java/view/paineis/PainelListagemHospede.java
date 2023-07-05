@@ -32,7 +32,6 @@ import model.seletor.HospedeSeletor;
 import model.vo.Hospede;
 
 public class PainelListagemHospede extends JPanel{
-
 	private HospedeController hospedeController = new HospedeController();
 	private HospedeSeletor hospedeSeletor = new HospedeSeletor();
 	
@@ -45,13 +44,11 @@ public class PainelListagemHospede extends JPanel{
 	private JLabel lblCpf;
 	private JFormattedTextField tfCpf;
 	private MaskFormatter mascaraCpf;
-	
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JButton btnEditar;
 	private JButton btnExcluir;
 	private JButton btnAdicionarNovoHospede;
-
 	private JButton btnGerarRelatorio;
 
 	private final int TAMANHO_PAGINA = 40;
