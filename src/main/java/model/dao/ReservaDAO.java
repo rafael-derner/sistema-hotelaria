@@ -49,30 +49,31 @@ public class ReservaDAO {
 		return listaQuartos;
 	}
 
-	public void inserir(Reserva novaReserva) {
-		Connection conn = Banco.getConnection();
-		String query = "INSERT INTO reserva(ID_hospede,id_quarto, id_usuario, DTHR_CHECK_IN, DTHR_CHECK_OUT) VALUES (?, ?, ?, ?, ?)";
-		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
-		try {
-			
-			pstmt.setInt(1, novaReserva.getHospede().getIdHospede());
-			pstmt.setInt(2, novaReserva.getQuarto().getIdQuarto());
-			pstmt.setInt(3, 1); // novaReserva.getUsuario().getIdUsuario());
-			pstmt.setDate(4, java.sql.Date.valueOf(novaReserva.getDtCheckIn()));
-			pstmt.setDate(5, java.sql.Date.valueOf(novaReserva.getDtCheckOut()));
-			pstmt.execute();
-			
-			ResultSet resultado = pstmt.getGeneratedKeys();
-			if(resultado.next()) {
-				System.out.println("Tem que ver onde vai lançar essa mensagem, mas e apareceu funcionou! uhul!!");
-			}
-		} catch (SQLException e) {
-			System.out.println("Ocorreu um erro no método inserir. \n Causa: " + e.getMessage());
-		} finally {
-			Banco.closePreparedStatement(pstmt);
-			Banco.closeConnection(conn);
-		}
-	}
+	public Reserva inserir(Reserva novaReserva) {
+        Connection conn = Banco.getConnection();
+        String query = "INSERT INTO reserva(ID_hospede,id_quarto, id_usuario, DTHR_CHECK_IN, DTHR_CHECK_OUT) VALUES (?, ?, ?, ?, ?)";
+        PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
+        try {
+
+            pstmt.setInt(1, novaReserva.getHospede().getIdHospede());
+            pstmt.setInt(2, novaReserva.getQuarto().getIdQuarto());
+            pstmt.setInt(3, 1); // novaReserva.getUsuario().getIdUsuario());
+            pstmt.setDate(4, java.sql.Date.valueOf(novaReserva.getDtCheckIn()));
+            pstmt.setDate(5, java.sql.Date.valueOf(novaReserva.getDtCheckOut()));
+            pstmt.execute();
+
+            ResultSet resultado = pstmt.getGeneratedKeys();
+            if(resultado.next()) {
+            	novaReserva.setIdReserva(resultado.getInt(1));
+            }
+        } catch (SQLException e) {
+            System.out.println("Ocorreu um erro no método inserir. \n Causa: " + e.getMessage());
+        } finally {
+            Banco.closePreparedStatement(pstmt);
+            Banco.closeConnection(conn);
+        }
+        return novaReserva; 
+    }
 
 	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
 		ArrayList<Reserva> listaReservas = new ArrayList<Reserva>();
@@ -192,6 +193,28 @@ public class ReservaDAO {
 		}
 		
 		return total;
+	}
+	
+	public Boolean atualizar(Reserva reservaVO) {
+		int registroAlterado = 0;
+		Connection conn = Banco.getConnection();
+		String query = "UPDATE RESERVA SET ID_HOSPEDE = ?, ID_QUARTO = ?, ID_USUARIO = ?, DTHR_CHECK_IN = ?, DTHR_CHECK_OUT = ? WHERE ID_RESERVA = ?";
+		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
+		try {
+			pstmt.setInt(1, reservaVO.getHospede().getIdHospede());
+			pstmt.setInt(2, reservaVO.getQuarto().getIdQuarto());
+			pstmt.setInt(3, reservaVO.getUsuario().getIdUsuario());
+			pstmt.setDate(4, java.sql.Date.valueOf(reservaVO.getDtCheckIn()));
+			pstmt.setDate(5, java.sql.Date.valueOf(reservaVO.getDtCheckOut()));
+			pstmt.setInt(6, reservaVO.getIdReserva());
+			registroAlterado = pstmt.executeUpdate();
+		} catch (SQLException e) {
+			System.out.println("Ocorreu um erro no m�todo atualizar. \n Causa: " + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		return registroAlterado > 0;
 	}
 
 }

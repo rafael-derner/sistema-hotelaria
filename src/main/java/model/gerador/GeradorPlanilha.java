@@ -13,6 +13,7 @@ import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import Util.Formatador;
 import model.vo.Hospede;
 import model.vo.Quarto;
+import model.vo.Reserva;
 import model.vo.Usuario;
 
 public class GeradorPlanilha {
@@ -62,6 +63,33 @@ public class GeradorPlanilha {
 			novaLinha.createCell(3).setCellValue(usuario.getTelefone());
 			novaLinha.createCell(4).setCellValue(usuario.getPerfil());
 			novaLinha.createCell(5).setCellValue(usuario.isAtivo() ? "Sim" : "Não");
+			contadorLinhas++;
+		}
+		
+		return salvarNoDisco(arquivoExcel, destinoArquivo);
+	}
+	
+	public String geradorPlanilhaReserva(ArrayList<Reserva> listaReservas, String destinoArquivo) {
+		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		linhaCabecalho.createCell(0).setCellValue("ID");
+		linhaCabecalho.createCell(1).setCellValue("Hospede");
+		linhaCabecalho.createCell(2).setCellValue("Numero do Quarto");
+		linhaCabecalho.createCell(3).setCellValue("Check-in Previsto");
+		linhaCabecalho.createCell(4).setCellValue("Check-out Previsto");
+		linhaCabecalho.createCell(4).setCellValue("Valor");
+		
+		int contadorLinhas = 1;
+		for(Reserva reserva: listaReservas) {
+			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
+			novaLinha.createCell(0).setCellValue(reserva.getIdReserva());
+			novaLinha.createCell(1).setCellValue(reserva.getHospede().getNome());
+			novaLinha.createCell(2).setCellValue(reserva.getQuarto().getNumeroQuarto());
+			novaLinha.createCell(3).setCellValue(reserva.getDtCheckIn());
+			novaLinha.createCell(4).setCellValue(reserva.getDtCheckOut());
+			novaLinha.createCell(4).setCellValue(reserva.getDtCheckOut());
 			contadorLinhas++;
 		}
 		
@@ -120,5 +148,7 @@ public class GeradorPlanilha {
 		
 		return mensagem;
 	}
+
+	
 
 }

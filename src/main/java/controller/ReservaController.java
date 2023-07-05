@@ -7,6 +7,7 @@ import javax.swing.ButtonModel;
 
 import model.bo.ReservaBO;
 import model.exception.CampoInvalidoException;
+import model.gerador.GeradorPlanilha;
 import model.vo.Quarto;
 import model.vo.Reserva;
 import model.seletor.HospedeSeletor;
@@ -18,25 +19,6 @@ public class ReservaController {
 	private ArrayList<String> listaHospedes;
 	String mensagemValidacao = "";
 	
-
-	public void inserir(Reserva novaReserva) throws CampoInvalidoException {
-		if(novaReserva.getHospede() == null) {
-			mensagemValidacao += "\nUm hospede dever ser selecionado";
-			throw new CampoInvalidoException(mensagemValidacao);
-		}
-		if(novaReserva.getDtCheckIn() == null) {
-			mensagemValidacao += "\nUm periodo deve ser selecionado";
-			throw new CampoInvalidoException(mensagemValidacao);
-		}
-		if(novaReserva.getQuarto() == null) {
-			mensagemValidacao += "\nUm quarto deve ser selecionado";
-			throw new CampoInvalidoException(mensagemValidacao);
-		}
-		if(mensagemValidacao.trim().isEmpty()) {
-			reservaBO.inserir(novaReserva);
-		}
-		
-	}
 
 	public ArrayList<Quarto> consultarQuartos(LocalDate dataInicio, LocalDate dataFim, String categoria) throws CampoInvalidoException {
 		if(dataInicio == null) {
@@ -57,6 +39,42 @@ public class ReservaController {
 
 	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
 		return reservaBO.contarTotalRegistrosComFiltros(reservaSeletor);
+	}
+
+	public String gerarPlanilha(ArrayList<Reserva> listaReservas, String caminhoEscolhido) throws CampoInvalidoException {
+		if(listaReservas == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
+			throw new CampoInvalidoException("Preencha todos os campos");
+		}
+		GeradorPlanilha gerador = new GeradorPlanilha();
+		return gerador.geradorPlanilhaReserva(listaReservas, caminhoEscolhido);
+	}
+	
+	public Reserva inserir(Reserva novaReserva) throws CampoInvalidoException {
+		this.validarCampos(novaReserva);
+		return reservaBO.inserir(novaReserva);
+	}
+	
+	public void validarCampos(Reserva reservaVO) throws CampoInvalidoException {
+		if(reservaVO.getHospede() == null) {
+			mensagemValidacao += "\nUm hospede dever ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(reservaVO.getDtCheckIn() == null) {
+			mensagemValidacao += "\nUm periodo deve ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(reservaVO.getQuarto() == null) {
+			mensagemValidacao += "\nUm quarto deve ser selecionado";
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+		if(!mensagemValidacao.trim().isEmpty()) {
+			throw new CampoInvalidoException(mensagemValidacao);
+		}
+	}
+
+	public Boolean atualizar(Reserva reservaVO) throws CampoInvalidoException {
+		validarCampos(reservaVO);
+		return reservaBO.atualizar(reservaVO);
 	}
 
 

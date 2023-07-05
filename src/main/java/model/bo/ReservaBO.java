@@ -21,19 +21,20 @@ public class ReservaBO {
 		return reservaDAO.consultaQuartosVagos(dataInicio, dataFim, categoria);
 	}
 
-
-	public void inserir(Reserva novaReserva) {
-		reservaDAO.inserir(novaReserva);
+	public Reserva inserir(Reserva novaReserva) {
+		return reservaDAO.inserir(novaReserva);
 	}
-
 
 	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
 		return reservaDAO.consultarComFiltro(reservaSeletor);
 	}
 
-
 	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
 		return reservaDAO.contarTotalRegistrosComFiltros(reservaSeletor);
+	}
+	
+	public Boolean atualizar(Reserva reservaVO) {
+		return reservaDAO.atualizar(reservaVO);
 	}
 
 }

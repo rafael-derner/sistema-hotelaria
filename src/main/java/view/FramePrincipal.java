@@ -187,8 +187,9 @@ public class FramePrincipal extends JFrame {
 		JMenuItem mnItemCadastrarReserva = new JMenuItem("Cadastrar");
 		mnItemCadastrarReserva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				cadastroReserva = new PainelCadastroReserva(null);
+				cadastroReserva = new PainelCadastroReserva(null, usuarioAutenticado);
 				cadastroReserva.setVisible(true);
+				registraCliqueBtnSalvarDoPainelCadastroReserva();
 				setContentPane(cadastroReserva);
 				revalidate();
 			}
@@ -250,8 +251,9 @@ public class FramePrincipal extends JFrame {
 		listaReserva.getBtnEditar().addActionListener(new ActionListener() {
 			
 			public void actionPerformed(ActionEvent e) {
-				cadastroReserva = new PainelCadastroReserva(listaReserva.getReservaSelecionada());
+				cadastroReserva = new PainelCadastroReserva(listaReserva.getReservaSelecionada(), usuarioAutenticado);
 				cadastroReserva.setVisible(true);
+				registraCliqueBtnSalvarDoPainelCadastroReserva();
 				setContentPane(cadastroReserva);
 				revalidate();
 			}
@@ -351,6 +353,28 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 	}
+	
+	
+	protected void registraCliqueBtnSalvarDoPainelCadastroReserva() {
+		cadastroReserva.getBtnSalvar().addActionListener(new ActionListener() {
+			
+			public void actionPerformed(ActionEvent e) {
+				try {
+					if(cadastroReserva.inserirReserva()) {
+						listaReserva = new PainelListagemReserva();
+						listaReserva.setVisible(true);
+						registraCliqueBtnEditarPainelListagemReserva();
+						
+						setContentPane(listaReserva);
+						revalidate();
+					}
+				} catch (CampoInvalidoException e1) {
+					e1.printStackTrace();
+				}
+			}
+		});
+	}
+	
 	
 	/*
 	 * Clique no bot�o de CANCELAR do PainelCadastroHospede
