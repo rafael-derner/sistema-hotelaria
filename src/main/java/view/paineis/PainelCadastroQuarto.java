@@ -13,6 +13,7 @@ import com.privatejgoodies.forms.layout.FormLayout;
 import com.privatejgoodies.forms.layout.FormSpecs;
 import com.privatejgoodies.forms.layout.RowSpec;
 
+import Util.Formatador;
 import controller.QuartoController;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoJaUtilizadoException;
@@ -43,6 +44,7 @@ public class PainelCadastroQuarto extends JPanel {
 	private JLabel lblCadastroQuarto;
 	private Quarto quartoVO;
 	private QuartoController quartoController = new QuartoController();
+	private int tipoDoQuarto;
 
 	/**
 	 * Create the panel.
@@ -117,18 +119,20 @@ public class PainelCadastroQuarto extends JPanel {
 		if(this.quartoVO.getIdQuarto() != null) {
 			preencherCamposDoFormulario();
 		}
+		
+		
 
 	}
 
 	private void preencherCamposDoFormulario() {
 		this.textNumeroQuarto.setText(this.quartoVO.getNumeroQuarto().toString());
+		this.comboBox.setSelectedIndex(Formatador.formatarTipoQuarto(quartoVO.getTipoQuarto()));
 		this.ftfValorDiaria.setText(this.quartoVO.getValorQuarto().toString().replace('.', ','));;
 	}
 
 	public boolean salvarQuarto() {
 		// TODO Auto-generated method stub
 		boolean retorno = false;
-		quartoVO = new Quarto();
 		String numeroQuarto = textNumeroQuarto.getText();
 		if(!numeroQuarto.isEmpty()) {
 			try {
@@ -176,8 +180,6 @@ public class PainelCadastroQuarto extends JPanel {
 		return retorno; 
 
 	}
-
-	
 
 	public JButton getBtnSalvar() {
 		return btnSalvar;

@@ -4,6 +4,9 @@ import javax.swing.JPanel;
 import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import Util.Formatador;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -155,6 +158,7 @@ public class PainelCadastroUsuario extends JPanel {
 	private void preencherCamposDoFormulario() {
 		this.tfNome.setText(this.usuarioVO.getNome());
 		this.tfCpf.setText(this.usuarioVO.getCpf());
+		this.comboBox.setSelectedIndex(Formatador.formatarTipoUsuario(this.usuarioVO.getPerfil()));
 		this.tfTelefone.setText(this.usuarioVO.getTelefone());
 	}
 

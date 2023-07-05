@@ -32,6 +32,10 @@ String mensagemValidacao = "";
 			mensagemValidacao += "Preencher campo valor.";
 		}
 		
+		if(novoQuarto.getTipoQuarto() == null) {
+			mensagemValidacao += "Preencher campo Tipo de Quarto.";
+		}
+		
 		if(!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}

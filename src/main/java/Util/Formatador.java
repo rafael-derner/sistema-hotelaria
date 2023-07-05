@@ -46,6 +46,30 @@ public abstract class Formatador {
 		return "R$ " + formatador.format(valor);
 	}
 
+	public static int formatarTipoQuarto(String tipoQuarto) {
+		int numeroTipoQuarto = 0;
+		if(tipoQuarto.equalsIgnoreCase("Básico")) {
+			numeroTipoQuarto = 0;
+		}else if(tipoQuarto.equalsIgnoreCase("Intermediário")){
+			numeroTipoQuarto = 1;
+		}else if(tipoQuarto.equalsIgnoreCase("Luxo")){
+			numeroTipoQuarto = 2;
+		}
+		return numeroTipoQuarto;
+	}
+
+	public static int formatarTipoUsuario(String perfil) {
+		int numeroTipoPerfil = 0;
+		if(perfil.equalsIgnoreCase("Recepcionista")) {
+			numeroTipoPerfil = 0;
+		}else if(perfil.equalsIgnoreCase("Gerente")){
+			numeroTipoPerfil = 1;
+		}
+		return numeroTipoPerfil;
+	}
+
+	
+
 	
 
 }
