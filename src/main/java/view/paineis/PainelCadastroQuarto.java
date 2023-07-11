@@ -25,6 +25,8 @@ import javax.swing.JFormattedTextField;
 import javax.swing.ButtonGroup;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
+
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionListener;
 import java.text.DecimalFormat;
@@ -57,63 +59,75 @@ public class PainelCadastroQuarto extends JPanel {
 			quartoVO = new Quarto();
 		}
 		
-		setLayout(new FormLayout(new ColumnSpec[] {
-				ColumnSpec.decode("32px:grow"),
-				ColumnSpec.decode("121px"),
-				FormSpecs.UNRELATED_GAP_COLSPEC,
-				ColumnSpec.decode("130px"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("127px"),
-				FormSpecs.UNRELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),},
-			new RowSpec[] {
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("26px"),
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("16px"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("23px"),
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("26px"),
-				FormSpecs.UNRELATED_GAP_ROWSPEC,
-				RowSpec.decode("29px"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
 		buttonGroup = new ButtonGroup();
+		setLayout(new com.jgoodies.forms.layout.FormLayout(new com.jgoodies.forms.layout.ColumnSpec[] {
+				com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"),
+				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
+				com.jgoodies.forms.layout.ColumnSpec.decode("max(40dlu;default):grow"),
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+				com.jgoodies.forms.layout.ColumnSpec.decode("max(40dlu;default):grow"),
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+				com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"),},
+			new com.jgoodies.forms.layout.RowSpec[] {
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+				com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		lblCadastroQuarto = new JLabel("Cadastro de Quarto");
 		lblCadastroQuarto.setFont(new Font("Tahoma", Font.BOLD, 25));
-		add(lblCadastroQuarto, "2, 2, 5, 1, center, default");
+		add(lblCadastroQuarto, "1, 4, 7, 1, center, top");
 		
 		lblNumeroQuarto = new JLabel("Número do Quarto:");
-		add(lblNumeroQuarto, "4, 4, left, center");
+		add(lblNumeroQuarto, "3, 8, 3, 1, left, top");
 		
 		textNumeroQuarto = new JTextField();
-		add(textNumeroQuarto, "4, 6, left, top");
+		add(textNumeroQuarto, "3, 10, 3, 1, fill, top");
 		textNumeroQuarto.setColumns(10);
 		
 		lblTipoQuarto = new JLabel("Tipo do Quarto:");
-		add(lblTipoQuarto, "4, 8, fill, top");
+		add(lblTipoQuarto, "3, 12, 3, 1, fill, top");
 		
 		comboBox = new JComboBox(tiposQuarto);
-		add(comboBox, "4, 10, fill, default");
+		add(comboBox, "3, 14, 3, 1, fill, top");
 		
 		lblValorDiaria = new JLabel("Valor da Diária:");
-		add(lblValorDiaria, "4, 12, fill, center");
+		add(lblValorDiaria, "3, 16, 3, 1, fill, top");
 		
 		ftfValorDiaria = new JFormattedTextField();
-		add(ftfValorDiaria, "4, 14, fill, top");
-		
-		btnCancelar = new JButton("Cancelar");
-		add(btnCancelar, "2, 16, fill, top");
+		add(ftfValorDiaria, "3, 18, 3, 1, fill, top");
 		
 		btnSalvar = new JButton("Salvar");
-		add(btnSalvar, "6, 16, fill, top");
+		btnSalvar.setBackground(new Color(128, 255, 128));
+		add(btnSalvar, "3, 28, fill, top");
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(255, 0, 0));
+		add(btnCancelar, "5, 28, fill, top");
 		
 
 		if(this.quartoVO.getIdQuarto() != null) {
