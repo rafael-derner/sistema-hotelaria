@@ -88,7 +88,7 @@ public class FramePrincipal extends JFrame {
 				try {
 					String codAcesso = painelLogin.getTfCodigoAcesso().getText();
 					if(codAcesso.matches("[0]{1}")) {
-						System.out.println("ACESSO COM USUÁRIO ADMIN - ALTERAR PARA PRODUÇÃO");
+						System.out.println("ACESSO COM USUÃ�RIO ADMIN - ALTERAR PARA PRODUÃ‡ÃƒO");
 						codAcesso = "00000000000";
 					}
 					usuarioAutenticado = usuarioController.login(codAcesso);
@@ -147,7 +147,7 @@ public class FramePrincipal extends JFrame {
 		});
 		mnQuarto.add(mnItemListarQuartos);
 		
-		JMenu mnHospede = new JMenu("Hóspede");
+		JMenu mnHospede = new JMenu("HÃ³spede");
 		menuBar.add(mnHospede);
 		
 		JMenuItem mnItemCadastrarHospede = new JMenuItem("Cadastrar");
@@ -211,7 +211,7 @@ public class FramePrincipal extends JFrame {
 		mnReserva.add(mnItemListarReservas);
 		
 				
-		JMenu mnUsuario = new JMenu("Usuário");
+		JMenu mnUsuario = new JMenu("UsuÃ¡rio");
 		menuBar.add(mnUsuario);
 		
 		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");		
@@ -261,7 +261,7 @@ public class FramePrincipal extends JFrame {
 	}
 
 	/*
-	 * Clique no bot�o de CANCELAR do PainelCadastroUsuario
+	 * Clique no botï¿½o de CANCELAR do PainelCadastroUsuario
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
 		if(painelCadastroUsuario == null) {
@@ -281,7 +281,7 @@ public class FramePrincipal extends JFrame {
 	}
 
 	/*
-	 * Clique no botão de EDITAR do PainelListagemUsuario
+	 * Clique no botÃ£o de EDITAR do PainelListagemUsuario
 	 */
 	protected void registrarCliqueBtnEditarDoPainelListagemUsuario() {
 		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
@@ -299,7 +299,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no botão de ADICIONAR NOVO USUARIO do PainelListagemUsuario
+	 * Clique no botÃ£o de ADICIONAR NOVO USUARIO do PainelListagemUsuario
 	 */
 	protected void registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario() {
 		painelListagemUsuario.getBtnAdicionarNovoUsuario().addActionListener(new ActionListener() {
@@ -317,7 +317,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no botão de ADICIONAR NOVO USUARIO do PainelListagemHospede
+	 * Clique no botÃ£o de ADICIONAR NOVO USUARIO do PainelListagemHospede
 	 */
 	protected void registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede() {
 		painelListagemHospede.getBtnAdicionarNovoHospede().addActionListener(new ActionListener() {
@@ -335,7 +335,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no botão de SALVAR do PainelCadastroUsuario
+	 * Clique no botÃ£o de SALVAR do PainelCadastroUsuario
 	 */
 	protected void registraCliqueBtnSalvarDoPainelCadastroUsuario() {
 		painelCadastroUsuario.getBtnSalvar().addActionListener(new ActionListener() {
@@ -377,7 +377,7 @@ public class FramePrincipal extends JFrame {
 	
 	
 	/*
-	 * Clique no bot�o de CANCELAR do PainelCadastroHospede
+	 * Clique no botï¿½o de CANCELAR do PainelCadastroHospede
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroHospede() {
 		if(painelCadastroHospede == null) {
@@ -398,7 +398,7 @@ public class FramePrincipal extends JFrame {
 	}
 
 	/*
-	 * Clique no botão de EDITAR do PainelListagemUsuario
+	 * Clique no botÃ£o de EDITAR do PainelListagemUsuario
 	 */
 	protected void registrarCliqueBtnEditarDoPainelListagemHospede() {
 		painelListagemHospede.getBtnEditar().addActionListener(new ActionListener() {
@@ -416,7 +416,7 @@ public class FramePrincipal extends JFrame {
 	}
 	
 	/*
-	 * Clique no botão de SALVAR do PainelCadastroUsuario
+	 * Clique no botÃ£o de SALVAR do PainelCadastroUsuario
 	 */
 	protected void registraCliqueBtnSalvarDoPainelCadastroHospede() {
 		painelCadastroHospede.getBtnSalvar().addActionListener(new ActionListener() {

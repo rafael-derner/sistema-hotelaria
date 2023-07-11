@@ -116,8 +116,16 @@ public class QuartoDAO {
 			query += " TIPO_QUARTO LIKE '%" + quartoSeletor.getTipoQuarto() + "%'";
 		}
 		
-		
-		
+		if(quartoSeletor.getFiltroValor() != null && !quartoSeletor.getFiltroValor().trim().isEmpty()) {
+			if(primeiro) {
+				if(quartoSeletor.getFiltroValor() == "Crescente") {
+					query += " ORDER BY VALOR_DIARIA";
+				}else if(quartoSeletor.getFiltroValor() == "Decrescente") {
+					query += " ORDER BY VALOR_DIARIA DESC";
+				}
+			}
+		}
+
 		return query;
 	}
 
