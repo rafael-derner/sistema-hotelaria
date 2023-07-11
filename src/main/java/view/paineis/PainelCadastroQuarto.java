@@ -6,6 +6,7 @@ import javax.swing.JPanel;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
+import javax.swing.text.MaskFormatter;
 
 import com.google.protobuf.TextFormat.ParseException;
 import com.privatejgoodies.forms.layout.ColumnSpec;
@@ -14,6 +15,7 @@ import com.privatejgoodies.forms.layout.FormSpecs;
 import com.privatejgoodies.forms.layout.RowSpec;
 
 import Util.Formatador;
+import Util.JNumberFormatField;
 import controller.QuartoController;
 import model.exception.CampoInvalidoException;
 import model.exception.QuartoJaUtilizadoException;
@@ -42,11 +44,12 @@ public class PainelCadastroQuarto extends JPanel {
 	private JButton btnCancelar;
 	private JButton btnSalvar;
 	private JComboBox comboBox;
-	private String[] tiposQuarto = {"Básico","Intermediário","Luxo"};
+	private String[] tiposQuarto = {"B�sico","Intermedi�rio","Luxo"};
 	private JLabel lblCadastroQuarto;
 	private Quarto quartoVO;
 	private QuartoController quartoController = new QuartoController();
 	private int tipoDoQuarto;
+	private MaskFormatter mascaraValorDiaria;
 
 	/**
 	 * Create the panel.
@@ -57,6 +60,13 @@ public class PainelCadastroQuarto extends JPanel {
 			quartoVO = quarto;
 		} else {
 			quartoVO = new Quarto();
+		}
+		
+		try {
+			mascaraValorDiaria = new MaskFormatter("R$  ####,## ");
+		} catch (java.text.ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 		
 		buttonGroup = new ButtonGroup();
@@ -152,16 +162,17 @@ public class PainelCadastroQuarto extends JPanel {
 			try {
 				int numero = Integer.parseInt(numeroQuarto);
 				quartoVO.setNumeroQuarto(numero);
-			}catch (NumberFormatException numeroIncorreto){
+			}catch (NumberFormatException numeroIncorreto) {
 				JOptionPane.showMessageDialog(null,"Campo número do quarto deve receber caractéres numéricos.",
 						"Erro",JOptionPane.ERROR_MESSAGE);
 				
 			}
 		}
-		quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());			
-		String valorQuarto = ftfValorDiaria.getText();
+		quartoVO.setTipoQuarto((String) comboBox.getSelectedItem());
+		
+		String valorQuarto = ftfValorDiaria.getText().replace("R$", "").trim();
 		if (!valorQuarto.isEmpty()) {
-		    valorQuarto = valorQuarto.replace(',', '.'); // Replace comma with a point
+		    valorQuarto = valorQuarto.replace(',', '.');
 		    try {
 		        double valor = Double.parseDouble(valorQuarto);
 		        quartoVO.setValorQuarto(valor);

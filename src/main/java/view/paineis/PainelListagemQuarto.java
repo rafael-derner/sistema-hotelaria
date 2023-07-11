@@ -39,6 +39,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JCheckBox;
 
 public class PainelListagemQuarto extends JPanel {
 
@@ -53,6 +54,7 @@ public class PainelListagemQuarto extends JPanel {
 	private JComboBox cBTipoQuarto;
 	private String[] tipoDeQuarto = {"","Básico","Intermediário","Luxo"};
 	private String[] valoresQuarto = {"","Ativo","Inativo"};
+	private String[] filtroValorDiaria = {"","Crescente", "Decrescente"};
 	private JLabel lblTipoDeQuarto;
 	private JLabel lblNumero;
 	private String[] colunas = {"Número do Quarto","Tipo do Quarto","Valor do Quarto","Ativo"};
@@ -69,6 +71,8 @@ public class PainelListagemQuarto extends JPanel {
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	private JLabel lblPaginacao = new JLabel();
+	private JLabel lblValorFiltro;
+	private JComboBox cBFiltroValor;
 	
 
 	/**
@@ -139,6 +143,9 @@ public class PainelListagemQuarto extends JPanel {
 		
 		lblTipoDeQuarto = new JLabel("Tipo de Quarto:");
 		add(lblTipoDeQuarto, "12, 8, fill, top");
+		
+		lblValorFiltro = new JLabel("Valor Di\u00E1ria");
+		add(lblValorFiltro, "8, 4");
 		
 		txtNumero = new JTextField();
 		add(txtNumero, "4, 10, 7, 1, fill, center");
@@ -231,11 +238,12 @@ public class PainelListagemQuarto extends JPanel {
 				}
 			}
 		});
+		
 		add(btnGerarPlanilha, "14, 14, fill, top");
 		
 		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
-		btnEditar.setBackground(Color.BLUE);
+		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 14, fill, top");
 		
 		btnInativar = new JButton("Inativar");
@@ -292,6 +300,7 @@ public class PainelListagemQuarto extends JPanel {
 			}
 		}
 		quartoSeletor.setTipoQuarto((String) cBTipoQuarto.getSelectedItem());
+		quartoSeletor.setFiltroValor((String) cBFiltroValor.getSelectedItem());
 		quartos = (ArrayList<Quarto>) quartoController.consultarComFiltro(quartoSeletor);
 		atualizarTabelaQuartos();
 		atualizarQuantidadePaginas();

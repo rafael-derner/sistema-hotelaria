@@ -5,6 +5,7 @@ public class QuartoSeletor extends BaseSeletor {
 	private Integer numeroQuarto;
 	private Double valorQuarto;
 	private String tipoQuarto;
+	private String filtroValor;
 	
 
 	@Override
@@ -12,7 +13,18 @@ public class QuartoSeletor extends BaseSeletor {
 		// TODO Auto-generated method stub
 		return (this.numeroQuarto != null
 				|| this.tipoQuarto != null
-				|| this.valorQuarto != null);
+				|| this.valorQuarto != null)
+				|| this.filtroValor != null;
+	}
+
+
+	public String getFiltroValor() {
+		return filtroValor;
+	}
+
+
+	public void setFiltroValor(String filtroValor) {
+		this.filtroValor = filtroValor;
 	}
 
 
