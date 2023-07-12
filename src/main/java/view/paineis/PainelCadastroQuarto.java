@@ -123,6 +123,7 @@ public class PainelCadastroQuarto extends JPanel {
 		add(lblTipoQuarto, "3, 12, 3, 1, fill, top");
 
 		comboBox = new JComboBox(tiposQuarto);
+		comboBox.setSelectedIndex(-1);
 		add(comboBox, "3, 14, 3, 1, fill, top");
 
 		lblValorDiaria = new JLabel("Valor da Diária:");

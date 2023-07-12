@@ -28,11 +28,11 @@ public class QuartoController {
 		}
 
 		if (novoQuarto.getValorQuarto() == 0.00) {
-			mensagemValidacao += "Preencher campo valor.";
+			mensagemValidacao += "\nPreencher campo valor.";
 		}
 
 		if (novoQuarto.getTipoQuarto() == null) {
-			mensagemValidacao += "Preencher campo Tipo de Quarto.";
+			mensagemValidacao += "\nEscolha uma categoria de quarto.";
 		}
 
 		if (!mensagemValidacao.isEmpty()) {
