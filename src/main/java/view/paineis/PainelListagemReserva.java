@@ -116,7 +116,7 @@ public class PainelListagemReserva extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 
-		lblTitulo = new JLabel("Cadastro de Reservas");
+		lblTitulo = new JLabel("Listagem de Reservas");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblTitulo, "4, 4, 15, 1, center, default");
 

@@ -45,7 +45,7 @@ public class PainelCadastroReserva extends JPanel {
 	private DatePickerSettings pickerInicial;
 	private DatePickerSettings pickerFinal;
 	private JButton btnSalvar;
-	private JButton btnVoltar;
+	private JButton btnCancelar;
 	private DatePicker dataInicio;
 	private String[] nomesColunas = { "Número", "Categoria", "Valor" };
 	private DatePicker dataFim;
@@ -72,7 +72,6 @@ public class PainelCadastroReserva extends JPanel {
 
 	private JComboBox cbxCategoriaQuarto;
 	private String[] categoriasDeQuarto = { "", "Básico", "Intermediário", "Luxo" };
-	private JButton btnCancelar;
 
 	public PainelCadastroReserva(Reserva reserva, Usuario usuarioAutenticado) {
 		if (reserva != null) {
@@ -121,19 +120,11 @@ public class PainelCadastroReserva extends JPanel {
 		lblTitulo = new JLabel("Cadastro de Reservas");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblTitulo, "4, 4, 9, 1, center, default");
-		
-		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 6, 3, 1, fill, default");
-		tfNomeHospede.setColumns(10);
-		
-		cbxNomeHospede = new JComboBox();
-		add(cbxNomeHospede, "4, 8, 3, 1, fill, default");
 
 		JLabel lblReservaHospede = new JLabel("Nome do Hóspede:");
 		add(lblReservaHospede, "4, 8");
 
 		JButton btnBuscarHospede = new JButton("Buscar Hóspede");
-
 		btnBuscarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cbxNomeHospede.removeAllItems();
@@ -252,10 +243,6 @@ public class PainelCadastroReserva extends JPanel {
 				}
 			}
 		});
-	
-		btnVoltar = new JButton("Voltar");
-		add(btnVoltar, "4, 22, left, default");
-		
 
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
