@@ -37,6 +37,9 @@ import java.awt.event.ActionEvent;
 import com.github.lgooddatepicker.optionalusertools.DateChangeListener;
 import com.github.lgooddatepicker.zinternaltools.DateChangeEvent;
 import java.awt.Font;
+import javax.swing.JSeparator;
+import javax.swing.SwingConstants;
+import java.awt.Color;
 
 public class PainelCadastroReserva extends JPanel {
 	private DatePickerSettings pickerInicial;
@@ -44,7 +47,7 @@ public class PainelCadastroReserva extends JPanel {
 	private JButton btnSalvar;
 	private JButton btnCancelar;
 	private DatePicker dataInicio;
-	private String[] nomesColunas = { "Numero", "Categoria", "Valor" };
+	private String[] nomesColunas = { "Número", "Categoria", "Valor" };
 	private DatePicker dataFim;
 	private JTable tabelaQuartos;
 	private JTextField tfNomeHospede;
@@ -63,7 +66,12 @@ public class PainelCadastroReserva extends JPanel {
 	private Usuario usuarioVO;
 	private JButton btnBuscarQuartos;
 	private ReservaController reservaController = new ReservaController();
-	private Reserva reservaVO;;
+	private Reserva reservaVO;
+	private JSeparator separator;
+	private JSeparator separator_1;
+	
+	private JComboBox cbxCategoriaQuarto;
+	private String[] categoriasDeQuarto = {"", "Básico", "Intermediário", "Luxo"};
 	
 	public PainelCadastroReserva(Reserva reserva, Usuario usuarioAutenticado) {
 		if(reserva != null) {
@@ -79,16 +87,24 @@ public class PainelCadastroReserva extends JPanel {
 		
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("max(100dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(70dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(70dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(70dlu;default):grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(100dlu;default)"),},
 			new RowSpec[] {
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -102,7 +118,9 @@ public class PainelCadastroReserva extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(15dlu;default)"),
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("max(17dlu;default)"),
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
@@ -112,23 +130,28 @@ public class PainelCadastroReserva extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		lblTitulo = new JLabel("Cadastro de Reservas");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
-		add(lblTitulo, "2, 2, 7, 1, center, default");
+		add(lblTitulo, "4, 4, 9, 1, center, default");
 		
-		JLabel lblReservaHospede = new JLabel("Buscar hospede:");
-		add(lblReservaHospede, "4, 4, 3, 1");
+		JLabel lblReservaHospede = new JLabel("Nome do Hóspede:");
+		add(lblReservaHospede, "4, 8");
 		
-		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 6, 3, 1, fill, default");
-		tfNomeHospede.setColumns(10);
-		
-		cbxNomeHospede = new JComboBox();
-		add(cbxNomeHospede, "4, 8, 3, 1, fill, default");
-		
-		JButton btnBuscarHospede = new JButton("Buscar");
+		JButton btnBuscarHospede = new JButton("Buscar Hóspede");
 		btnBuscarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				cbxNomeHospede.removeAllItems();
@@ -142,33 +165,18 @@ public class PainelCadastroReserva extends JPanel {
 				cbxNomeHospede.setSelectedItem(null);
 			}
 		});
-		add(btnBuscarHospede, "8, 6, left, default");
+		add(btnBuscarHospede, "12, 10, fill, default");
 		
-		JLabel lblModeloQuarto = new JLabel("Selecione o modelo de quarto:");
-		add(lblModeloQuarto, "4, 10, 3, 1");
+		separator = new JSeparator();
+		add(separator, "4, 14, 9, 1");
 		
-		rdbtnBasico = new JRadioButton("Básico");
-		add(rdbtnBasico, "4, 12");
+		tfNomeHospede = new JTextField();
+		add(tfNomeHospede, "4, 10, 7, 1, fill, default");
+		tfNomeHospede.setColumns(10);
 		
-		rdbtnIntermediario = new JRadioButton("Intermediário");
-		add(rdbtnIntermediario, "6, 12");
 		
-		rdbtnLuxo = new JRadioButton("Luxo");
-		add(rdbtnLuxo, "8, 12");
-		
-		final ButtonGroup buttonGroup = new ButtonGroup();
-	    buttonGroup.add(rdbtnBasico);
-	    buttonGroup.add(rdbtnIntermediario);
-	    buttonGroup.add(rdbtnLuxo);
-		
-		JLabel lblPeriodo = new JLabel("Insira um periodo para a reserva:");
-		add(lblPeriodo, "4, 14, 3, 1");
-		
-		JLabel lblInicioPeridodo = new JLabel("Inicio:");
-		add(lblInicioPeridodo, "4, 16, left, default");
-		
-		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "6, 16");
+		cbxNomeHospede = new JComboBox();
+		add(cbxNomeHospede, "4, 12, 9, 1, fill, default");
 		
 		primeiraData = 0;
 		
@@ -184,7 +192,39 @@ public class PainelCadastroReserva extends JPanel {
 				}
 			}
 		});
-		add(dataInicio, "4, 18");
+		
+		JLabel lblModeloQuarto = new JLabel("Categoria de Quarto pretendida:");
+		add(lblModeloQuarto, "4, 16");
+
+		/*
+		 * btngroup
+		rdbtnBasico = new JRadioButton("Básico");
+		add(rdbtnBasico, "4, 18, center, default");
+		
+		rdbtnIntermediario = new JRadioButton("Intermediário");
+		add(rdbtnIntermediario, "6, 18, center, default");
+		
+		rdbtnLuxo = new JRadioButton("Luxo");
+		add(rdbtnLuxo, "8, 18, center, default");
+		
+		final ButtonGroup buttonGroup = new ButtonGroup();
+		buttonGroup.add(rdbtnIntermediario);
+		buttonGroup.add(rdbtnBasico);
+		buttonGroup.add(rdbtnLuxo);
+		 */
+		
+		cbxCategoriaQuarto = new JComboBox(categoriasDeQuarto);
+		add(cbxCategoriaQuarto, "4, 18, 9, 1, fill, default");
+		
+		separator_1 = new JSeparator();
+		add(separator_1, "4, 20, 9, 1");
+		
+		JLabel lblInicioPeridodo = new JLabel("Data pretendida para inicio de reserva:");
+		add(lblInicioPeridodo, "4, 22, left, default");
+		
+		JLabel lblFimPeridodo = new JLabel("Data pretendida para fim de reserva:");
+		add(lblFimPeridodo, "8, 22, 3, 1");
+		add(dataInicio, "4, 24, 3, 1");
 		
 		pickerFinal = new DatePickerSettings();
 		dataFim = new DatePicker(pickerFinal);
@@ -198,15 +238,16 @@ public class PainelCadastroReserva extends JPanel {
 				}
 			}
 		});
-		add(dataFim, "6, 18, fill, default");
+		add(dataFim, "8, 24, 3, 1, fill, default");
 		
-		btnBuscarQuartos = new JButton("Buscar");
+		btnBuscarQuartos = new JButton("Buscar Quartos disponíveis");
 		btnBuscarQuartos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				if(dataInicio.getDate().lengthOfYear() > 0) {
 					try {
 						listaQuartos = new ArrayList<Quarto>();
-						String rdbSelecionado = consultaRadioBurronSelecionado(rdbtnBasico, rdbtnIntermediario, rdbtnLuxo);
+//						String rdbSelecionado = consultaRadioBurronSelecionado(rdbtnBasico, rdbtnIntermediario, rdbtnLuxo);
+						String rdbSelecionado = (String) cbxCategoriaQuarto.getSelectedItem();
 						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), rdbSelecionado);
 					} catch (CampoInvalidoException e1) {
 						// TODO Auto-generated catch block
@@ -216,10 +257,10 @@ public class PainelCadastroReserva extends JPanel {
 				}
 			}
 		});
-		add(btnBuscarQuartos, "8, 18, left, default");
+		add(btnBuscarQuartos, "12, 24, fill, default");
 		
 		tabelaQuartos = new JTable();
-		add(tabelaQuartos, "4, 20, 5, 1, fill, fill");
+		add(tabelaQuartos, "4, 26, 9, 1, fill, fill");
 		this.limparTabelaQuartos();
 		
 		tabelaQuartos.addMouseListener(new MouseAdapter() {
@@ -232,20 +273,22 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		
-		btnCancelar = new JButton("Cancelar");
-		add(btnCancelar, "4, 22, left, default");
-		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				limparCampos();
 			}
 		});
-		add(btnLimpar, "6, 22, center, default");
-
+		add(btnLimpar, "4, 28, fill, default");
+		
 		btnSalvar = new JButton("Salvar");
+		btnSalvar.setBackground(new Color(128, 255, 128));
 		btnSalvar.setEnabled(false);
-		add(btnSalvar, "8, 22, right, default");
+		add(btnSalvar, "10, 28, fill, default");
+		
+		btnCancelar = new JButton("Cancelar");
+		btnCancelar.setBackground(new Color(255, 0, 0));
+		add(btnCancelar, "12, 28, fill, default");
 		
 		if(reservaVO.getIdReserva() != null) {
 			quartoSelecionado = reservaVO.getQuarto();
