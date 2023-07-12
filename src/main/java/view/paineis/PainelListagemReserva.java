@@ -251,7 +251,7 @@ public class PainelListagemReserva extends JPanel {
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
-						"Voce deseja realmente Inativar o Quarto selecionado?");
+						"Voce deseja realmente Inativar o Reserva selecionado?");
 				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						controller.inativar(reservaSelecionada.getIdReserva());
