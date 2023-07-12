@@ -27,7 +27,7 @@ public class QuartoController {
 			mensagemValidacao += "Preencher campo número!";
 		}
 
-		if (novoQuarto.getValorQuarto() == null) {
+		if (novoQuarto.getValorQuarto() == 0.00) {
 			mensagemValidacao += "Preencher campo valor.";
 		}
 
