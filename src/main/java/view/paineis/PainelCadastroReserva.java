@@ -69,12 +69,12 @@ public class PainelCadastroReserva extends JPanel {
 	private Reserva reservaVO;
 	private JSeparator separator;
 	private JSeparator separator_1;
-	
+
 	private JComboBox cbxCategoriaQuarto;
-	private String[] categoriasDeQuarto = {"", "Básico", "Intermediário", "Luxo"};
-	
+	private String[] categoriasDeQuarto = { "", "Básico", "Intermediário", "Luxo" };
+
 	public PainelCadastroReserva(Reserva reserva, Usuario usuarioAutenticado) {
-		if(reserva != null) {
+		if (reserva != null) {
 			reservaVO = reserva;
 			listaQuartos = new ArrayList<Quarto>();
 			listaQuartos.add(reservaVO.getQuarto());
@@ -84,73 +84,46 @@ public class PainelCadastroReserva extends JPanel {
 			reservaVO = new Reserva();
 		}
 		usuarioVO = usuarioAutenticado;
-		
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(17dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(17dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
+
+		setLayout(new FormLayout(
+				new ColumnSpec[] { 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(100dlu;default)"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(100dlu;default)"), },
+				new RowSpec[] { 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("max(17dlu;default)"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("max(17dlu;default)"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
 		lblTitulo = new JLabel("Cadastro de Reservas");
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblTitulo, "4, 4, 9, 1, center, default");
-		
+
 		JLabel lblReservaHospede = new JLabel("Nome do Hóspede:");
 		add(lblReservaHospede, "4, 8");
-		
+
 		JButton btnBuscarHospede = new JButton("Buscar Hóspede");
 		btnBuscarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -159,96 +132,94 @@ public class PainelCadastroReserva extends JPanel {
 				HospedeSeletor seletor = new HospedeSeletor();
 				seletor.setNome(tfNomeHospede.getText());
 				listaHospedes = hospedeController.consultarComFiltro(seletor);
-				for(Hospede l : listaHospedes) {
+				for (Hospede l : listaHospedes) {
 					cbxNomeHospede.addItem(l);
 				}
 				cbxNomeHospede.setSelectedItem(null);
 			}
 		});
 		add(btnBuscarHospede, "12, 10, fill, default");
-		
+
 		separator = new JSeparator();
 		add(separator, "4, 14, 9, 1");
-		
+
 		tfNomeHospede = new JTextField();
 		add(tfNomeHospede, "4, 10, 7, 1, fill, default");
 		tfNomeHospede.setColumns(10);
-		
-		
+
 		cbxNomeHospede = new JComboBox();
 		add(cbxNomeHospede, "4, 12, 9, 1, fill, default");
-		
+
 		primeiraData = 0;
-		
+
 		pickerInicial = new DatePickerSettings();
 		dataInicio = new DatePicker(pickerInicial);
 		dataInicio.addDateChangeListener(new DateChangeListener() {
 			public void dateChanged(DateChangeEvent event) {
 				LocalDate dataInicialSelecionada = dataInicio.getDate();
 				pickerFinal.setDateRangeLimits(dataInicialSelecionada, null);
-				if(primeiraData == 0) {
+				if (primeiraData == 0) {
 					dataFim.setDate(dataInicialSelecionada);
 					primeiraData = 1;
 				}
 			}
 		});
-		
+
 		JLabel lblModeloQuarto = new JLabel("Categoria de Quarto pretendida:");
 		add(lblModeloQuarto, "4, 16");
 
 		/*
-		 * btngroup
-		rdbtnBasico = new JRadioButton("Básico");
-		add(rdbtnBasico, "4, 18, center, default");
-		
-		rdbtnIntermediario = new JRadioButton("Intermediário");
-		add(rdbtnIntermediario, "6, 18, center, default");
-		
-		rdbtnLuxo = new JRadioButton("Luxo");
-		add(rdbtnLuxo, "8, 18, center, default");
-		
-		final ButtonGroup buttonGroup = new ButtonGroup();
-		buttonGroup.add(rdbtnIntermediario);
-		buttonGroup.add(rdbtnBasico);
-		buttonGroup.add(rdbtnLuxo);
+		 * btngroup rdbtnBasico = new JRadioButton("Básico"); add(rdbtnBasico,
+		 * "4, 18, center, default");
+		 * 
+		 * rdbtnIntermediario = new JRadioButton("Intermediário");
+		 * add(rdbtnIntermediario, "6, 18, center, default");
+		 * 
+		 * rdbtnLuxo = new JRadioButton("Luxo"); add(rdbtnLuxo,
+		 * "8, 18, center, default");
+		 * 
+		 * final ButtonGroup buttonGroup = new ButtonGroup();
+		 * buttonGroup.add(rdbtnIntermediario); buttonGroup.add(rdbtnBasico);
+		 * buttonGroup.add(rdbtnLuxo);
 		 */
-		
+
 		cbxCategoriaQuarto = new JComboBox(categoriasDeQuarto);
 		add(cbxCategoriaQuarto, "4, 18, 9, 1, fill, default");
-		
+
 		separator_1 = new JSeparator();
 		add(separator_1, "4, 20, 9, 1");
-		
+
 		JLabel lblInicioPeridodo = new JLabel("Data pretendida para inicio de reserva:");
 		add(lblInicioPeridodo, "4, 22, left, default");
-		
+
 		JLabel lblFimPeridodo = new JLabel("Data pretendida para fim de reserva:");
 		add(lblFimPeridodo, "8, 22, 3, 1");
 		add(dataInicio, "4, 24, 3, 1");
-		
+
 		pickerFinal = new DatePickerSettings();
 		dataFim = new DatePicker(pickerFinal);
 		dataFim.addDateChangeListener(new DateChangeListener() {
 			public void dateChanged(DateChangeEvent event) {
 				LocalDate dataFinalSelecionada = dataFim.getDate();
 				pickerInicial.setDateRangeLimits(null, dataFinalSelecionada);
-				if(primeiraData == 0) {
+				if (primeiraData == 0) {
 					dataInicio.setDate(dataFinalSelecionada);
 					primeiraData = 1;
 				}
 			}
 		});
 		add(dataFim, "8, 24, 3, 1, fill, default");
-		
+
 		btnBuscarQuartos = new JButton("Buscar Quartos disponíveis");
 		btnBuscarQuartos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(dataInicio.getDate().lengthOfYear() > 0) {
+				if (dataInicio.getDate().lengthOfYear() > 0) {
 					try {
 						listaQuartos = new ArrayList<Quarto>();
 //						String rdbSelecionado = consultaRadioBurronSelecionado(rdbtnBasico, rdbtnIntermediario, rdbtnLuxo);
 						String rdbSelecionado = (String) cbxCategoriaQuarto.getSelectedItem();
-						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(), rdbSelecionado);
+						listaQuartos = reservaController.consultarQuartos(dataInicio.getDate(), dataFim.getDate(),
+								rdbSelecionado);
 					} catch (CampoInvalidoException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -258,21 +229,21 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		add(btnBuscarQuartos, "12, 24, fill, default");
-		
+
 		tabelaQuartos = new JTable();
 		add(tabelaQuartos, "4, 26, 9, 1, fill, fill");
 		this.limparTabelaQuartos();
-		
+
 		tabelaQuartos.addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {
 				int elementoSelecionado = tabelaQuartos.getSelectedRow();
-				if(elementoSelecionado > 0) {
+				if (elementoSelecionado > 0) {
 					btnSalvar.setEnabled(true);
 					quartoSelecionado = listaQuartos.get(elementoSelecionado - 1);
 				}
 			}
 		});
-		
+
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -280,17 +251,17 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		add(btnLimpar, "4, 28, fill, default");
-		
+
 		btnSalvar = new JButton("Salvar");
 		btnSalvar.setBackground(new Color(128, 255, 128));
 		btnSalvar.setEnabled(false);
 		add(btnSalvar, "10, 28, fill, default");
-		
+
 		btnCancelar = new JButton("Cancelar");
 		btnCancelar.setBackground(new Color(255, 0, 0));
 		add(btnCancelar, "12, 28, fill, default");
-		
-		if(reservaVO.getIdReserva() != null) {
+
+		if (reservaVO.getIdReserva() != null) {
 			quartoSelecionado = reservaVO.getQuarto();
 			btnSalvar.setEnabled(true);
 			cbxNomeHospede.addItem(listaHospedes.get(0));
@@ -298,7 +269,7 @@ public class PainelCadastroReserva extends JPanel {
 			atualizarTabelaUsuarios();
 		}
 	}
-	
+
 	public DatePicker getDataInicio() {
 		return dataInicio;
 	}
@@ -316,9 +287,9 @@ public class PainelCadastroReserva extends JPanel {
 	}
 
 	private void editarReserva() {
-				
+
 	}
-	
+
 	public JButton getBtnSalvar() {
 		return btnSalvar;
 	}
@@ -334,15 +305,15 @@ public class PainelCadastroReserva extends JPanel {
 		this.dataInicio.setDate(reservaVO.getDtCheckIn());
 		this.dataFim.setDate(reservaVO.getDtCheckOut());
 		switch (reservaVO.getQuarto().getTipoQuarto()) {
-			case "BÁSICO": 
-				rdbtnBasico.setSelected(true);
-				break;
-			case "INTERMEDIÁRIO":
-				rdbtnIntermediario.setSelected(true);
-				break;
-			case "LUXO":
-				rdbtnLuxo.setSelected(true);
-				break;
+		case "BÁSICO":
+			rdbtnBasico.setSelected(true);
+			break;
+		case "INTERMEDIÁRIO":
+			rdbtnIntermediario.setSelected(true);
+			break;
+		case "LUXO":
+			rdbtnLuxo.setSelected(true);
+			break;
 		}
 	}
 
@@ -359,11 +330,11 @@ public class PainelCadastroReserva extends JPanel {
 			model.addRow(novaLinhaDaTabela);
 		}
 	}
-	
+
 	private void limparTabelaQuartos() {
 		tabelaQuartos.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
-	
+
 	private void limparCampos() {
 		tfNomeHospede.setText("");
 		cbxNomeHospede.removeAllItems();
@@ -380,33 +351,38 @@ public class PainelCadastroReserva extends JPanel {
 		reservaVO.setDtCheckIn(dataInicio.getDate());
 		reservaVO.setDtCheckOut(dataFim.getDate());
 		try {
-			if(reservaVO.getIdReserva() != null) {
-				if(reservaController.atualizar(reservaVO)) {
-					JOptionPane.showMessageDialog(null, "Reserva atualizada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+			if (reservaVO.getIdReserva() != null) {
+				if (reservaController.atualizar(reservaVO)) {
+					JOptionPane.showMessageDialog(null, "Reserva atualizada com sucesso!", "Sucesso",
+							JOptionPane.INFORMATION_MESSAGE);
 					retorno = true;
 				} else {
-					JOptionPane.showMessageDialog(null, "Ocorreu um erro ao atualizar a reserva. Verifique os dados e tente novamente", "Erro", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null,
+							"Ocorreu um erro ao atualizar a reserva. Verifique os dados e tente novamente", "Erro",
+							JOptionPane.ERROR_MESSAGE);
 				}
 			} else {
 				reservaController.inserir(reservaVO);
-				JOptionPane.showMessageDialog(null, "Reserva criada com sucesso!", "Sucesso", JOptionPane.INFORMATION_MESSAGE);
+				JOptionPane.showMessageDialog(null, "Reserva criada com sucesso!", "Sucesso",
+						JOptionPane.INFORMATION_MESSAGE);
 				retorno = true;
 			}
-		}catch(Exception e2){
+		} catch (Exception e2) {
 			JOptionPane.showMessageDialog(null, e2.getMessage());
 		}
 		return retorno;
 	}
-	
-	private String consultaRadioBurronSelecionado(JRadioButton rdbtnBasico, JRadioButton rdbtnIntermediario, JRadioButton rdbtnLuxo) {
+
+	private String consultaRadioBurronSelecionado(JRadioButton rdbtnBasico, JRadioButton rdbtnIntermediario,
+			JRadioButton rdbtnLuxo) {
 		String botao = "";
-		if(rdbtnBasico.isSelected()) {
+		if (rdbtnBasico.isSelected()) {
 			botao += "BÁSICO";
 		}
-		if(rdbtnIntermediario.isSelected()) {
+		if (rdbtnIntermediario.isSelected()) {
 			botao += "INTERMEDIÁRIO";
 		}
-		if(rdbtnLuxo.isSelected()) {
+		if (rdbtnLuxo.isSelected()) {
 			botao += "LUXO";
 		}
 		return botao;

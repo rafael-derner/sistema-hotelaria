@@ -15,8 +15,8 @@ import model.vo.Hospede;
 
 public class HospedeController {
 	private HospedeBO hospedeBO = new HospedeBO();
-	
-	public Hospede inserir(Hospede novoHospede) throws CampoInvalidoException, CpfDuplicadoException{
+
+	public Hospede inserir(Hospede novoHospede) throws CampoInvalidoException, CpfDuplicadoException {
 		this.validarCamposObrigatorios(novoHospede);
 		return hospedeBO.inserir(novoHospede);
 	}
@@ -30,22 +30,22 @@ public class HospedeController {
 		return hospedeBO.excluir(Hospede);
 	}
 
-	private void validarCamposObrigatorios(Hospede novoHospede) throws CampoInvalidoException{
+	private void validarCamposObrigatorios(Hospede novoHospede) throws CampoInvalidoException {
 		String mensagemValidacao = "";
-		
-		if(novoHospede.getNome() == null || novoHospede.getNome().trim().length() < 2) {
+
+		if (novoHospede.getNome() == null || novoHospede.getNome().trim().length() < 2) {
 			mensagemValidacao += "Nome inv�lido \n";
 		}
-		
-		if(novoHospede.getCpf() == null || novoHospede.getCpf().trim().length() < 2) {
+
+		if (novoHospede.getCpf() == null || novoHospede.getCpf().trim().length() < 2) {
 			mensagemValidacao += "Telefone inv�lido \n";
 		}
-		
-		if(novoHospede.getTelefone() == null || novoHospede.getTelefone().trim().length() < 2) {
+
+		if (novoHospede.getTelefone() == null || novoHospede.getTelefone().trim().length() < 2) {
 			mensagemValidacao += "Telefone inv�lido \n";
 		}
-		
-		if(!mensagemValidacao.isEmpty()) {
+
+		if (!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
 	}
@@ -53,13 +53,13 @@ public class HospedeController {
 	public List<Hospede> consultarComFiltro(HospedeSeletor hospedeSeletor) {
 		return hospedeBO.consultarComFiltro(hospedeSeletor);
 	}
-	
+
 	public int contarTotalRegistrosComFiltros(HospedeSeletor hospedeSeletor) {
 		return hospedeBO.contarTotalRegistrosComFiltros(hospedeSeletor);
 	}
 
-	public String gerarPlanilha(ArrayList<Hospede> hospedes, String caminhoEscolhido) throws CampoInvalidoException{
-		if(hospedes == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
+	public String gerarPlanilha(ArrayList<Hospede> hospedes, String caminhoEscolhido) throws CampoInvalidoException {
+		if (hospedes == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
 			throw new CampoInvalidoException("Preencha todos os campos!");
 		}
 		GeradorPlanilha gerador = new GeradorPlanilha();

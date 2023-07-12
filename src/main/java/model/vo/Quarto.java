@@ -1,13 +1,13 @@
 package model.vo;
 
 public class Quarto {
-	
+
 	private Integer idQuarto;
 	private Integer numeroQuarto;
 	private Double valorQuarto;
 	private String tipoQuarto;
 	private boolean ativo;
-	
+
 	public Quarto() {
 		super();
 		// TODO Auto-generated constructor stub
@@ -61,6 +61,5 @@ public class Quarto {
 	public void setAtivo(boolean ativo) {
 		this.ativo = ativo;
 	}
-	
 
 }

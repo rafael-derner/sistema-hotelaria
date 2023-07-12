@@ -15,16 +15,16 @@ import model.vo.Quarto;
 import model.vo.Usuario;
 
 public class QuartoBO {
-	
+
 	private QuartoDAO quartoDAO = new QuartoDAO();
 
 	public Quarto inserir(Quarto novoQuarto) throws QuartoJaUtilizadoException {
-		if(quartoDAO.verificarNumeroJaUtilizado(novoQuarto.getNumeroQuarto())) {
+		if (quartoDAO.verificarNumeroJaUtilizado(novoQuarto.getNumeroQuarto())) {
 			throw new QuartoJaUtilizadoException("O número do quarto já foi utilizado.");
 		}
-		
+
 		return quartoDAO.inserir(novoQuarto);
-		
+
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {
@@ -35,10 +35,10 @@ public class QuartoBO {
 		return quartoDAO.atualizar(quartoAlterado);
 	}
 
-	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException {
 		Quarto quarto = quartoDAO.consultarPorId(idQuarto);
-		
-		if(!quarto.isAtivo()) {
+
+		if (!quarto.isAtivo()) {
 			throw new QuartoInativoException("O quarto já se encontra inativo.");
 		}
 

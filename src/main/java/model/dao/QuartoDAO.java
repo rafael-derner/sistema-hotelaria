@@ -23,13 +23,13 @@ public class QuartoDAO {
 		try {
 			pstmt.setInt(1, numeroQuarto);
 			ResultSet resultado = pstmt.executeQuery();
-			
-			if(resultado.next()) {
+
+			if (resultado.next()) {
 				numeroQuartoDuplicado = resultado.getInt(1) > 0;
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Ocorreu um erro no método verificarNumeroJaUtilizado." + e.getMessage());
-		}finally {
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
@@ -45,9 +45,9 @@ public class QuartoDAO {
 			pstmt.setDouble(2, novoQuarto.getValorQuarto());
 			pstmt.setString(3, novoQuarto.getTipoQuarto());
 			pstmt.execute();
-			
+
 			ResultSet resultado = pstmt.getGeneratedKeys();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				novoQuarto.setIdQuarto(resultado.getInt(1));
 			}
 		} catch (SQLException e) {
@@ -60,34 +60,33 @@ public class QuartoDAO {
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {
-		
+
 		List<Quarto> quartos = new ArrayList<Quarto>();
 		Connection conn = Banco.getConnection();
-		
+
 		String query = " SELECT * FROM QUARTO ";
-		
-		if(quartoSeletor.temFiltro()) {
+
+		if (quartoSeletor.temFiltro()) {
 			query = preencherFiltros(query, quartoSeletor);
 		}
-		
-		if(quartoSeletor.temPaginacao()) {
-			query += " LIMIT "  + quartoSeletor.getLimite()
-				 + " OFFSET " + quartoSeletor.getOffset();  
+
+		if (quartoSeletor.temPaginacao()) {
+			query += " LIMIT " + quartoSeletor.getLimite() + " OFFSET " + quartoSeletor.getOffset();
 		}
-		
+
 		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
-		
+
 		try {
 			ResultSet resultado = pstmt.executeQuery();
-			
-			while(resultado.next()) {
+
+			while (resultado.next()) {
 				Quarto quartoBuscado = montarQuartoComResultadoDoBanco(resultado);
 				quartos.add(quartoBuscado);
 			}
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			System.out.println("Erro ao buscar todos os quartos. \n Causa:" + e.getMessage());
-		}finally {
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
@@ -96,31 +95,31 @@ public class QuartoDAO {
 
 	private String preencherFiltros(String query, QuartoSeletor quartoSeletor) {
 		boolean primeiro = true;
-		if(quartoSeletor.getNumeroQuarto() != null) {
-			if(primeiro) {
+		if (quartoSeletor.getNumeroQuarto() != null) {
+			if (primeiro) {
 				query += " WHERE ";
 			} else {
 				query += " AND ";
 			}
 			query += " NUMERO = " + quartoSeletor.getNumeroQuarto() + " ";
 			primeiro = false;
-			
+
 		}
-		
-		if(quartoSeletor.getTipoQuarto() != null && !quartoSeletor.getTipoQuarto().trim().isEmpty()) {
-			if(primeiro) {
+
+		if (quartoSeletor.getTipoQuarto() != null && !quartoSeletor.getTipoQuarto().trim().isEmpty()) {
+			if (primeiro) {
 				query += " WHERE ";
 			} else {
 				query += " AND ";
 			}
 			query += " TIPO_QUARTO LIKE '%" + quartoSeletor.getTipoQuarto() + "%'";
 		}
-		
-		if(quartoSeletor.getFiltroValor() != null && !quartoSeletor.getFiltroValor().trim().isEmpty()) {
-			if(primeiro) {
-				if(quartoSeletor.getFiltroValor() == "Crescente") {
+
+		if (quartoSeletor.getFiltroValor() != null && !quartoSeletor.getFiltroValor().trim().isEmpty()) {
+			if (primeiro) {
+				if (quartoSeletor.getFiltroValor() == "Crescente") {
 					query += " ORDER BY VALOR_DIARIA";
-				}else if(quartoSeletor.getFiltroValor() == "Decrescente") {
+				} else if (quartoSeletor.getFiltroValor() == "Decrescente") {
 					query += " ORDER BY VALOR_DIARIA DESC";
 				}
 			}
@@ -148,13 +147,12 @@ public class QuartoDAO {
 		try {
 			pstmt.setInt(1, idQuarto);
 			ResultSet resultado = pstmt.executeQuery();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				quarto = montarQuartoComResultadoDoBanco(resultado);
-			}	
-		}catch (Exception e) {
-			System.out.println("Erro ao buscar quarto com id: " + idQuarto
-					+ "\n Causa:" + e.getMessage());
-		}finally {
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar quarto com id: " + idQuarto + "\n Causa:" + e.getMessage());
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
@@ -186,20 +184,20 @@ public class QuartoDAO {
 		int total = 0;
 		Connection conn = Banco.getConnection();
 		String query = "SELECT COUNT(*) FROM QUARTO ";
-		
-		if(quartoSeletor.temFiltro()) {
+
+		if (quartoSeletor.temFiltro()) {
 			query = preencherFiltros(query, quartoSeletor);
 		}
-		
+
 		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
 		try {
 			ResultSet resultado = pstmt.executeQuery();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				total = resultado.getInt(1);
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			System.out.println("Erro ao contar o total de quartos " + "\nCausa: " + e.getMessage());
-		}finally {
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}

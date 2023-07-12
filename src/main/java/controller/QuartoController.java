@@ -14,7 +14,6 @@ import model.vo.Quarto;
 
 public class QuartoController {
 	private QuartoBO quartoBO = new QuartoBO();
-	
 
 	public Quarto inserir(Quarto novoQuarto) throws QuartoJaUtilizadoException, CampoInvalidoException {
 		this.validarCamposObrigatorios(novoQuarto);
@@ -22,37 +21,37 @@ public class QuartoController {
 	}
 
 	private void validarCamposObrigatorios(Quarto novoQuarto) throws CampoInvalidoException {
-String mensagemValidacao = "";
-		
-		if(novoQuarto.getNumeroQuarto() == null) {
+		String mensagemValidacao = "";
+
+		if (novoQuarto.getNumeroQuarto() == null) {
 			mensagemValidacao += "Preencher campo número!";
 		}
-		
-		if(novoQuarto.getValorQuarto() == null) {
+
+		if (novoQuarto.getValorQuarto() == null) {
 			mensagemValidacao += "Preencher campo valor.";
 		}
-		
-		if(novoQuarto.getTipoQuarto() == null) {
+
+		if (novoQuarto.getTipoQuarto() == null) {
 			mensagemValidacao += "Preencher campo Tipo de Quarto.";
 		}
-		
-		if(!mensagemValidacao.isEmpty()) {
+
+		if (!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
-		
+
 	}
 
-	public boolean atualizar(Quarto quartoAlterado) throws CampoInvalidoException, QuartoJaUtilizadoException{
+	public boolean atualizar(Quarto quartoAlterado) throws CampoInvalidoException, QuartoJaUtilizadoException {
 		this.validarCamposObrigatorios(quartoAlterado);
 		return quartoBO.atualizar(quartoAlterado);
 	}
 
 	public List<Quarto> consultarComFiltro(QuartoSeletor quartoSeletor) {
 		return quartoBO.consultarComFiltro(quartoSeletor);
-		
+
 	}
 
-	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException{
+	public boolean inativar(Integer idQuarto) throws QuartoComReservaException, QuartoInativoException {
 		// TODO Auto-generated method stub
 		return quartoBO.inativar(idQuarto);
 	}
@@ -63,11 +62,11 @@ String mensagemValidacao = "";
 	}
 
 	public String gerarPlanilha(ArrayList<Quarto> quartos, String destinoArquivo) throws CampoInvalidoException {
-		
-		if(quartos == null || destinoArquivo == null || destinoArquivo.trim().isEmpty()) {
+
+		if (quartos == null || destinoArquivo == null || destinoArquivo.trim().isEmpty()) {
 			throw new CampoInvalidoException("Preencha todos os campos");
 		}
-		
+
 		GeradorPlanilha gerador = new GeradorPlanilha();
 		return gerador.geradorPlanilhaQuarto(quartos, destinoArquivo);
 	}

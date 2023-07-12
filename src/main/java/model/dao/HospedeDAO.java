@@ -26,9 +26,9 @@ public class HospedeDAO {
 			pstmt.setString(2, novohospede.getCpf());
 			pstmt.setString(3, novohospede.getTelefone());
 			pstmt.execute();
-			
+
 			ResultSet resultado = pstmt.getGeneratedKeys();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				novohospede.setIdHospede(resultado.getInt(1));
 			}
 		} catch (SQLException e) {
@@ -74,19 +74,18 @@ public class HospedeDAO {
 		try {
 			pstmt.setInt(1, idHospede);
 			ResultSet resultado = pstmt.executeQuery();
-			if(resultado.next()) {
+			if (resultado.next()) {
 				hospede = montarhospedeComResultadoDoBanco(resultado);
-			}	
-		}catch (Exception e) {
-			System.out.println("Erro ao buscar hospede com id: " + idHospede 
-					+ "\n Causa:" + e.getMessage());
-		}finally {
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar hospede com id: " + idHospede + "\n Causa:" + e.getMessage());
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
 		return hospede;
 	}
-	
+
 	/*
 	 * CONSULTAR REGISTROS POR FILTRO
 	 */
@@ -94,35 +93,33 @@ public class HospedeDAO {
 		List<Hospede> hospedes = new ArrayList<Hospede>();
 		Connection conn = Banco.getConnection();
 		String query = " SELECT * FROM hospede ";
-		
-		if(hospedeSeletor.temFiltro()) {
+
+		if (hospedeSeletor.temFiltro()) {
 			query = preencherFiltros(query, hospedeSeletor);
 		}
-		
-		if(hospedeSeletor.temPaginacao()) {
-			query += " LIMIT "  + hospedeSeletor.getLimite()
-				 + " OFFSET " + hospedeSeletor.getOffset();  
+
+		if (hospedeSeletor.temPaginacao()) {
+			query += " LIMIT " + hospedeSeletor.getLimite() + " OFFSET " + hospedeSeletor.getOffset();
 		}
-		
+
 		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
 		try {
 			ResultSet resultado = pstmt.executeQuery();
-			
-			while(resultado.next()) {
+
+			while (resultado.next()) {
 				Hospede hospedeBuscado = montarhospedeComResultadoDoBanco(resultado);
 				hospedes.add(hospedeBuscado);
 			}
-			
-		}catch (Exception e) {
+
+		} catch (Exception e) {
 			System.out.println("Erro ao buscar todos os hospedes. \n Causa:" + e.getMessage());
-		}finally {
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
-		
+
 		return hospedes;
 	}
-
 
 	/*
 	 * VERIFICAR EXISTENTICA DE REGISTRO COM CPF
@@ -135,8 +132,8 @@ public class HospedeDAO {
 		try {
 			pstmt.setString(1, cpf);
 			ResultSet resultado = pstmt.executeQuery();
-			
-			if(resultado.next()) {
+
+			if (resultado.next()) {
 				cpfDuplicado = resultado.getInt(1) > 0;
 			}
 		} catch (Exception e) {
@@ -147,26 +144,26 @@ public class HospedeDAO {
 		}
 		return cpfDuplicado;
 	}
-	
+
 	/*
 	 * COMPLETAR QUERY COM FILTROS DO USU�RIO
 	 */
 	private String preencherFiltros(String query, HospedeSeletor hospedeSeletor) {
-		
+
 		boolean primeiro = true;
-		if(hospedeSeletor.getNome() != null && !hospedeSeletor.getNome().trim().isEmpty()) {
-			if(primeiro) {
+		if (hospedeSeletor.getNome() != null && !hospedeSeletor.getNome().trim().isEmpty()) {
+			if (primeiro) {
 				query += " WHERE ";
 			} else {
 				query += " AND ";
 			}
-			
+
 			query += " nome LIKE '%" + hospedeSeletor.getNome() + "%'";
 			primeiro = false;
 		}
-		
-		if(hospedeSeletor.getCpf() != null && !hospedeSeletor.getCpf().trim().isEmpty()) {
-			if(primeiro) {
+
+		if (hospedeSeletor.getCpf() != null && !hospedeSeletor.getCpf().trim().isEmpty()) {
+			if (primeiro) {
 				query += " WHERE ";
 			} else {
 				query += " AND ";
@@ -174,10 +171,10 @@ public class HospedeDAO {
 			query += " cpf LIKE '%" + hospedeSeletor.getCpf() + "%'";
 			primeiro = false;
 		}
-		
+
 		return query;
 	}
-	
+
 	/*
 	 * MONTAR OBJETO DE HOSPEDE COM RESULTADO DA QUERY
 	 */
@@ -187,7 +184,7 @@ public class HospedeDAO {
 		hospedeBuscado.setNome(resultado.getString("NOME"));
 		hospedeBuscado.setCpf(Formatador.formatarCpfParaView(resultado.getString("CPF")));
 		hospedeBuscado.setTelefone(Formatador.formatarTelefoneMovelParaView(resultado.getString("TELEFONE")));
-		
+
 		return hospedeBuscado;
 	}
 
@@ -195,26 +192,25 @@ public class HospedeDAO {
 		int total = 0;
 		Connection conn = Banco.getConnection();
 		String query = " SELECT COUNT(*) FROM HOSPEDE ";
-		
-		if(hospedeSeletor.temFiltro()) {
+
+		if (hospedeSeletor.temFiltro()) {
 			query = preencherFiltros(query, hospedeSeletor);
 		}
-		
+
 		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
 		try {
 			ResultSet resultado = pstmt.executeQuery();
-			
-			if(resultado.next()) {
+
+			if (resultado.next()) {
 				total = resultado.getInt(1);
 			}
-		}catch (Exception e) {
-			System.out.println("Erro contar o total de hóspedes" 
-					+ "\n Causa:" + e.getMessage());
-		}finally {
+		} catch (Exception e) {
+			System.out.println("Erro contar o total de hóspedes" + "\n Causa:" + e.getMessage());
+		} finally {
 			Banco.closePreparedStatement(pstmt);
 			Banco.closeConnection(conn);
 		}
-		
+
 		return total;
 	}
 

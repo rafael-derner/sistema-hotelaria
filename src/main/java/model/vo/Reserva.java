@@ -26,76 +26,63 @@ public class Reserva {
 		this.dtCheckOut = dtCheckOut;
 	}
 
-
 	public Integer getIdReserva() {
 		return idReserva;
 	}
-
 
 	public void setIdReserva(Integer idReserva) {
 		this.idReserva = idReserva;
 	}
 
-
 	public Hospede getHospede() {
 		return hospede;
 	}
-
 
 	public void setHospede(Hospede hospede) {
 		this.hospede = hospede;
 	}
 
-
 	public Quarto getQuarto() {
 		return quarto;
 	}
-
 
 	public void setQuarto(Quarto quarto) {
 		this.quarto = quarto;
 	}
 
-
 	public Usuario getUsuario() {
 		return usuario;
 	}
-
 
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}
 
-
 	public LocalDate getDtCheckIn() {
 		return dtCheckIn;
 	}
-
 
 	public void setDtCheckIn(LocalDate dtCheckIn) {
 		this.dtCheckIn = dtCheckIn;
 	}
 
-
 	public LocalDate getDtCheckOut() {
 		return dtCheckOut;
 	}
 
-
 	public void setDtCheckOut(LocalDate dtCheckOut) {
 		this.dtCheckOut = dtCheckOut;
 	}
-	
+
 	public double calcularValorReserva(Reserva reserva) {
 		double valor = 0;
 		long dias = ChronoUnit.DAYS.between(reserva.getDtCheckIn(), reserva.getDtCheckOut());
-        int diasFormatados = Math.toIntExact(dias);
-        valor = diasFormatados * reserva.getQuarto().getValorQuarto();
-        if(valor == 0) {
-        	valor = reserva.getQuarto().getValorQuarto();
-        }
-        return valor;
-    }
-	
-}
+		int diasFormatados = Math.toIntExact(dias);
+		valor = diasFormatados * reserva.getQuarto().getValorQuarto();
+		if (valor == 0) {
+			valor = reserva.getQuarto().getValorQuarto();
+		}
+		return valor;
+	}
 
+}

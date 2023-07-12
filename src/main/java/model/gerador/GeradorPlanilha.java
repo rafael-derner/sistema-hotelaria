@@ -21,31 +21,31 @@ public class GeradorPlanilha {
 	public String geradorPlanilhaQuarto(ArrayList<Quarto> quartos, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Quartos");
-		
+
 		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
 		linhaCabecalho.createCell(0).setCellValue("Número");
 		linhaCabecalho.createCell(1).setCellValue("Tipo de Quarto");
 		linhaCabecalho.createCell(2).setCellValue("Valor da diária");
 		linhaCabecalho.createCell(3).setCellValue("Ativo?");
-		
+
 		int contadorLinhas = 1;
-		for(Quarto q: quartos) {
+		for (Quarto q : quartos) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(q.getNumeroQuarto());
 			novaLinha.createCell(1).setCellValue(q.getTipoQuarto());
 			novaLinha.createCell(2).setCellValue(Formatador.formatarValorQuartoParaView(q.getValorQuarto()));
 			novaLinha.createCell(3).setCellValue(q.isAtivo() ? "Sim" : "Não");
 			contadorLinhas++;
-			
+
 		}
-		
+
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
-	
+
 	public String geradorPlanilhaUsuario(ArrayList<Usuario> usuarios, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
-		
+
 		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
 		linhaCabecalho.createCell(0).setCellValue("ID");
 		linhaCabecalho.createCell(1).setCellValue("Nome");
@@ -53,9 +53,9 @@ public class GeradorPlanilha {
 		linhaCabecalho.createCell(3).setCellValue("Telefone");
 		linhaCabecalho.createCell(4).setCellValue("Perfil");
 		linhaCabecalho.createCell(5).setCellValue("Ativo");
-		
+
 		int contadorLinhas = 1;
-		for(Usuario usuario: usuarios) {
+		for (Usuario usuario : usuarios) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(usuario.getIdUsuario());
 			novaLinha.createCell(1).setCellValue(usuario.getNome());
@@ -65,14 +65,14 @@ public class GeradorPlanilha {
 			novaLinha.createCell(5).setCellValue(usuario.isAtivo() ? "Sim" : "Não");
 			contadorLinhas++;
 		}
-		
+
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
-	
+
 	public String geradorPlanilhaReserva(ArrayList<Reserva> listaReservas, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
-		
+
 		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
 		linhaCabecalho.createCell(0).setCellValue("ID");
 		linhaCabecalho.createCell(1).setCellValue("Hospede");
@@ -80,9 +80,9 @@ public class GeradorPlanilha {
 		linhaCabecalho.createCell(3).setCellValue("Check-in Previsto");
 		linhaCabecalho.createCell(4).setCellValue("Check-out Previsto");
 		linhaCabecalho.createCell(4).setCellValue("Valor");
-		
+
 		int contadorLinhas = 1;
-		for(Reserva reserva: listaReservas) {
+		for (Reserva reserva : listaReservas) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(reserva.getIdReserva());
 			novaLinha.createCell(1).setCellValue(reserva.getHospede().getNome());
@@ -92,22 +92,22 @@ public class GeradorPlanilha {
 			novaLinha.createCell(4).setCellValue(reserva.getDtCheckOut());
 			contadorLinhas++;
 		}
-		
+
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
 
 	public String geradorPlanilhaHospedes(ArrayList<Hospede> hospedes, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Hóspedes");
-		
+
 		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
 		linhaCabecalho.createCell(0).setCellValue("ID");
 		linhaCabecalho.createCell(1).setCellValue("Nome");
 		linhaCabecalho.createCell(2).setCellValue("CPF");
 		linhaCabecalho.createCell(3).setCellValue("Telefone");
-		
+
 		int contadorLinhas = 1;
-		for(Hospede hospede: hospedes) {
+		for (Hospede hospede : hospedes) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(hospede.getIdHospede());
 			novaLinha.createCell(1).setCellValue(hospede.getNome());
@@ -115,7 +115,7 @@ public class GeradorPlanilha {
 			novaLinha.createCell(3).setCellValue(hospede.getTelefone());
 			contadorLinhas++;
 		}
-		
+
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
 
@@ -124,31 +124,29 @@ public class GeradorPlanilha {
 		String mensagem = "";
 		FileOutputStream saida = null;
 		String extensao = ".xls";
-		
+
 		try {
 			saida = new FileOutputStream(new File(caminhoArquivo + extensao));
 			planilha.write(saida);
 			mensagem = "Relatório gerado com sucesso";
-		}catch (FileNotFoundException e) {
+		} catch (FileNotFoundException e) {
 			mensagem = "Erro ao tentar salvar relatório (sem acesso) : " + caminhoArquivo + extensao;
-		}catch (IOException e) {
+		} catch (IOException e) {
 			mensagem = "Erro de I/O ao tentar salvar relatório em : " + caminhoArquivo + extensao;
 			System.out.println("Causa: " + e.getMessage());
-		}finally {
+		} finally {
 			if (saida != null) {
 				try {
 					saida.close();
 					planilha.close();
-				}catch (IOException e) {
+				} catch (IOException e) {
 					mensagem = "Erro ao tentar salvar relatório em: " + caminhoArquivo + extensao;
 					System.out.println("Causa: " + e.getMessage());
 				}
 			}
 		}
-		
+
 		return mensagem;
 	}
-
-	
 
 }

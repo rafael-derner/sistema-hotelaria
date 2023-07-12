@@ -5,7 +5,7 @@ public class Hospede {
 	private String nome;
 	private String cpf;
 	private String telefone;
-	
+
 	public Hospede(Integer idHospede, String nome, String cpf, String telefone) {
 		super();
 		this.idHospede = idHospede;
@@ -55,7 +55,5 @@ public class Hospede {
 	public String toString() {
 		return nome;
 	}
-	
-	
-	
+
 }

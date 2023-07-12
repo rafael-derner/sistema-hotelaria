@@ -1,8 +1,8 @@
 package model.exception;
 
-public class QuartoComReservaException extends Exception{
+public class QuartoComReservaException extends Exception {
 
-	public QuartoComReservaException (String mensagem) {
+	public QuartoComReservaException(String mensagem) {
 		super(mensagem);
 	}
 

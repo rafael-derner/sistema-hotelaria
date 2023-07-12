@@ -40,11 +40,11 @@ public class FramePrincipal extends JFrame {
 	private PainelListagemReserva listaReserva;
 	private PainelListagemQuarto painelListagemQuarto;
 	private PainelLogin painelLogin;
-	
+
 	private UsuarioController usuarioController = new UsuarioController();
 	private Usuario usuarioAutenticado;
 	private JPanel contentPaneVazio;
-	
+
 	/**
 	 * Launch the application.
 	 */
@@ -60,7 +60,7 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 	}
-	
+
 	/*
 	 * Renderiza tela de login
 	 */
@@ -68,27 +68,27 @@ public class FramePrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
-		setTitle("Sistema de Telefonia");
+		setTitle("Sistema de Hotelaria");
 		setLocationRelativeTo(null);
-		
+
 		painelLogin = new PainelLogin();
 		setContentPane(painelLogin);
-		
+
 		painelLogin.getTfCodigoAcesso().addKeyListener(new KeyAdapter() {
 			@Override
 			public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER) {
-                    painelLogin.getBtnAcessar().doClick();
-                }
+				if (e.getKeyCode() == KeyEvent.VK_ENTER) {
+					painelLogin.getBtnAcessar().doClick();
+				}
 			}
 		});
-		
+
 		painelLogin.getBtnAcessar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				try {
 					String codAcesso = painelLogin.getTfCodigoAcesso().getText();
-					if(codAcesso.matches("[0]{1}")) {
-						System.out.println("ACESSO COM USUÃ�RIO ADMIN - ALTERAR PARA PRODUÃ‡ÃƒO");
+					if (codAcesso.matches("[0]{1}")) {
+						System.out.println("ACESSO COM USUÁRIO ADMIN - ALTERAR PARA PRODUÇÃO");
 						codAcesso = "00000000000";
 					}
 					usuarioAutenticado = usuarioController.login(codAcesso);
@@ -114,13 +114,13 @@ public class FramePrincipal extends JFrame {
 
 		contentPaneVazio = new JPanel();
 		setContentPane(contentPaneVazio);
-		
+
 		JMenuBar menuBar = new JMenuBar();
 		setJMenuBar(menuBar);
-		
+
 		JMenu mnQuarto = new JMenu("Quarto");
 		menuBar.add(mnQuarto);
-		
+
 		JMenuItem mnItemCadastrarQuarto = new JMenuItem("Cadastrar");
 		mnItemCadastrarQuarto.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -133,7 +133,7 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 		mnQuarto.add(mnItemCadastrarQuarto);
-		
+
 		JMenuItem mnItemListarQuartos = new JMenuItem("Listar");
 		mnItemListarQuartos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -146,10 +146,10 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 		mnQuarto.add(mnItemListarQuartos);
-		
-		JMenu mnHospede = new JMenu("HÃ³spede");
+
+		JMenu mnHospede = new JMenu("Hóspede");
 		menuBar.add(mnHospede);
-		
+
 		JMenuItem mnItemCadastrarHospede = new JMenuItem("Cadastrar");
 		mnItemCadastrarHospede.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -158,14 +158,14 @@ public class FramePrincipal extends JFrame {
 				// registra action do botao cancelar de dentro do painel
 				registrarCliqueBtnCancelarPainelCadastroHospede();
 				registraCliqueBtnSalvarDoPainelCadastroHospede();
-				
-				//Atualiza a tela principal
+
+				// Atualiza a tela principal
 				setContentPane(painelCadastroHospede);
 				revalidate();
 			}
 		});
 		mnHospede.add(mnItemCadastrarHospede);
-		
+
 		JMenuItem mnItemListarHospedes = new JMenuItem("Listar");
 		mnItemListarHospedes.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -173,17 +173,17 @@ public class FramePrincipal extends JFrame {
 				painelListagemHospede.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemHospede();
 				registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede();
-				
-				//Atualiza a tela principal
+
+				// Atualiza a tela principal
 				setContentPane(painelListagemHospede);
 				revalidate();
 			}
 		});
 		mnHospede.add(mnItemListarHospedes);
-		
+
 		JMenu mnReserva = new JMenu("Reserva");
 		menuBar.add(mnReserva);
-		
+
 		JMenuItem mnItemCadastrarReserva = new JMenuItem("Cadastrar");
 		mnItemCadastrarReserva.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -195,26 +195,25 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 		mnReserva.add(mnItemCadastrarReserva);
-		
+
 		JMenuItem mnItemListarReservas = new JMenuItem("Listar");
 		mnItemListarReservas.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				listaReserva = new PainelListagemReserva();
 				listaReserva.setVisible(true);
-				
+
 				registraCliqueBtnEditarPainelListagemReserva();
-				
+
 				setContentPane(listaReserva);
 				revalidate();
 			}
 		});
 		mnReserva.add(mnItemListarReservas);
-		
-				
-		JMenu mnUsuario = new JMenu("UsuÃ¡rio");
+
+		JMenu mnUsuario = new JMenu("Funcionário");
 		menuBar.add(mnUsuario);
-		
-		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");		
+
+		JMenuItem mnItemCadastrarUsuario = new JMenuItem("Cadastrar");
 		mnItemCadastrarUsuario.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroUsuario = new PainelCadastroUsuario(null);
@@ -222,15 +221,14 @@ public class FramePrincipal extends JFrame {
 				// registra action do botao cancelar de dentro do painel
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
 				registraCliqueBtnSalvarDoPainelCadastroUsuario();
-				
-				//Atualiza a tela principal
+
+				// Atualiza a tela principal
 				setContentPane(painelCadastroUsuario);
 				revalidate();
 			}
 		});
 		mnUsuario.add(mnItemCadastrarUsuario);
-		
-		
+
 		JMenuItem mnItemListarUsuarios = new JMenuItem("Listar");
 		mnItemListarUsuarios.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -238,18 +236,18 @@ public class FramePrincipal extends JFrame {
 				painelListagemUsuario.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemUsuario();
 				registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario();
-				
-				//Atualiza a tela principal
+
+				// Atualiza a tela principal
 				setContentPane(painelListagemUsuario);
 				revalidate();
 			}
 		});
 		mnUsuario.add(mnItemListarUsuarios);
 	}
-	
+
 	private void registraCliqueBtnEditarPainelListagemReserva() {
 		listaReserva.getBtnEditar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				cadastroReserva = new PainelCadastroReserva(listaReserva.getReservaSelecionada(), usuarioAutenticado);
 				cadastroReserva.setVisible(true);
@@ -264,10 +262,10 @@ public class FramePrincipal extends JFrame {
 	 * Clique no botï¿½o de CANCELAR do PainelCadastroUsuario
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroUsuario() {
-		if(painelCadastroUsuario == null) {
+		if (painelCadastroUsuario == null) {
 			painelCadastroUsuario = new PainelCadastroUsuario(null);
 		}
-		
+
 		painelCadastroUsuario.getBtnCancelar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				painelListagemUsuario = new PainelListagemUsuario();
@@ -285,86 +283,85 @@ public class FramePrincipal extends JFrame {
 	 */
 	protected void registrarCliqueBtnEditarDoPainelListagemUsuario() {
 		painelListagemUsuario.getBtnEditar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroUsuario = new PainelCadastroUsuario(painelListagemUsuario.getUsuarioSelecionado());
 				painelCadastroUsuario.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
 				registraCliqueBtnSalvarDoPainelCadastroUsuario();
-				
+
 				setContentPane(painelCadastroUsuario);
 				revalidate();
 			}
 		});
 	}
-	
+
 	/*
 	 * Clique no botÃ£o de ADICIONAR NOVO USUARIO do PainelListagemUsuario
 	 */
 	protected void registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario() {
 		painelListagemUsuario.getBtnAdicionarNovoUsuario().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroUsuario = new PainelCadastroUsuario(null);
 				painelCadastroUsuario.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroUsuario();
 				registraCliqueBtnSalvarDoPainelCadastroUsuario();
-				
+
 				setContentPane(painelCadastroUsuario);
 				revalidate();
 			}
 		});
 	}
-	
+
 	/*
 	 * Clique no botÃ£o de ADICIONAR NOVO USUARIO do PainelListagemHospede
 	 */
 	protected void registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede() {
 		painelListagemHospede.getBtnAdicionarNovoHospede().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroHospede = new PainelCadastroHospede(null);
 				painelCadastroHospede.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroHospede();
 				registraCliqueBtnSalvarDoPainelCadastroHospede();
-				
+
 				setContentPane(painelCadastroHospede);
 				revalidate();
 			}
 		});
 	}
-	
+
 	/*
 	 * Clique no botÃ£o de SALVAR do PainelCadastroUsuario
 	 */
 	protected void registraCliqueBtnSalvarDoPainelCadastroUsuario() {
 		painelCadastroUsuario.getBtnSalvar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
-				if(painelCadastroUsuario.salvarUsuario()) {
+				if (painelCadastroUsuario.salvarUsuario()) {
 					painelListagemUsuario = new PainelListagemUsuario();
 					painelListagemUsuario.setVisible(true);
 					registrarCliqueBtnEditarDoPainelListagemUsuario();
-					
-					//Atualiza a tela principal
+
+					// Atualiza a tela principal
 					setContentPane(painelListagemUsuario);
 					revalidate();
 				}
 			}
 		});
 	}
-	
-	
+
 	protected void registraCliqueBtnSalvarDoPainelCadastroReserva() {
 		cadastroReserva.getBtnSalvar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				try {
-					if(cadastroReserva.inserirReserva()) {
+					if (cadastroReserva.inserirReserva()) {
 						listaReserva = new PainelListagemReserva();
 						listaReserva.setVisible(true);
 						registraCliqueBtnEditarPainelListagemReserva();
-						
+
 						setContentPane(listaReserva);
 						revalidate();
 					}
@@ -374,16 +371,15 @@ public class FramePrincipal extends JFrame {
 			}
 		});
 	}
-	
-	
+
 	/*
 	 * Clique no botï¿½o de CANCELAR do PainelCadastroHospede
 	 */
 	protected void registrarCliqueBtnCancelarPainelCadastroHospede() {
-		if(painelCadastroHospede == null) {
+		if (painelCadastroHospede == null) {
 			painelCadastroHospede = new PainelCadastroHospede(null);
 		}
-		
+
 		painelCadastroHospede.getBtnCancelar().addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
@@ -402,19 +398,19 @@ public class FramePrincipal extends JFrame {
 	 */
 	protected void registrarCliqueBtnEditarDoPainelListagemHospede() {
 		painelListagemHospede.getBtnEditar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroHospede = new PainelCadastroHospede(painelListagemHospede.getHospedeSelecionado());
 				painelCadastroHospede.setVisible(true);
 				registrarCliqueBtnCancelarPainelCadastroHospede();
 				registraCliqueBtnSalvarDoPainelCadastroHospede();
-				
+
 				setContentPane(painelCadastroHospede);
 				revalidate();
 			}
 		});
 	}
-	
+
 	/*
 	 * Clique no botÃ£o de SALVAR do PainelCadastroUsuario
 	 */
@@ -422,68 +418,68 @@ public class FramePrincipal extends JFrame {
 		painelCadastroHospede.getBtnSalvar().addActionListener(new ActionListener() {
 
 			public void actionPerformed(ActionEvent e) {
-				if(painelCadastroHospede.salvarHospede()) {
+				if (painelCadastroHospede.salvarHospede()) {
 					painelListagemHospede = new PainelListagemHospede();
 					painelListagemHospede.setVisible(true);
 					registrarCliqueBtnEditarDoPainelListagemHospede();
-					
-					//Atualiza a tela principal
+
+					// Atualiza a tela principal
 					setContentPane(painelListagemHospede);
 					revalidate();
 				}
 			}
 		});
 	}
-	
+
 	protected void registrarCliqueBtnSalvarDoPainelCadastroQuarto() {
 		painelCadastroQuarto.getBtnSalvar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if(painelCadastroQuarto.salvarQuarto()) {
+				if (painelCadastroQuarto.salvarQuarto()) {
 					painelListagemQuarto = new PainelListagemQuarto();
 					painelListagemQuarto.setVisible(true);
 					registrarCliqueBtnEditarDoPainelListagemQuarto();
 					setContentPane(painelListagemQuarto);
 					revalidate();
-					}
-				
+				}
+
 			}
 		});
 	}
-	
+
 	protected void registrarCliqueBtnCancelarDoPainelCadastroQuarto() {
 		// TODO Auto-generated method stub
-		if(painelCadastroQuarto == null) {
+		if (painelCadastroQuarto == null) {
 			painelCadastroQuarto = new PainelCadastroQuarto(null);
 		}
-		
+
 		painelCadastroQuarto.getBtnCancelar().addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				painelListagemQuarto = new PainelListagemQuarto();
 				painelListagemQuarto.setVisible(true);
 				registrarCliqueBtnEditarDoPainelListagemQuarto();
-				setContentPane(painelListagemHospede);
+				setContentPane(painelListagemQuarto);
 				revalidate();
 			}
 		});
-		
+
 	}
 
 	protected void registrarCliqueBtnEditarDoPainelListagemQuarto() {
 		painelListagemQuarto.getBtnEditar().addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				painelCadastroQuarto = new PainelCadastroQuarto(painelListagemQuarto.getQuartoSelecionado());
 				painelCadastroQuarto.setVisible(true);
 				registrarCliqueBtnCancelarDoPainelCadastroQuarto();
 				registrarCliqueBtnSalvarDoPainelCadastroQuarto();
-				
+
 				setContentPane(painelCadastroQuarto);
 				revalidate();
-				
+
 			}
-		});		
+		});
 	}
 }

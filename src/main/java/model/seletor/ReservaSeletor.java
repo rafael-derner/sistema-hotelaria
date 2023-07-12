@@ -8,11 +8,11 @@ public class ReservaSeletor extends BaseSeletor {
 	private int numQuarto;
 	private LocalDate dataEntrada;
 	private LocalDate dataSaida;
-	
+
 	@Override
 	public boolean temFiltro() {
-		return (this.nomeHospede != null && this.nomeHospede.trim().length() > 0)
-				|| (this.numQuarto> 0) || (this.dataEntrada != null) || (this.dataSaida != null);
+		return (this.nomeHospede != null && this.nomeHospede.trim().length() > 0) || (this.numQuarto > 0)
+				|| (this.dataEntrada != null) || (this.dataSaida != null);
 	}
 
 	public String getNomeHospede() {
@@ -47,5 +47,4 @@ public class ReservaSeletor extends BaseSeletor {
 		this.dataSaida = dataSaida;
 	}
 
-	
 }

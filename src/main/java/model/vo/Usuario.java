@@ -7,7 +7,7 @@ public class Usuario {
 	private String telefone;
 	private String perfil;
 	private boolean ativo;
-	
+
 	public Usuario() {
 		super();
 		// TODO Auto-generated constructor stub

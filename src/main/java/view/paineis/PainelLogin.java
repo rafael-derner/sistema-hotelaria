@@ -23,41 +23,32 @@ public class PainelLogin extends JPanel {
 	 * Create the panel.
 	 */
 	public PainelLogin() {
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("50dlu"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(40dlu;default):grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("50dlu"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(15dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(15dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("max(5dlu;default)"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-		
+		setLayout(new FormLayout(
+				new ColumnSpec[] { 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("50dlu"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(40dlu;default):grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("50dlu"), },
+				new RowSpec[] { 
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("max(15dlu;default)"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("max(15dlu;default)"), 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, 
+						FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("max(5dlu;default)"), 
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
 		lblBemVindo = new JLabel("Bem Vindo");
 		lblBemVindo.setHorizontalAlignment(SwingConstants.CENTER);
 		lblBemVindo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblBemVindo, "4, 4, center, default");
-		
+
 		lblCodigoAcesso = new JLabel("Código de Acesso");
 		add(lblCodigoAcesso, "4, 8");
-		
+
 		tfCodigoAcesso = new JPasswordField();
 		add(tfCodigoAcesso, "4, 10, fill, default");
 		tfCodigoAcesso.setColumns(10);
-		
+
 		btnAcessar = new JButton("Acessar");
 		add(btnAcessar, "4, 14");
 
