@@ -68,7 +68,7 @@ public class PainelCadastroQuarto extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
+		
 		buttonGroup = new ButtonGroup();
 		setLayout(new com.jgoodies.forms.layout.FormLayout(
 				new com.jgoodies.forms.layout.ColumnSpec[] {
@@ -107,11 +107,11 @@ public class PainelCadastroQuarto extends JPanel {
 						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
 						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
 						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC, }));
-
+		
 		lblCadastroQuarto = new JLabel("Cadastro de Quarto");
 		lblCadastroQuarto.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblCadastroQuarto, "1, 4, 7, 1, center, top");
-
+		
 		lblNumeroQuarto = new JLabel("Número do Quarto:");
 		add(lblNumeroQuarto, "3, 8, 3, 1, left, top");
 

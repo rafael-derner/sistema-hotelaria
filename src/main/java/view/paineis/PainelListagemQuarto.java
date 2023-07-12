@@ -135,7 +135,7 @@ public class PainelListagemQuarto extends JPanel {
 						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
 						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
 						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC, }));
-
+		
 		lblListagemQuartos = new JLabel("Listagem de Quartos");
 		lblListagemQuartos.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblListagemQuartos, "4, 4, 15, 1, center, top");
@@ -148,7 +148,6 @@ public class PainelListagemQuarto extends JPanel {
 
 		lblValorFiltro = new JLabel("Valor da Diária");
 		add(lblValorFiltro, "14, 8");
-
 		txtNumero = new JTextField();
 		add(txtNumero, "4, 10, 7, 1, fill, center");
 		txtNumero.setColumns(10);
@@ -177,10 +176,9 @@ public class PainelListagemQuarto extends JPanel {
 			}
 		});
 		add(btnLimpar, "18, 10, fill, top");
-
+		
 		tableListagemQuartos = new JTable();
 		add(tableListagemQuartos, "4, 12, 15, 5, fill, fill");
-
 		tableListagemQuartos.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
@@ -250,7 +248,6 @@ public class PainelListagemQuarto extends JPanel {
 		btnEditar.setEnabled(false);
 		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 18, fill, top");
-
 		btnInativar = new JButton("Inativar");
 		btnInativar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -276,8 +273,7 @@ public class PainelListagemQuarto extends JPanel {
 
 		});
 		btnInativar.setBackground(Color.RED);
-		add(btnInativar, "18, 18, fill, top");
-
+		add(btnInativar, "18, 18, fill, top");
 		buscarQuartos();
 		atualizarQuantidadePaginas();
 	}

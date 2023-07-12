@@ -1,17 +1,24 @@
 package view.paineis;
 
 import javax.swing.JPanel;
-import com.jgoodies.forms.layout.FormLayout;
-import com.jgoodies.forms.layout.ColumnSpec;
-import com.jgoodies.forms.layout.RowSpec;
+import javax.swing.JLabel;
+import javax.swing.JTextField;
+import java.awt.Font;
+import javax.swing.SwingConstants;
 
 import Util.Formatador;
 
-import com.jgoodies.forms.layout.FormSpecs;
+
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.text.MaskFormatter;
+
+import com.privatejgoodies.forms.layout.ColumnSpec;
+import com.privatejgoodies.forms.layout.FormLayout;
+import com.privatejgoodies.forms.layout.FormSpecs;
+import com.privatejgoodies.forms.layout.RowSpec;
+
 import javax.swing.JComboBox;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
