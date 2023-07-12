@@ -198,15 +198,16 @@ public class ReservaDAO {
 	public Boolean atualizar(Reserva reservaVO) {
 		int registroAlterado = 0;
 		Connection conn = Banco.getConnection();
-		String query = "UPDATE RESERVA SET ID_HOSPEDE = ?, ID_QUARTO = ?, ID_USUARIO = ?, DTHR_CHECK_IN = ?, DTHR_CHECK_OUT = ? WHERE ID_RESERVA = ?";
+		String query = "UPDATE RESERVA SET ID_HOSPEDE = ?, ID_QUARTO = ?, ID_USUARIO = ?, DTHR_CHECK_IN = ?, DTHR_CHECK_OUT = ?, ATIVO = ? WHERE ID_RESERVA = ?";
 		PreparedStatement pstmt = Banco.getPreparedStatementWithPk(conn, query);
 		try {
 			pstmt.setInt(1, reservaVO.getHospede().getIdHospede());
 			pstmt.setInt(2, reservaVO.getQuarto().getIdQuarto());
-			pstmt.setInt(3, reservaVO.getUsuario().getIdUsuario());
+			pstmt.setInt(3, 1);
 			pstmt.setDate(4, java.sql.Date.valueOf(reservaVO.getDtCheckIn()));
 			pstmt.setDate(5, java.sql.Date.valueOf(reservaVO.getDtCheckOut()));
-			pstmt.setInt(6, reservaVO.getIdReserva());
+			pstmt.setBoolean(6, reservaVO.getInvalido());
+			pstmt.setInt(7, reservaVO.getIdReserva());
 			registroAlterado = pstmt.executeUpdate();
 		} catch (SQLException e) {
 			System.out.println("Ocorreu um erro no m�todo atualizar. \n Causa: " + e.getMessage());

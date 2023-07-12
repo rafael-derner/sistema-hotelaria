@@ -77,7 +77,5 @@ public class ReservaController {
 		return reservaBO.atualizar(reservaVO);
 	}
 
-
-	
 	
 }

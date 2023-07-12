@@ -57,11 +57,14 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	private JButton btnGerarRelatorio;
+	private JButton btnInvalidar;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
 				FormSpecs.DEFAULT_COLSPEC,
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
 				ColumnSpec.decode("default:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
@@ -95,14 +98,14 @@ public class PainelListagemReserva extends JPanel {
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
 		JLabel lblNome = new JLabel("Nome do hospede:");
-		add(lblNome, "4, 4, 7, 1");
+		add(lblNome, "4, 4, 9, 1");
 		
 		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 6, 7, 1, fill, default");
+		add(tfNomeHospede, "4, 6, 9, 1, fill, default");
 		tfNomeHospede.setColumns(10);
 		
 		JLabel lblQuarto = new JLabel("Numero do quarto");
-		add(lblQuarto, "4, 8, 7, 1");
+		add(lblQuarto, "4, 8, 9, 1");
 		
 		tfQuarto = new JTextField();
 		tfQuarto.setColumns(10);
@@ -115,13 +118,13 @@ public class PainelListagemReserva extends JPanel {
 		add(lblInicioPeridodo, "4, 12, 4, 1, left, default");
 		
 		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "8, 12, 3, 1");
+		add(lblFimPeridodo, "8, 12, 5, 1");
 		
 		dataInicio = new DatePicker(pickerInicial);
 		add(dataInicio, "4, 14, 3, 1");
 		
 		dataFim = new DatePicker(pickerFinal);
-		add(dataFim, "8, 14, fill, default");
+		add(dataFim, "8, 14, 3, 1, fill, default");
 		
 		tabelaResultado = new JTable();
 		tabelaResultado.addMouseListener(new MouseAdapter() {
@@ -135,7 +138,7 @@ public class PainelListagemReserva extends JPanel {
 				}
 			}
 		});
-		add(tabelaResultado, "4, 16, 7, 1, fill, fill");
+		add(tabelaResultado, "4, 16, 9, 1, fill, fill");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
@@ -165,8 +168,21 @@ public class PainelListagemReserva extends JPanel {
 		});
 		add(btnGerarRelatorio, "6, 18, left, default");
 		
+		btnInvalidar = new JButton("Invalidar");
+		btnInvalidar.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				try {
+					reservaSelecionada.setInvalido(true);
+					controller.atualizar(reservaSelecionada);
+				} catch (CampoInvalidoException campoInvalidoException) {
+					JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+				}
+			}
+		});
+		add(btnInvalidar, "8, 18, center, default");
+		
 		btnEditar = new JButton("Editar");
-		add(btnEditar, "8, 18, center, default");
+		add(btnEditar, "10, 18, center, default");
 		btnEditar.setEnabled(false);
 		
 		btnConsultar = new JButton("Consultar");
@@ -176,7 +192,7 @@ public class PainelListagemReserva extends JPanel {
 			}
 
 		});
-		add(btnConsultar, "10, 18, right, default");
+		add(btnConsultar, "12, 18, right, default");
 		
 		btnVoltarPagina = new JButton("<<");
 		btnVoltarPagina.addActionListener(new ActionListener() {
@@ -204,7 +220,7 @@ public class PainelListagemReserva extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-		add(btnAvancarPagina, "8, 20");
+		add(btnAvancarPagina, "8, 20, 3, 1");
 		
 
 		atualizarQuantidadePaginas();
@@ -273,10 +289,10 @@ public class PainelListagemReserva extends JPanel {
 		tabelaResultado.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
 	
-	public double calcularDuracaoReserva(LocalDate dataInicial, LocalDate dataFinal, double valor) {
-        long dias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
-        int diasFormatados = Math.toIntExact(dias);
-        return diasFormatados * valor;
-    }
+//	public double calcularDuracaoReserva(LocalDate dataInicial, LocalDate dataFinal, double valor) {
+//        long dias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
+//        int diasFormatados = Math.toIntExact(dias);
+//        return diasFormatados * valor;
+//    }
 
 }

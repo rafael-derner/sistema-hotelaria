@@ -68,7 +68,7 @@ public class FramePrincipal extends JFrame {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 450, 300);
 		getContentPane().setLayout(null);
-		setTitle("Sistema de Telefonia");
+		setTitle("Sistema de Hotelaria");
 		setLocationRelativeTo(null);
 		
 		painelLogin = new PainelLogin();

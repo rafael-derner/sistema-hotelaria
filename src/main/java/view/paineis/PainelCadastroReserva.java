@@ -42,7 +42,7 @@ public class PainelCadastroReserva extends JPanel {
 	private DatePickerSettings pickerInicial;
 	private DatePickerSettings pickerFinal;
 	private JButton btnSalvar;
-	private JButton btnCancelar;
+	private JButton btnVoltar;
 	private DatePicker dataInicio;
 	private String[] nomesColunas = { "Numero", "Categoria", "Valor" };
 	private DatePicker dataFim;
@@ -118,7 +118,7 @@ public class PainelCadastroReserva extends JPanel {
 		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblTitulo, "2, 2, 7, 1, center, default");
 		
-		JLabel lblReservaHospede = new JLabel("Buscar hospede:");
+		JLabel lblReservaHospede = new JLabel("Buscar hóspede:");
 		add(lblReservaHospede, "4, 4, 3, 1");
 		
 		tfNomeHospede = new JTextField();
@@ -232,8 +232,8 @@ public class PainelCadastroReserva extends JPanel {
 			}
 		});
 		
-		btnCancelar = new JButton("Cancelar");
-		add(btnCancelar, "4, 22, left, default");
+		btnVoltar = new JButton("Voltar");
+		add(btnVoltar, "4, 22, left, default");
 		
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
