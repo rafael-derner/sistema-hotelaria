@@ -30,15 +30,18 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.Color;
+import java.awt.Font;
 
 public class PainelListagemReserva extends JPanel {
 	private ReservaController controller = new ReservaController();
 	private ReservaSeletor reservaSeletor = new ReservaSeletor();
-	
+
 	private ArrayList<Reserva> listaReservas;
 	private Reserva reservaSelecionada;
-	
-	private String[] nomesColunas = {"Hospede", "Quarto", "Check-in previsto", "Check-Out previsto", "Total da estadia"};
+
+	private String[] nomesColunas = { "Hospede", "Quarto", "Check-in previsto", "Check-Out previsto",
+			"Total da estadia" };
 	private JTextField tfNomeHospede;
 	private JTextField tfQuarto;
 	private DatePickerSettings pickerInicial;
@@ -49,7 +52,7 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnEditar;
 	private JButton btnConsultar;
 	private JButton btnLimpar;
-	
+
 	private final int TAMANHO_PAGINA = 40;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
@@ -58,23 +61,30 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnAvancarPagina;
 	private JButton btnGerarRelatorio;
 	private JButton btnInvalidar;
+	private JLabel lblTitulo;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,
+				ColumnSpec.decode("max(100dlu;default)"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("37px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("default:grow"),
+				ColumnSpec.decode("150px:grow"),
 				FormSpecs.RELATED_GAP_COLSPEC,
-				FormSpecs.DEFAULT_COLSPEC,},
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("150px:grow"),
+				FormSpecs.RELATED_GAP_COLSPEC,
+				ColumnSpec.decode("max(100dlu;default)"),},
 			new RowSpec[] {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
@@ -87,104 +97,72 @@ public class PainelListagemReserva extends JPanel {
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
+				RowSpec.decode("fill:default:grow"),
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
+				FormSpecs.RELATED_GAP_ROWSPEC,
+				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,
 				FormSpecs.RELATED_GAP_ROWSPEC,
 				FormSpecs.DEFAULT_ROWSPEC,}));
 		
-		JLabel lblNome = new JLabel("Nome do hospede:");
-		add(lblNome, "4, 4, 9, 1");
+
+		lblTitulo = new JLabel("Cadastro de Reservas");
+		lblTitulo.setFont(new Font("Tahoma", Font.BOLD, 25));
+		add(lblTitulo, "4, 4, 15, 1, center, default");
+
+		JLabel lblNome = new JLabel("Nome do Hóspede:");
+		add(lblNome, "4, 8, 3, 1");
 		
+		JLabel lblQuarto = new JLabel("Número do Quarto");
+		add(lblQuarto, "8, 8, 3, 1");
+
+		JLabel lblInicioPeridodo = new JLabel("Inicio:");
+		add(lblInicioPeridodo, "12, 8");
+
+		JLabel lblFimPeridodo = new JLabel("Fim:");
+		add(lblFimPeridodo, "14, 8");
+
 		tfNomeHospede = new JTextField();
-		add(tfNomeHospede, "4, 6, 9, 1, fill, default");
+		add(tfNomeHospede, "4, 10, 3, 1, fill, default");
 		tfNomeHospede.setColumns(10);
-		
-		JLabel lblQuarto = new JLabel("Numero do quarto");
-		add(lblQuarto, "4, 8, 9, 1");
-		
-		tfQuarto = new JTextField();
-		tfQuarto.setColumns(10);
-		add(tfQuarto, "4, 10, 3, 1, fill, default");
-		
+
 		pickerInicial = new DatePickerSettings();
 		pickerFinal = new DatePickerSettings();
 		
-		JLabel lblInicioPeridodo = new JLabel("Inicio:");
-		add(lblInicioPeridodo, "4, 12, 4, 1, left, default");
-		
-		JLabel lblFimPeridodo = new JLabel("Fim:");
-		add(lblFimPeridodo, "8, 12, 5, 1");
-		
+		tfQuarto = new JTextField();
+		tfQuarto.setColumns(10);
+		add(tfQuarto, "8, 10, 3, 1, fill, default");
+
 		dataInicio = new DatePicker(pickerInicial);
-		add(dataInicio, "4, 14, 3, 1");
-		
+		add(dataInicio, "12, 10");
+
 		dataFim = new DatePicker(pickerFinal);
-		add(dataFim, "8, 14, 3, 1, fill, default");
-		
+		add(dataFim, "14, 10, fill, default");
+
 		tabelaResultado = new JTable();
 		tabelaResultado.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
 				int linhaSelecionada = tabelaResultado.getSelectedRow();
-				
-				if(linhaSelecionada > 0) {
+
+				if (linhaSelecionada > 0) {
 					btnEditar.setEnabled(true);
 					reservaSelecionada = listaReservas.get(linhaSelecionada - 1);
 				}
 			}
 		});
-		add(tabelaResultado, "4, 16, 9, 1, fill, fill");
-		
-		btnLimpar = new JButton("Limpar");
-		btnLimpar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				limparTabelaHospedes();
-			}
-		});
-		add(btnLimpar, "4, 18, left, default");
-		
-		btnGerarRelatorio = new JButton("Gerar Relatório");
-		btnGerarRelatorio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
-				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
-				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
-					String resultado;
-					try {
-						resultado = controller.gerarPlanilha(listaReservas, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null,resultado);
-					} catch (CampoInvalidoException campoInvalidoException) {
-						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-					}
-				}
-			}
-		});
-		add(btnGerarRelatorio, "6, 18, left, default");
-		
-		btnInvalidar = new JButton("Invalidar");
-		btnInvalidar.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				try {
-					reservaSelecionada.setInvalido(true);
-					controller.atualizar(reservaSelecionada);
-				} catch (CampoInvalidoException campoInvalidoException) {
-					JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-				}
-			}
-		});
-		add(btnInvalidar, "8, 18, center, default");
-		
-		btnEditar = new JButton("Editar");
-		add(btnEditar, "10, 18, center, default");
-		btnEditar.setEnabled(false);
-		
+
+				
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -192,24 +170,39 @@ public class PainelListagemReserva extends JPanel {
 			}
 
 		});
-		add(btnConsultar, "12, 18, right, default");
+
+		add(btnConsultar, "16, 10, fill, default");
+
 		
-		btnVoltarPagina = new JButton("<<");
-		btnVoltarPagina.addActionListener(new ActionListener() {
+		btnLimpar = new JButton("Limpar");
+		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				paginaAtual--;
-				consultarReservasComFiltro();
-				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
-				btnVoltarPagina.setEnabled(paginaAtual > 1);
-				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+				limparTabelaHospedes();
 			}
 		});
-		add(btnVoltarPagina, "4, 20");
-		
-		lblPaginacao = new JLabel();
-		lblPaginacao.setText("1 / " + totalPaginas);
-		add(lblPaginacao, "6, 20, center, default");
-		
+		add(btnLimpar, "18, 10, fill, default");
+		add(tabelaResultado, "4, 12, 15, 1, fill, fill");
+				
+		btnGerarRelatorio = new JButton("Gerar Relatório");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = controller.gerarPlanilha(listaReservas, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null, resultado);
+					} catch (CampoInvalidoException campoInvalidoException) {
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
+						
 		btnAvancarPagina = new JButton(">>");
 		btnAvancarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -220,17 +213,40 @@ public class PainelListagemReserva extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-		add(btnAvancarPagina, "8, 20, 3, 1");
+
+										
+		btnVoltarPagina = new JButton("<<");
+		btnVoltarPagina.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				paginaAtual--;
+				consultarReservasComFiltro();
+				lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
+				btnVoltarPagina.setEnabled(paginaAtual > 1);
+				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
+			}
+		});
+		add(btnVoltarPagina, "4, 14");
+								
+		lblPaginacao = new JLabel();
+		lblPaginacao.setText("1 / " + totalPaginas);
+		add(lblPaginacao, "6, 14, center, default");
+		add(btnAvancarPagina, "8, 14");
+		add(btnGerarRelatorio, "14, 14, fill, default");
+
 		
+		btnEditar = new JButton("Editar");
+		btnEditar.setBackground(new Color(50, 204, 233));
+		add(btnEditar, "16, 14, fill, default");
+		btnEditar.setEnabled(false);
 
 		atualizarQuantidadePaginas();
 		consultarReservasComFiltro();
 	}
-	
-	
+
 	public Reserva getReservaSelecionada() {
 		return reservaSelecionada;
 	}
+
 	public void setReservaSelecionada(Reserva reservaSelecionada) {
 		this.reservaSelecionada = reservaSelecionada;
 	}
@@ -238,31 +254,32 @@ public class PainelListagemReserva extends JPanel {
 	public JButton getBtnEditar() {
 		return btnEditar;
 	}
+
 	public void setBtnEditar(JButton btnEditar) {
 		this.btnEditar = btnEditar;
 	}
-	
+
 	protected void consultarReservasComFiltro() {
 		reservaSeletor = new ReservaSeletor();
-		
+
 		reservaSeletor.setNomeHospede(tfNomeHospede.getText());
-		if(!tfQuarto.getText().isEmpty()) {
+		if (!tfQuarto.getText().isEmpty()) {
 			reservaSeletor.setNumQuarto(Integer.parseInt(tfQuarto.getText()));
 		}
 		reservaSeletor.setDataEntrada(dataInicio.getDate());
 		reservaSeletor.setDataSaida(dataFim.getDate());
-		
+
 		listaReservas = (ArrayList<Reserva>) controller.consultarComFiltro(reservaSeletor);
-		
+
 		atualizarTabela();
 		atualizarQuantidadePaginas();
 	}
-	
+
 	private void atualizarTabela() {
 		this.limparTabelaHospedes();
 		DefaultTableModel model = (DefaultTableModel) tabelaResultado.getModel();
 
-		for (Reserva reserva: listaReservas) {
+		for (Reserva reserva : listaReservas) {
 			Object[] novaLinha = new Object[5];
 			novaLinha[0] = reserva.getHospede().getNome();
 			novaLinha[1] = reserva.getQuarto().getNumeroQuarto();
@@ -273,26 +290,27 @@ public class PainelListagemReserva extends JPanel {
 			model.addRow(novaLinha);
 		}
 	}
-	
+
 	private void atualizarQuantidadePaginas() {
 		int totalRegistros = controller.contarTotalRegistrosComFiltros(reservaSeletor);
 
 		totalPaginas = totalRegistros / TAMANHO_PAGINA;
-		if(totalRegistros % TAMANHO_PAGINA > 0) { 
+		if (totalRegistros % TAMANHO_PAGINA > 0) {
 			totalPaginas++;
 		}
-		
+
 		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
-	
+
 	private void limparTabelaHospedes() {
 		tabelaResultado.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 	}
-	
-//	public double calcularDuracaoReserva(LocalDate dataInicial, LocalDate dataFinal, double valor) {
-//        long dias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
-//        int diasFormatados = Math.toIntExact(dias);
-//        return diasFormatados * valor;
-//    }
+
+	public double calcularDuracaoReserva(LocalDate dataInicial, LocalDate dataFinal, double valor) {
+		long dias = ChronoUnit.DAYS.between(dataInicial, dataFinal);
+		int diasFormatados = Math.toIntExact(dias);
+		return diasFormatados * valor;
+	}
+
 
 }

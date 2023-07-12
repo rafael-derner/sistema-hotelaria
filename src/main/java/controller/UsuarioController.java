@@ -16,12 +16,12 @@ import model.vo.Usuario;
 
 public class UsuarioController {
 	private UsuarioBO usuarioBO = new UsuarioBO();
-	
-	public Usuario inserir(Usuario novoUsuario) throws CampoInvalidoException, CpfDuplicadoException{
+
+	public Usuario inserir(Usuario novoUsuario) throws CampoInvalidoException, CpfDuplicadoException {
 		this.validarCamposObrigatorios(novoUsuario);
 		return usuarioBO.inserir(novoUsuario);
 	}
-	
+
 	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException {
 		this.validarCamposObrigatorios(usuario);
 		return usuarioBO.atualizar(usuario);
@@ -31,22 +31,23 @@ public class UsuarioController {
 		return usuarioBO.inativar(idUsuario);
 	}
 
-	private void validarCamposObrigatorios(Usuario novoUsuario) throws CampoInvalidoException{
+	private void validarCamposObrigatorios(Usuario novoUsuario) throws CampoInvalidoException {
 		String mensagemValidacao = "";
-		
-		if(novoUsuario.getNome() == null || novoUsuario.getNome().trim().length() < 2 || novoUsuario.getNome().matches(".*\\d+.*")) {
+
+		if (novoUsuario.getNome() == null || novoUsuario.getNome().trim().length() < 2
+				|| novoUsuario.getNome().matches(".*\\d+.*")) {
 			mensagemValidacao += "Nome inválido \n";
 		}
-		
-		if(novoUsuario.getCpf() == null || novoUsuario.getCpf().trim().length() < 2) {
+
+		if (novoUsuario.getCpf() == null || novoUsuario.getCpf().trim().length() < 2) {
 			mensagemValidacao += "Telefone inválido \n";
 		}
-		
-		if(novoUsuario.getTelefone() == null || novoUsuario.getTelefone().trim().length() < 2) {
+
+		if (novoUsuario.getTelefone() == null || novoUsuario.getTelefone().trim().length() < 2) {
 			mensagemValidacao += "Telefone inválido \n";
 		}
-		
-		if(!mensagemValidacao.isEmpty()) {
+
+		if (!mensagemValidacao.isEmpty()) {
 			throw new CampoInvalidoException(mensagemValidacao);
 		}
 	}
@@ -64,14 +65,14 @@ public class UsuarioController {
 	}
 
 	public Usuario login(String codigoAcesso) throws CampoInvalidoException, UsuarioInativoException {
-		if(codigoAcesso == null || codigoAcesso.trim().length() < 2) {
+		if (codigoAcesso == null || codigoAcesso.trim().length() < 2) {
 			throw new CampoInvalidoException("Código de acesso inválido.");
 		}
-		return usuarioBO.login(codigoAcesso);		
+		return usuarioBO.login(codigoAcesso);
 	}
 
 	public String gerarPlanilha(ArrayList<Usuario> usuarios, String caminhoEscolhido) throws CampoInvalidoException {
-		if(usuarios == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
+		if (usuarios == null || caminhoEscolhido == null || caminhoEscolhido.trim().isEmpty()) {
 			throw new CampoInvalidoException("Preencha todos os campos!");
 		}
 		GeradorPlanilha gerador = new GeradorPlanilha();

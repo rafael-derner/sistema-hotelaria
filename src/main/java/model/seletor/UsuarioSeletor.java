@@ -8,8 +8,7 @@ public class UsuarioSeletor extends BaseSeletor {
 	@Override
 	public boolean temFiltro() {
 		return (this.nome != null && this.nome.trim().length() > 0)
-				|| (this.cpf != null && this.cpf.trim().length() > 0)
-				|| (this.perfil != null);
+				|| (this.cpf != null && this.cpf.trim().length() > 0) || (this.perfil != null);
 	}
 
 	public String getNome() {

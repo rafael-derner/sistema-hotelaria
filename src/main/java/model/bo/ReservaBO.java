@@ -12,10 +12,9 @@ import model.vo.Quarto;
 import model.vo.Reserva;
 
 public class ReservaBO {
-	
+
 	HospedeDAO hospedeDAO = new HospedeDAO();
 	ReservaDAO reservaDAO = new ReservaDAO();
-	
 
 	public ArrayList<Quarto> consultaQuartos(LocalDate dataInicio, LocalDate dataFim, String categoria) {
 		return reservaDAO.consultaQuartosVagos(dataInicio, dataFim, categoria);
@@ -32,7 +31,7 @@ public class ReservaBO {
 	public int contarTotalRegistrosComFiltros(ReservaSeletor reservaSeletor) {
 		return reservaDAO.contarTotalRegistrosComFiltros(reservaSeletor);
 	}
-	
+
 	public Boolean atualizar(Reserva reservaVO) {
 		return reservaDAO.atualizar(reservaVO);
 	}

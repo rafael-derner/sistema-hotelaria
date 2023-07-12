@@ -14,20 +14,20 @@ import model.vo.Hospede;
 public class HospedeBO {
 	private HospedeDAO hospedeDAO = new HospedeDAO();
 
-	public Hospede inserir(Hospede novoHospede) throws CpfDuplicadoException{
-		if(hospedeDAO.verificarCpfDuplicado(novoHospede.getCpf())) {
+	public Hospede inserir(Hospede novoHospede) throws CpfDuplicadoException {
+		if (hospedeDAO.verificarCpfDuplicado(novoHospede.getCpf())) {
 			throw new CpfDuplicadoException("O CPF informado j� foi utilizado.");
 		}
-		
+
 		return hospedeDAO.inserir(novoHospede);
 	}
 
 	public boolean atualizar(Hospede hospede) throws CpfAlteradoException {
 		Hospede hospedeOld = hospedeDAO.consultarPorId(hospede.getIdHospede());
-		if(!Formatador.formatarCpfParaView(hospede.getCpf()).equals(hospedeOld.getCpf())) {
+		if (!Formatador.formatarCpfParaView(hospede.getCpf()).equals(hospedeOld.getCpf())) {
 			throw new CpfAlteradoException("O CPF n�o pode ser alterado");
 		}
-		
+
 		return hospedeDAO.atualizar(hospede);
 	}
 
@@ -39,7 +39,7 @@ public class HospedeBO {
 	public List<Hospede> consultarComFiltro(HospedeSeletor hospedeSeletor) {
 		return hospedeDAO.consultarComFiltro(hospedeSeletor);
 	}
-	
+
 	public int contarTotalRegistrosComFiltros(HospedeSeletor hospedeSeletor) {
 		return hospedeDAO.contarTotalRegistrosComFiltros(hospedeSeletor);
 	}

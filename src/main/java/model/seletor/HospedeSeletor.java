@@ -4,7 +4,7 @@ public class HospedeSeletor extends BaseSeletor {
 
 	private String nome;
 	private String cpf;
-	
+
 	@Override
 	public boolean temFiltro() {
 		return (this.nome != null && this.nome.trim().length() > 0)

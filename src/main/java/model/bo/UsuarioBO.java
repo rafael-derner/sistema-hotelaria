@@ -17,20 +17,20 @@ import model.vo.Usuario;
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-	public Usuario inserir(Usuario novoUsuario) throws CpfDuplicadoException{
-		if(usuarioDAO.verificarCpfDuplicado(novoUsuario.getCpf())) {
+	public Usuario inserir(Usuario novoUsuario) throws CpfDuplicadoException {
+		if (usuarioDAO.verificarCpfDuplicado(novoUsuario.getCpf())) {
 			throw new CpfDuplicadoException("O CPF informado já foi utilizado.");
 		}
-		
+
 		return usuarioDAO.inserir(novoUsuario);
 	}
 
 	public boolean atualizar(Usuario usuario) throws CpfAlteradoException {
 		Usuario usuarioOld = usuarioDAO.consultarPorId(usuario.getIdUsuario());
-		if(!Formatador.formatarCpfParaView(usuario.getCpf()).equals(usuarioOld.getCpf())) {
+		if (!Formatador.formatarCpfParaView(usuario.getCpf()).equals(usuarioOld.getCpf())) {
 			throw new CpfAlteradoException("O CPF não pode ser alterado");
 		}
-		
+
 		return usuarioDAO.atualizar(usuario);
 	}
 
@@ -38,10 +38,10 @@ public class UsuarioBO {
 		return usuarioDAO.contarTotalRegistrosComFiltros(usuarioSeletor);
 	}
 
-	public boolean inativar(Integer idUsuario) throws UsuarioInativoException{
+	public boolean inativar(Integer idUsuario) throws UsuarioInativoException {
 		Usuario usuario = usuarioDAO.consultarPorId(idUsuario);
-		
-		if(!usuario.isAtivo()) {
+
+		if (!usuario.isAtivo()) {
 			throw new UsuarioInativoException("O usuário já se encontra inativo.");
 		}
 		usuario.setCpf(Formatador.formatarCpfParaBanco(usuario.getCpf()));
@@ -61,10 +61,10 @@ public class UsuarioBO {
 
 	public Usuario login(String codigoAcesso) throws UsuarioInativoException, CampoInvalidoException {
 		Usuario usuario = usuarioDAO.consultarPorCpf(codigoAcesso);
-		if(usuario == null) {
+		if (usuario == null) {
 			throw new CampoInvalidoException("Não foi encontrado nenhum usuário com esse código de acesso");
 		}
-		if(!usuario.isAtivo()) {
+		if (!usuario.isAtivo()) {
 			throw new UsuarioInativoException("Esse usuário se encontra inativo.");
 		}
 		return usuario;

@@ -39,6 +39,7 @@ import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
 import java.awt.event.ActionEvent;
 import java.awt.Color;
+import javax.swing.JCheckBox;
 
 public class PainelListagemQuarto extends JPanel {
 
@@ -51,25 +52,27 @@ public class PainelListagemQuarto extends JPanel {
 	private JButton btnLimpar;
 	private JButton btnBuscar;
 	private JComboBox cBTipoQuarto;
-	private String[] tipoDeQuarto = {"","Básico","Intermediário","Luxo"};
-	private String[] valoresQuarto = {"","Ativo","Inativo"};
+	private String[] tipoDeQuarto = { "", "Básico", "Intermediário", "Luxo" };
+	private String[] valoresQuarto = { "", "Ativo", "Inativo" };
+	private String[] filtroValorDiaria = { "", "Crescente", "Decrescente" };
 	private JLabel lblTipoDeQuarto;
 	private JLabel lblNumero;
-	private String[] colunas = {"Número do Quarto","Tipo do Quarto","Valor do Quarto","Ativo"};
+	private String[] colunas = { "Número do Quarto", "Categoria", "Valor do Quarto", "Ativo" };
 	private JLabel lblListagemQuartos;
 	private ArrayList<Quarto> quartos;
 	private Quarto quartoSelecionado;
 	private QuartoSeletor quartoSeletor;
-	
+
 	private QuartoController quartoController = new QuartoController();
-	
+
 	private final int TAMANHO_PAGINA = 38;
 	private int paginaAtual = 1;
 	private int totalPaginas = 0;
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
 	private JLabel lblPaginacao = new JLabel();
-	
+	private JLabel lblValorFiltro;
+	private JComboBox cBFiltroValor;
 
 	/**
 	 * Launch the application.
@@ -79,62 +82,92 @@ public class PainelListagemQuarto extends JPanel {
 	 * Create the frame.
 	 */
 	public PainelListagemQuarto() {
-		setLayout(new com.jgoodies.forms.layout.FormLayout(new com.jgoodies.forms.layout.ColumnSpec[] {
-				com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"),
-				com.jgoodies.forms.layout.ColumnSpec.decode("130px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("140px:grow"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.FormSpecs.DEFAULT_COLSPEC,
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("130px:grow"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("85px:grow"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("91px:grow"),
-				com.jgoodies.forms.layout.FormSpecs.UNRELATED_GAP_COLSPEC,
-				com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"),},
-			new com.jgoodies.forms.layout.RowSpec[] {
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("31px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("16px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("29px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("236px:grow"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("29px"),
-				com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
-				com.jgoodies.forms.layout.RowSpec.decode("fill:default"),}));
+		setLayout(new com.jgoodies.forms.layout.FormLayout(
+				new com.jgoodies.forms.layout.ColumnSpec[] { com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("37px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("37px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("37px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("37px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("150px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("150px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("150px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("150px:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_COLSPEC,
+						com.jgoodies.forms.layout.ColumnSpec.decode("max(100dlu;default)"), },
+				new com.jgoodies.forms.layout.RowSpec[] { com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.RowSpec.decode("default:grow"),
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.RELATED_GAP_ROWSPEC,
+						com.jgoodies.forms.layout.FormSpecs.DEFAULT_ROWSPEC, }));
 		
 		lblListagemQuartos = new JLabel("Listagem de Quartos");
 		lblListagemQuartos.setFont(new Font("Tahoma", Font.BOLD, 25));
-		add(lblListagemQuartos, "2, 2, 11, 1, center, top");
-		
-		lblNumero = new JLabel("Número:");
-		add(lblNumero, "2, 4, fill, top");
-		
-		lblTipoDeQuarto = new JLabel("Tipo de Quarto:");
-		add(lblTipoDeQuarto, "4, 4, fill, top");
-		
+		add(lblListagemQuartos, "4, 4, 15, 1, center, top");
+
+		lblNumero = new JLabel("Número do Quarto:");
+		add(lblNumero, "4, 8, 3, 1, fill, top");
+
+		lblTipoDeQuarto = new JLabel("Categoria:");
+		add(lblTipoDeQuarto, "12, 8, fill, top");
+
+		lblValorFiltro = new JLabel("Valor da Diária");
+		add(lblValorFiltro, "14, 8");
 		txtNumero = new JTextField();
-		add(txtNumero, "2, 6, left, center");
+		add(txtNumero, "4, 10, 7, 1, fill, center");
 		txtNumero.setColumns(10);
-		
-		cBTipoQuarto = new JComboBox(tipoDeQuarto);
-		add(cBTipoQuarto, "4, 6, 3, 1, fill, center");
-		
-		btnBuscar = new JButton("Buscar");
+
+		btnBuscar = new JButton("Consultar");
 		btnBuscar.addActionListener(new ActionListener() {
-			
+
 			public void actionPerformed(ActionEvent e) {
 				buscarQuartos();
-				
+
 			}
 		});
-		add(btnBuscar, "10, 6, fill, top");
-		
+
+		cBTipoQuarto = new JComboBox(tipoDeQuarto);
+		add(cBTipoQuarto, "12, 10, fill, center");
+
+		cBFiltroValor = new JComboBox(filtroValorDiaria);
+		add(cBFiltroValor, "14, 10, fill, default");
+		add(btnBuscar, "16, 10, fill, top");
+
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -142,46 +175,24 @@ public class PainelListagemQuarto extends JPanel {
 				cBTipoQuarto.setSelectedIndex(0);
 			}
 		});
-		add(btnLimpar, "12, 6, fill, top");
+		add(btnLimpar, "18, 10, fill, top");
 		
 		tableListagemQuartos = new JTable();
-		add(tableListagemQuartos, "2, 8, 11, 1, fill, fill");
-		
+		add(tableListagemQuartos, "4, 12, 15, 5, fill, fill");
 		tableListagemQuartos.addMouseListener(new MouseAdapter() {
-			
+
 			public void mouseClicked(MouseEvent e) {
 				// TODO Auto-generated method stub
 				int elementoSelecionado = tableListagemQuartos.getSelectedRow();
-				if(elementoSelecionado > 0) {
+				if (elementoSelecionado > 0) {
 					btnEditar.setEnabled(true);
 					btnInativar.setEnabled(true);
 					quartoSelecionado = quartos.get(elementoSelecionado - 1);
 				}
-				
+
 			}
 		});
-		
-		btnGerarPlanilha = new JButton("Gerar Planilha");
-		btnGerarPlanilha.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
-				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para a planilha...");
-				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
-					String resultado;
-					try {
-						resultado = quartoController.gerarPlanilha(quartos, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null,resultado);
-					}catch (CampoInvalidoException e1) {
-						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-						
-					}
-				}
-			}
-		});
-		add(btnGerarPlanilha, "2, 10, left, top");
-		
+
 		btnVoltarPagina = new JButton("<<");
 		btnVoltarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -193,11 +204,11 @@ public class PainelListagemQuarto extends JPanel {
 			}
 		});
 		btnVoltarPagina.setEnabled(false);
-		add(btnVoltarPagina, "4, 10, right, default");
-		
+		add(btnVoltarPagina, "4, 18, fill, top");
+
 		lblPaginacao = new JLabel("1 / " + totalPaginas);
-		add(lblPaginacao, "6, 10");
-		
+		add(lblPaginacao, "6, 18, center, center");
+
 		btnAvancarPagina = new JButton(">>");
 		btnAvancarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -208,57 +219,81 @@ public class PainelListagemQuarto extends JPanel {
 				btnAvancarPagina.setEnabled(paginaAtual < totalPaginas);
 			}
 		});
-//		btnAvancarPagina.setEnabled(false);
-		add(btnAvancarPagina, "8, 10, left, default");
-		
+		// btnAvancarPagina.setEnabled(false);
+		add(btnAvancarPagina, "8, 18, fill, top");
+
+		btnGerarPlanilha = new JButton("Gerar Relatório");
+		btnGerarPlanilha.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = quartoController.gerarPlanilha(quartos, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null, resultado);
+					} catch (CampoInvalidoException e1) {
+						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+
+					}
+				}
+			}
+		});
+
+		add(btnGerarPlanilha, "14, 18, fill, top");
+
 		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
-		btnEditar.setBackground(Color.BLUE);
-		add(btnEditar, "10, 10, fill, top");
-		
+		btnEditar.setBackground(new Color(50, 204, 233));
+		add(btnEditar, "16, 18, fill, top");
 		btnInativar = new JButton("Inativar");
 		btnInativar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Voce deseja realmente Inativar o Quarto selecionado?");
-				if(opcaoSelecionada == JOptionPane.YES_OPTION){
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
+						"Voce deseja realmente Inativar o Quarto selecionado?");
+				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						quartoController.inativar(quartoSelecionado.getIdQuarto());
-						JOptionPane.showMessageDialog(null, "Quarto inativado com sucesso!","Sucesso",JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, "Quarto inativado com sucesso!", "Sucesso",
+								JOptionPane.INFORMATION_MESSAGE);
 						quartos = (ArrayList<Quarto>) quartoController.consultarTodos();
-					}catch (QuartoComReservaException quartoComReservaException) {
-						JOptionPane.showConfirmDialog(null, quartoComReservaException.getMessage(), "Atenção" , JOptionPane.WARNING_MESSAGE);
-					}catch (QuartoInativoException quartoInativoException) {
-						JOptionPane.showConfirmDialog(null, quartoInativoException.getMessage(), "Atenção" , JOptionPane.WARNING_MESSAGE);
+					} catch (QuartoComReservaException quartoComReservaException) {
+						JOptionPane.showConfirmDialog(null, quartoComReservaException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
+					} catch (QuartoInativoException quartoInativoException) {
+						JOptionPane.showConfirmDialog(null, quartoInativoException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
 					}
 				}
 				buscarQuartos();
 				atualizarTabelaQuartos();
 			}
-		
+
 		});
 		btnInativar.setBackground(Color.RED);
-		add(btnInativar, "12, 10, left, top");
-		
+		add(btnInativar, "18, 18, fill, top");
 		buscarQuartos();
 		atualizarQuantidadePaginas();
 	}
-	
+
 	private void atualizarQuantidadePaginas() {
 		int totalRegistros = quartoController.contarTotalRegistrosComFiltros(quartoSeletor);
-		
+
 		totalPaginas = totalRegistros / TAMANHO_PAGINA;
-		if(totalRegistros % TAMANHO_PAGINA > 0) {
+		if (totalRegistros % TAMANHO_PAGINA > 0) {
 			totalPaginas++;
 		}
 		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
 
 	private void buscarQuartos() {
-		
+
 		quartoSeletor = new QuartoSeletor();
 		quartoSeletor.setLimite(TAMANHO_PAGINA);
 		quartoSeletor.setPagina(paginaAtual);
-		
+
 		String numeroQuarto = txtNumero.getText();
 		if (numeroQuarto.isEmpty()) {
 		} else {
@@ -270,6 +305,7 @@ public class PainelListagemQuarto extends JPanel {
 			}
 		}
 		quartoSeletor.setTipoQuarto((String) cBTipoQuarto.getSelectedItem());
+		quartoSeletor.setFiltroValor((String) cBFiltroValor.getSelectedItem());
 		quartos = (ArrayList<Quarto>) quartoController.consultarComFiltro(quartoSeletor);
 		atualizarTabelaQuartos();
 		atualizarQuantidadePaginas();
@@ -279,7 +315,7 @@ public class PainelListagemQuarto extends JPanel {
 	private void atualizarTabelaQuartos() {
 		this.limparTabelaQuartos();
 		DefaultTableModel model = (DefaultTableModel) tableListagemQuartos.getModel();
-		
+
 		for (Quarto quarto : quartos) {
 			Object[] novaLinhaTabela = new Object[4];
 			novaLinhaTabela[0] = quarto.getNumeroQuarto();
@@ -291,11 +327,11 @@ public class PainelListagemQuarto extends JPanel {
 	}
 
 	private void limparTabelaQuartos() {
-		tableListagemQuartos.setModel(new DefaultTableModel(new Object[][] {colunas,},colunas));
+		tableListagemQuartos.setModel(new DefaultTableModel(new Object[][] { colunas, }, colunas));
 		btnEditar.setEnabled(false);
 		btnInativar.setEnabled(false);
 	}
-	
+
 	public Quarto getQuartoSelecionado() {
 		return this.quartoSelecionado;
 	}

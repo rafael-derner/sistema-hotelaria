@@ -42,10 +42,10 @@ public class PainelListagemUsuario extends JPanel {
 
 	private UsuarioController usuarioController = new UsuarioController();
 	private UsuarioSeletor usuarioSeletor = new UsuarioSeletor();
-	
+
 	private ArrayList<Usuario> usuarios;
 	private Usuario usuarioSelecionado;
-	
+
 	private String[] nomesColunas = { "Nome", "CPF", "Telefone", "Perfil", "Ativo" };
 	private JTable tblUsuarios;
 	private JTextField tfNome;
@@ -54,8 +54,8 @@ public class PainelListagemUsuario extends JPanel {
 	private MaskFormatter mascaraCpf;
 	private JLabel lblPerfil;
 	private JComboBox comboBox;
-	private String[] tiposDePerfil = {"", "Recepcionista", "Gerente"};
-	
+	private String[] tiposDePerfil = { "", "Recepcionista", "Gerente" };
+
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JButton btnEditar;
@@ -69,63 +69,29 @@ public class PainelListagemUsuario extends JPanel {
 	private JLabel lblPaginacao = new JLabel();
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
-	
+
 	public PainelListagemUsuario() {
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-				
+		setLayout(new FormLayout(
+				new ColumnSpec[] { FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(100dlu;default)"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("37px:grow"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("150px:grow"), FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("150px:grow"), FormSpecs.RELATED_GAP_COLSPEC,
+						ColumnSpec.decode("max(100dlu;default)"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
@@ -133,80 +99,83 @@ public class PainelListagemUsuario extends JPanel {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		btnInativar = new JButton("Inativar");
 		btnInativar.setBackground(new Color(255, 0, 0));
 		btnInativar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				int opcaoSelecionada = JOptionPane.showConfirmDialog(null, "Você deseja realmente inativar o usuário selecionado?");
-				
-				if(opcaoSelecionada == JOptionPane.YES_OPTION) {
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
+						"Você deseja realmente inativar o Funcionário selecionado?");
+
+				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
 					try {
 						usuarioController.inativar(usuarioSelecionado.getIdUsuario());
-						JOptionPane.showMessageDialog(null, "Usuário inativado com sucesso");
+						JOptionPane.showMessageDialog(null, "Funcionário inativado com sucesso");
 						usuarios = (ArrayList<Usuario>) usuarioController.consultarTodos();
 						atualizarTabelaUsuarios();
 					} catch (UsuarioInativoException usuarioInativoException) {
-						JOptionPane.showMessageDialog(null, usuarioInativoException.getMessage(), "Atenção", JOptionPane.INFORMATION_MESSAGE);
+						JOptionPane.showMessageDialog(null, usuarioInativoException.getMessage(), "Atenção",
+								JOptionPane.INFORMATION_MESSAGE);
 					}
 				}
 			}
 		});
-				
+
 		btnGerarRelatorio = new JButton("Gerar Relatório");
 		btnGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
 				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
 				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
 					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
 					String resultado;
 					try {
 						resultado = usuarioController.gerarPlanilha(usuarios, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null,resultado);
+						JOptionPane.showMessageDialog(null, resultado);
 					} catch (CampoInvalidoException campoInvalidoException) {
-						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
 		});
 		add(btnGerarRelatorio, "12, 18");
-		
-		btnAdicionarNovoUsuario = new JButton("Adicionar novo Usuário");
+
+		btnAdicionarNovoUsuario = new JButton("Adicionar novo Funcionário");
 		btnAdicionarNovoUsuario.setBackground(new Color(128, 255, 128));
 		add(btnAdicionarNovoUsuario, "14, 18");
-	
+
 		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
 		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 18");
 		add(btnInativar, "18, 18");
-		
-		JLabel lblListagemUsuarios = new JLabel("Listagem de Usuários");
+
+		JLabel lblListagemUsuarios = new JLabel("Listagem de Funcionários");
 		lblListagemUsuarios.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblListagemUsuarios, "4, 4, 15, 1, center, default");
-		
-		JLabel lblNome = new JLabel("Nome:");
+
+		JLabel lblNome = new JLabel("Nome do Funcionário:");
 		add(lblNome, "4, 8, 3, 1");
-		
+
 		lblCpf = new JLabel("CPF:");
 		add(lblCpf, "12, 8");
-		
-		lblPerfil = new JLabel("Perfil");
+
+		lblPerfil = new JLabel("Perfil:");
 		add(lblPerfil, "14, 8");
-		
+
 		tfNome = new JTextField();
 		add(tfNome, "4, 10, 7, 1, fill, default");
 		tfNome.setColumns(10);
-		
+
 		tfCpf = new JFormattedTextField(mascaraCpf);
 		add(tfCpf, "12, 10, fill, default");
 		tfCpf.setColumns(10);
-		
+
 		comboBox = new JComboBox(tiposDePerfil);
 		add(comboBox, "14, 10, fill, default");
-		
+
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			private UsuarioSeletor usuarioSeletor;
@@ -216,7 +185,7 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		add(btnConsultar, "16, 10");
-		
+
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -226,25 +195,25 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		add(btnLimpar, "18, 10");
-		
+
 		tblUsuarios = new JTable();
 		add(tblUsuarios, "4, 12, 15, 5, fill, fill");
 		this.limparTabelaUsuarios();
 		buscarUsuarioComFiltro();
-		
+
 		tblUsuarios.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
 				int elementoSelecionado = tblUsuarios.getSelectedRow();
-				
-				if(elementoSelecionado > 0) {
+
+				if (elementoSelecionado > 0) {
 					btnEditar.setEnabled(true);
 					btnInativar.setEnabled(true);
 					usuarioSelecionado = usuarios.get(elementoSelecionado - 1);
 				}
 			}
-		});		
-		
+		});
+
 		btnVoltarPagina = new JButton("<<");
 		btnVoltarPagina.addActionListener(new ActionListener() {
 
@@ -257,7 +226,7 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		add(btnVoltarPagina, "4, 18");
-		
+
 		btnAvancarPagina = new JButton(">>");
 		btnAvancarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -269,23 +238,23 @@ public class PainelListagemUsuario extends JPanel {
 			}
 		});
 		add(btnAvancarPagina, "8, 18");
-				
+
 		lblPaginacao.setText("1 / " + totalPaginas);
 		add(lblPaginacao, "6, 18, center, default");
 
 		atualizarQuantidadePaginas();
 		buscarUsuarioComFiltro();
-	} 
-	
+	}
+
 	protected void buscarUsuarioComFiltro() {
-		usuarioSeletor = new UsuarioSeletor();		
+		usuarioSeletor = new UsuarioSeletor();
 		usuarioSeletor.setLimite(TAMANHO_PAGINA);
 		usuarioSeletor.setPagina(paginaAtual);
-		
+
 		usuarioSeletor.setNome(tfNome.getText());
 		usuarioSeletor.setPerfil((String) comboBox.getSelectedItem());
 
-		if(!tfCpf.getText().contains("   .   .   -  ")) {
+		if (!tfCpf.getText().contains("   .   .   -  ")) {
 			try {
 				String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
 				usuarioSeletor.setCpf(cpfSemMascara);
@@ -294,13 +263,13 @@ public class PainelListagemUsuario extends JPanel {
 				e.printStackTrace();
 			}
 		}
-		
+
 		usuarios = (ArrayList<Usuario>) usuarioController.consultarComFiltro(usuarioSeletor);
-		
+
 		atualizarTabelaUsuarios();
 		atualizarQuantidadePaginas();
 	}
-	
+
 	private void atualizarTabelaUsuarios() {
 		this.limparTabelaUsuarios();
 
@@ -317,28 +286,28 @@ public class PainelListagemUsuario extends JPanel {
 			model.addRow(novaLinhaDaTabela);
 		}
 	}
-	
+
 	private void atualizarQuantidadePaginas() {
 		int totalRegistros = usuarioController.contarTotalRegistrosComFiltros(usuarioSeletor);
 
 		totalPaginas = totalRegistros / TAMANHO_PAGINA;
-		if(totalRegistros % TAMANHO_PAGINA > 0) { 
+		if (totalRegistros % TAMANHO_PAGINA > 0) {
 			totalPaginas++;
 		}
-		
+
 		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
-	
+
 	private void limparTabelaUsuarios() {
 		tblUsuarios.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 		btnEditar.setEnabled(false);
 		btnInativar.setEnabled(false);
 	}
-	
+
 	public JButton getBtnEditar() {
 		return this.btnEditar;
 	}
-	
+
 	public Usuario getUsuarioSelecionado() {
 		return this.usuarioSelecionado;
 	}

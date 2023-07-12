@@ -31,13 +31,13 @@ import model.exception.CampoInvalidoException;
 import model.seletor.HospedeSeletor;
 import model.vo.Hospede;
 
-public class PainelListagemHospede extends JPanel{
+public class PainelListagemHospede extends JPanel {
 	private HospedeController hospedeController = new HospedeController();
 	private HospedeSeletor hospedeSeletor = new HospedeSeletor();
-	
+
 	private ArrayList<Hospede> hospedes;
 	private Hospede hospedeSelecionado;
-	
+
 	private String[] nomesColunas = { "Nome", "CPF", "Telefone" };
 	private JTable tblHospedes;
 	private JTextField tfNome;
@@ -57,64 +57,32 @@ public class PainelListagemHospede extends JPanel{
 	private JLabel lblPaginacao = new JLabel();
 	private JButton btnVoltarPagina;
 	private JButton btnAvancarPagina;
-	
-	
+
 	public PainelListagemHospede() {
-		setLayout(new FormLayout(new ColumnSpec[] {
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("37px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("150px:grow"),
-				FormSpecs.RELATED_GAP_COLSPEC,
-				ColumnSpec.decode("max(100dlu;default)"),},
-			new RowSpec[] {
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				RowSpec.decode("default:grow"),
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,
-				FormSpecs.RELATED_GAP_ROWSPEC,
-				FormSpecs.DEFAULT_ROWSPEC,}));
-				
+		setLayout(new FormLayout(
+				new ColumnSpec[] { 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(100dlu;default)"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("37px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"),
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("150px:grow"), 
+						FormSpecs.RELATED_GAP_COLSPEC, ColumnSpec.decode("max(100dlu;default)"), },
+				new RowSpec[] { FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, RowSpec.decode("default:grow"),
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC,
+						FormSpecs.DEFAULT_ROWSPEC, FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC,
+						FormSpecs.RELATED_GAP_ROWSPEC, FormSpecs.DEFAULT_ROWSPEC, }));
+
 		try {
 			mascaraCpf = new MaskFormatter("###.###.###-##");
 			mascaraCpf.setValueContainsLiteralCharacters(false);
@@ -122,11 +90,11 @@ public class PainelListagemHospede extends JPanel{
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		lblCpf = new JLabel("CPF:");
 		add(lblCpf, "12, 8");
-		
-		btnVoltarPagina = new JButton("<<");		
+
+		btnVoltarPagina = new JButton("<<");
 		btnVoltarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				paginaAtual--;
@@ -140,7 +108,7 @@ public class PainelListagemHospede extends JPanel{
 
 		lblPaginacao.setText("1 / " + totalPaginas);
 		add(lblPaginacao, "6, 18, center, default");
-		
+
 		btnAvancarPagina = new JButton(">>");
 		btnAvancarPagina.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
@@ -152,27 +120,28 @@ public class PainelListagemHospede extends JPanel{
 			}
 		});
 		add(btnAvancarPagina, "8, 18");
-		
+
 		btnGerarRelatorio = new JButton("Gerar Relatório");
 		btnGerarRelatorio.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
 				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
 				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if(opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
 					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
 					String resultado;
 					try {
 						resultado = hospedeController.gerarPlanilha(hospedes, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null,resultado);
+						JOptionPane.showMessageDialog(null, resultado);
 					} catch (CampoInvalidoException campoInvalidoException) {
-						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
 					}
 				}
 			}
 		});
 		add(btnGerarRelatorio, "12, 18");
-		
+
 		btnAdicionarNovoHospede = new JButton("Adicionar novo Hóspede");
 		btnAdicionarNovoHospede.setBackground(new Color(128, 255, 128));
 		add(btnAdicionarNovoHospede, "14, 18");
@@ -181,32 +150,32 @@ public class PainelListagemHospede extends JPanel{
 		btnEditar.setEnabled(false);
 		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 18");
-		
+
 		btnExcluir = new JButton("Excluir");
 		btnExcluir.setEnabled(false);
-		btnExcluir.setBackground(new Color(255, 0, 0));		
+		btnExcluir.setBackground(new Color(255, 0, 0));
 		btnExcluir.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				// COMPLETAR ACTION LISTENER
 			}
 		});
 		add(btnExcluir, "18, 18");
-		
+
 		JLabel lblListagemHospedes = new JLabel("Listagem de Hóspedes");
 		lblListagemHospedes.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblListagemHospedes, "4, 4, 15, 1, center, default");
-		
-		JLabel lblNome = new JLabel("Nome:");
+
+		JLabel lblNome = new JLabel("Nome do Hóspede:");
 		add(lblNome, "4, 8, 7, 1");
-		
+
 		tfNome = new JTextField();
 		add(tfNome, "4, 10, 7, 1, fill, default");
 		tfNome.setColumns(10);
-		
+
 		tfCpf = new JFormattedTextField(mascaraCpf);
 		add(tfCpf, "12, 10, fill, default");
 		tfCpf.setColumns(10);
-		
+
 		btnConsultar = new JButton("Consultar");
 		btnConsultar.addActionListener(new ActionListener() {
 			private HospedeSeletor HospedeSeletor;
@@ -216,7 +185,7 @@ public class PainelListagemHospede extends JPanel{
 			}
 		});
 		add(btnConsultar, "16, 10");
-		
+
 		btnLimpar = new JButton("Limpar");
 		btnLimpar.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
@@ -225,34 +194,34 @@ public class PainelListagemHospede extends JPanel{
 			}
 		});
 		add(btnLimpar, "18, 10");
-		
+
 		tblHospedes = new JTable();
 		add(tblHospedes, "4, 12, 15, 5, fill, fill");
 		this.limparTabelaHospedes();
-		
+
 		tblHospedes.addMouseListener(new MouseAdapter() {
 
 			public void mouseClicked(MouseEvent e) {
 				int elementoSelecionado = tblHospedes.getSelectedRow();
-				
-				if(elementoSelecionado > 0) {
+
+				if (elementoSelecionado > 0) {
 					btnEditar.setEnabled(true);
 					btnExcluir.setEnabled(true);
 					hospedeSelecionado = hospedes.get(elementoSelecionado - 1);
 				}
 			}
 		});
-		
+
 		atualizarQuantidadePaginas();
 		buscarHospedeComFiltro();
-	} 
-	
+	}
+
 	protected void buscarHospedeComFiltro() {
 		hospedeSeletor = new HospedeSeletor();
-		
+
 		hospedeSeletor.setNome(tfNome.getText());
 
-		if(!tfCpf.getText().contains("   .   .   -  ")) {
+		if (!tfCpf.getText().contains("   .   .   -  ")) {
 			try {
 				String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
 				hospedeSeletor.setCpf(cpfSemMascara);
@@ -261,13 +230,13 @@ public class PainelListagemHospede extends JPanel{
 				e.printStackTrace();
 			}
 		}
-		
+
 		hospedes = (ArrayList<Hospede>) hospedeController.consultarComFiltro(hospedeSeletor);
 
 		atualizarTabelaHospedes();
 		atualizarQuantidadePaginas();
 	}
-	
+
 	private void atualizarTabelaHospedes() {
 		this.limparTabelaHospedes();
 
@@ -282,28 +251,28 @@ public class PainelListagemHospede extends JPanel{
 			model.addRow(novaLinhaDaTabela);
 		}
 	}
-	
+
 	private void atualizarQuantidadePaginas() {
 		int totalRegistros = hospedeController.contarTotalRegistrosComFiltros(hospedeSeletor);
 
 		totalPaginas = totalRegistros / TAMANHO_PAGINA;
-		if(totalRegistros % TAMANHO_PAGINA > 0) { 
+		if (totalRegistros % TAMANHO_PAGINA > 0) {
 			totalPaginas++;
 		}
-		
+
 		lblPaginacao.setText(paginaAtual + " / " + totalPaginas);
 	}
-	
+
 	private void limparTabelaHospedes() {
 		tblHospedes.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 		btnEditar.setEnabled(false);
 		btnExcluir.setEnabled(false);
 	}
-	
+
 	public JButton getBtnEditar() {
 		return this.btnEditar;
 	}
-	
+
 	public Hospede getHospedeSelecionado() {
 		return this.hospedeSelecionado;
 	}

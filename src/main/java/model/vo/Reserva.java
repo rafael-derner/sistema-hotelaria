@@ -87,13 +87,12 @@ public class Reserva {
 	public double calcularValorReserva(Reserva reserva) {
 		double valor = 0;
 		long dias = ChronoUnit.DAYS.between(reserva.getDtCheckIn(), reserva.getDtCheckOut());
-        int diasFormatados = Math.toIntExact(dias);
-        valor = diasFormatados * reserva.getQuarto().getValorQuarto();
-        if(valor == 0) {
-        	valor = reserva.getQuarto().getValorQuarto();
-        }
-        return valor;
-    }
-	
-}
+		int diasFormatados = Math.toIntExact(dias);
+		valor = diasFormatados * reserva.getQuarto().getValorQuarto();
+		if (valor == 0) {
+			valor = reserva.getQuarto().getValorQuarto();
+		}
+		return valor;
+	}
 
+}
