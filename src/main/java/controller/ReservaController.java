@@ -78,4 +78,8 @@ public class ReservaController {
 		return reservaBO.atualizar(reservaVO);
 	}
 
+	public void inativar(Integer idReserva) {
+		reservaBO.inativar(idReserva);
+	}
+
 }

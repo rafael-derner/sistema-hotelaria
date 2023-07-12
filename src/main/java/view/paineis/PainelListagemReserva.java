@@ -8,9 +8,12 @@ import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
 
 import model.exception.CampoInvalidoException;
+import model.exception.QuartoComReservaException;
+import model.exception.QuartoInativoException;
 import model.seletor.HospedeSeletor;
 import model.seletor.ReservaSeletor;
 import model.vo.Hospede;
+import model.vo.Quarto;
 import model.vo.Reserva;
 import javax.swing.JPanel;
 import com.jgoodies.forms.layout.FormLayout;
@@ -18,6 +21,9 @@ import com.github.lgooddatepicker.components.DatePicker;
 import com.github.lgooddatepicker.components.DatePickerSettings;
 import com.jgoodies.forms.layout.ColumnSpec;
 import com.jgoodies.forms.layout.RowSpec;
+
+import Util.Formatador;
+
 import com.jgoodies.forms.layout.FormSpecs;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
@@ -41,7 +47,7 @@ public class PainelListagemReserva extends JPanel {
 	private Reserva reservaSelecionada;
 
 	private String[] nomesColunas = { "Hospede", "Quarto", "Check-in previsto", "Check-Out previsto",
-			"Total da estadia" };
+			"Total da estadia", "Ativo" };
 	private JTextField tfNomeHospede;
 	private JTextField tfQuarto;
 	private DatePickerSettings pickerInicial;
@@ -62,6 +68,7 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnGerarRelatorio;
 	private JButton btnInvalidar;
 	private JLabel lblTitulo;
+	private JButton btnExcluir;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -157,6 +164,7 @@ public class PainelListagemReserva extends JPanel {
 
 				if (linhaSelecionada > 0) {
 					btnEditar.setEnabled(true);
+					btnExcluir.setEnabled(true);
 					reservaSelecionada = listaReservas.get(linhaSelecionada - 1);
 				}
 			}
@@ -238,6 +246,26 @@ public class PainelListagemReserva extends JPanel {
 		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 14, fill, default");
 		btnEditar.setEnabled(false);
+		
+		btnExcluir = new JButton("Excluir");
+		btnExcluir.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				int opcaoSelecionada = JOptionPane.showConfirmDialog(null,
+						"Voce deseja realmente Inativar o Quarto selecionado?");
+				if (opcaoSelecionada == JOptionPane.YES_OPTION) {
+					try {
+						controller.inativar(reservaSelecionada.getIdReserva());
+						JOptionPane.showMessageDialog(null, "Reserva inativada com sucesso!", "Sucesso",
+								JOptionPane.INFORMATION_MESSAGE);
+						consultarReservasComFiltro();
+					} catch (Exception ew) {
+						System.out.println("Deu ruim");;
+					}
+			}
+		}});
+		btnExcluir.setEnabled(false);
+		btnExcluir.setBackground(Color.RED);
+		add(btnExcluir, "18, 14");
 
 		atualizarQuantidadePaginas();
 		consultarReservasComFiltro();
@@ -280,12 +308,13 @@ public class PainelListagemReserva extends JPanel {
 		DefaultTableModel model = (DefaultTableModel) tabelaResultado.getModel();
 
 		for (Reserva reserva : listaReservas) {
-			Object[] novaLinha = new Object[5];
+			Object[] novaLinha = new Object[6];
 			novaLinha[0] = reserva.getHospede().getNome();
 			novaLinha[1] = reserva.getQuarto().getNumeroQuarto();
 			novaLinha[2] = reserva.getDtCheckIn();
 			novaLinha[3] = reserva.getDtCheckOut();
-			novaLinha[4] = reserva.calcularValorReserva(reserva);
+			novaLinha[4] = Formatador.formatarValorQuartoParaView(reserva.calcularValorReserva(reserva));
+			novaLinha[5] = reserva.getInvalido() ? "Não" : "Sim";
 
 			model.addRow(novaLinha);
 		}

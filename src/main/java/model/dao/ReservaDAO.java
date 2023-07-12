@@ -71,11 +71,37 @@ public class ReservaDAO {
 		}
 		return novaReserva;
 	}
+	
+	public Reserva consultarPorId(Integer idReserva) {
+		Reserva reserva = null;
+		Connection conn = Banco.getConnection();
+		String query = "SELECT RESERVA.ID_RESERVA,RESERVA.ID_HOSPEDE,RESERVA.ID_QUARTO, HOSPEDE.NOME, QUARTO.NUMERO, RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT, (SELECT DATEDIFF(RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT) * QUARTO.VALOR_DIARIA) AS VALOR_TOTAL"
+				+ " FROM RESERVA" + "	JOIN QUARTO ON RESERVA.ID_QUARTO = QUARTO.iD_QUARTO"
+				+ "    JOIN HOSPEDE ON RESERVA.ID_HOSPEDE = HOSPEDE.ID_HOSPEDE WHERE ID_RESERVA = ?";
+		PreparedStatement pstmt = Banco.getPreparedStatement(conn, query);
+		try {
+			pstmt.setInt(1, idReserva);
+			ResultSet resultado = pstmt.executeQuery();
+			if (resultado.next()) {
+				HospedeDAO hospedeDAO = new HospedeDAO();
+				QuartoDAO quartoDAO = new QuartoDAO();
+				Hospede hospede = hospedeDAO.consultarPorId(resultado.getInt(2));
+				Quarto quarto = quartoDAO.consultarPorId(resultado.getInt(3));
+				reserva = montarReservaComResultadoDoBanco(resultado, hospede, quarto);
+			}
+		} catch (Exception e) {
+			System.out.println("Erro ao buscar reserva com id: " + idReserva + "\n Causa:" + e.getMessage());
+		} finally {
+			Banco.closePreparedStatement(pstmt);
+			Banco.closeConnection(conn);
+		}
+		return reserva;
+	}
 
 	public ArrayList<Reserva> consultarComFiltro(ReservaSeletor reservaSeletor) {
 		ArrayList<Reserva> listaReservas = new ArrayList<Reserva>();
 		Connection conn = Banco.getConnection();
-		String query = "SELECT RESERVA.ID_RESERVA,RESERVA.ID_HOSPEDE,RESERVA.ID_QUARTO, HOSPEDE.NOME, QUARTO.NUMERO, RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT, (SELECT DATEDIFF(RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT) * QUARTO.VALOR_DIARIA) AS VALOR_TOTAL"
+		String query = "SELECT RESERVA.ID_RESERVA,RESERVA.ID_HOSPEDE,RESERVA.ID_QUARTO, HOSPEDE.NOME, QUARTO.NUMERO, RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT, (SELECT DATEDIFF(RESERVA.DTHR_CHECK_IN, RESERVA.DTHR_CHECK_OUT) * QUARTO.VALOR_DIARIA) AS VALOR_TOTAL, reserva.ATIVO"
 				+ " FROM RESERVA" + "	JOIN QUARTO ON RESERVA.ID_QUARTO = QUARTO.iD_QUARTO"
 				+ "    JOIN HOSPEDE ON RESERVA.ID_HOSPEDE = HOSPEDE.ID_HOSPEDE";
 
@@ -114,6 +140,7 @@ public class ReservaDAO {
 		reservaBanco.setQuarto(quarto);
 		reservaBanco.setDtCheckIn(java.time.LocalDate.parse(resultado.getString("RESERVA.DTHR_CHECK_IN")));
 		reservaBanco.setDtCheckOut(java.time.LocalDate.parse(resultado.getString(("RESERVA.DTHR_CHECK_OUT"))));
+		reservaBanco.setInvalido(resultado.getBoolean("ATIVO"));
 
 		return reservaBanco;
 	}

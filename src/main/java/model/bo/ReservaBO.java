@@ -36,4 +36,10 @@ public class ReservaBO {
 		return reservaDAO.atualizar(reservaVO);
 	}
 
+	public Boolean inativar(Integer idReserva) {
+		Reserva reserva = reservaDAO.consultarPorId(idReserva);
+		reserva.setInvalido(true);
+		return reservaDAO.atualizar(reserva);
+	}
+
 }
