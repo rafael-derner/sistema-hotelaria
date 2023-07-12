@@ -42,7 +42,7 @@ public class PainelCadastroQuarto extends JPanel {
 	private JButton btnCancelar;
 	private JButton btnSalvar;
 	private JComboBox comboBox;
-	private String[] tiposQuarto = {"B·sico","Intermedi·rio","Luxo"};
+	private String[] tiposQuarto = {"B√°sico","Intermedi√°rio","Luxo"};
 	private JLabel lblCadastroQuarto;
 	private Quarto quartoVO;
 	private QuartoController quartoController = new QuartoController();
