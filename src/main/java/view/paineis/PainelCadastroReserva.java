@@ -160,29 +160,28 @@ public class PainelCadastroReserva extends JPanel {
 				LocalDate dataInicialSelecionada = dataInicio.getDate();
 				pickerFinal.setDateRangeLimits(dataInicialSelecionada, null);
 				if (primeiraData == 0) {
-					dataFim.setDate(dataInicialSelecionada);
+					dataFim.setDate(dataInicialSelecionada.plusDays(1));
 					primeiraData = 1;
 				}
 			}
 		});
 
+		pickerFinal = new DatePickerSettings();
+		dataFim = new DatePicker(pickerFinal);
+		dataFim.addDateChangeListener(new DateChangeListener() {
+			public void dateChanged(DateChangeEvent event) {
+				LocalDate dataFinalSelecionada = dataFim.getDate();
+				pickerInicial.setDateRangeLimits(null, dataFinalSelecionada);
+				if (primeiraData == 0) {
+					dataInicio.setDate(dataFinalSelecionada.plusDays(1));
+					primeiraData = 1;
+				}
+			}
+		});
+		add(dataFim, "8, 24, 3, 1, fill, default");
+
 		JLabel lblModeloQuarto = new JLabel("Categoria de Quarto pretendida:");
 		add(lblModeloQuarto, "4, 16");
-
-		/*
-		 * btngroup rdbtnBasico = new JRadioButton("Básico"); add(rdbtnBasico,
-		 * "4, 18, center, default");
-		 * 
-		 * rdbtnIntermediario = new JRadioButton("Intermediário");
-		 * add(rdbtnIntermediario, "6, 18, center, default");
-		 * 
-		 * rdbtnLuxo = new JRadioButton("Luxo"); add(rdbtnLuxo,
-		 * "8, 18, center, default");
-		 * 
-		 * final ButtonGroup buttonGroup = new ButtonGroup();
-		 * buttonGroup.add(rdbtnIntermediario); buttonGroup.add(rdbtnBasico);
-		 * buttonGroup.add(rdbtnLuxo);
-		 */
 
 		cbxCategoriaQuarto = new JComboBox(categoriasDeQuarto);
 		add(cbxCategoriaQuarto, "4, 18, 9, 1, fill, default");
@@ -196,21 +195,7 @@ public class PainelCadastroReserva extends JPanel {
 		JLabel lblFimPeridodo = new JLabel("Data pretendida para fim de reserva:");
 		add(lblFimPeridodo, "8, 22, 3, 1");
 		add(dataInicio, "4, 24, 3, 1");
-
-		pickerFinal = new DatePickerSettings();
-		dataFim = new DatePicker(pickerFinal);
-		dataFim.addDateChangeListener(new DateChangeListener() {
-			public void dateChanged(DateChangeEvent event) {
-				LocalDate dataFinalSelecionada = dataFim.getDate();
-				pickerInicial.setDateRangeLimits(null, dataFinalSelecionada);
-				if (primeiraData == 0) {
-					dataInicio.setDate(dataFinalSelecionada);
-					primeiraData = 1;
-				}
-			}
-		});
-		add(dataFim, "8, 24, 3, 1, fill, default");
-
+		
 		btnBuscarQuartos = new JButton("Buscar Quartos disponíveis");
 		btnBuscarQuartos.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
