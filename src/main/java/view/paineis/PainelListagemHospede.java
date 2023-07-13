@@ -47,7 +47,6 @@ public class PainelListagemHospede extends JPanel {
 	private JButton btnConsultar;
 	private JButton btnLimpar;
 	private JButton btnEditar;
-	private JButton btnExcluir;
 	private JButton btnAdicionarNovoHospede;
 	private JButton btnGerarRelatorio;
 
@@ -151,16 +150,6 @@ public class PainelListagemHospede extends JPanel {
 		btnEditar.setBackground(new Color(50, 204, 233));
 		add(btnEditar, "16, 18");
 
-		btnExcluir = new JButton("Excluir");
-		btnExcluir.setEnabled(false);
-		btnExcluir.setBackground(new Color(255, 0, 0));
-		btnExcluir.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				// COMPLETAR ACTION LISTENER
-			}
-		});
-		add(btnExcluir, "18, 18");
-
 		JLabel lblListagemHospedes = new JLabel("Listagem de Hóspedes");
 		lblListagemHospedes.setFont(new Font("Tahoma", Font.BOLD, 25));
 		add(lblListagemHospedes, "4, 4, 15, 1, center, default");
@@ -206,7 +195,6 @@ public class PainelListagemHospede extends JPanel {
 
 				if (elementoSelecionado > 0) {
 					btnEditar.setEnabled(true);
-					btnExcluir.setEnabled(true);
 					hospedeSelecionado = hospedes.get(elementoSelecionado - 1);
 				}
 			}
@@ -266,7 +254,6 @@ public class PainelListagemHospede extends JPanel {
 	private void limparTabelaHospedes() {
 		tblHospedes.setModel(new DefaultTableModel(new Object[][] { nomesColunas, }, nomesColunas));
 		btnEditar.setEnabled(false);
-		btnExcluir.setEnabled(false);
 	}
 
 	public JButton getBtnEditar() {

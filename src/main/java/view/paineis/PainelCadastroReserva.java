@@ -15,6 +15,7 @@ import com.jgoodies.forms.layout.FormLayout;
 import com.jgoodies.forms.layout.FormSpecs;
 import com.jgoodies.forms.layout.RowSpec;
 
+import Util.Formatador;
 import controller.HospedeController;
 import controller.ReservaController;
 import model.exception.CampoInvalidoException;
@@ -325,7 +326,7 @@ public class PainelCadastroReserva extends JPanel {
 			Object[] novaLinhaDaTabela = new Object[4];
 			novaLinhaDaTabela[0] = quarto.getNumeroQuarto();
 			novaLinhaDaTabela[1] = quarto.getTipoQuarto();
-			novaLinhaDaTabela[2] = quarto.getValorQuarto();
+			novaLinhaDaTabela[2] = Formatador.formatarValorQuartoParaView(quarto.getValorQuarto());
 
 			model.addRow(novaLinhaDaTabela);
 		}

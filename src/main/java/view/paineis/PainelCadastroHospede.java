@@ -138,10 +138,16 @@ public class PainelCadastroHospede extends JPanel {
 	public boolean salvarHospede() {
 		boolean retorno = false;
 		hospedeVO.setNome(tfNome.getText());
+		
+		String cpfSemMascara;
 		try {
-			String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
+			cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
 			hospedeVO.setCpf(cpfSemMascara);
-
+		} catch (ParseException e) {
+		
+		}
+		
+		try {
 			String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
 			hospedeVO.setTelefone(telefoneSemMascara);
 		} catch (ParseException e1) {

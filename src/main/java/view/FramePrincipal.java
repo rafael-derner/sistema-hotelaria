@@ -422,6 +422,7 @@ public class FramePrincipal extends JFrame {
 					painelListagemHospede = new PainelListagemHospede();
 					painelListagemHospede.setVisible(true);
 					registrarCliqueBtnEditarDoPainelListagemHospede();
+					registrarCliqueBtnAdicionarNovoHospedePainelListagemHospede();
 
 					// Atualiza a tela principal
 					setContentPane(painelListagemHospede);

@@ -6,6 +6,9 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFDataFormat;
 import org.apache.poi.hssf.usermodel.HSSFRow;
 import org.apache.poi.hssf.usermodel.HSSFSheet;
 import org.apache.poi.hssf.usermodel.HSSFWorkbook;
@@ -22,19 +25,24 @@ public class GeradorPlanilha {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Quartos");
 
-		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
-		linhaCabecalho.createCell(0).setCellValue("Número");
-		linhaCabecalho.createCell(1).setCellValue("Tipo de Quarto");
-		linhaCabecalho.createCell(2).setCellValue("Valor da diária");
-		linhaCabecalho.createCell(3).setCellValue("Ativo?");
+		HSSFRow linhaTitulo = abaPlanilha.createRow(0);
+		linhaTitulo.createCell(0).setCellValue("Relatório de Quartos");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(1);
+		linhaCabecalho.createCell(0).setCellValue("ID");
+		linhaCabecalho.createCell(1).setCellValue("Número");
+		linhaCabecalho.createCell(2).setCellValue("Tipo de Quarto");
+		linhaCabecalho.createCell(3).setCellValue("Valor da diária");
+		linhaCabecalho.createCell(4).setCellValue("Ativo?");
 
-		int contadorLinhas = 1;
+		int contadorLinhas = 2;
 		for (Quarto q : quartos) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
-			novaLinha.createCell(0).setCellValue(q.getNumeroQuarto());
-			novaLinha.createCell(1).setCellValue(q.getTipoQuarto());
-			novaLinha.createCell(2).setCellValue(Formatador.formatarValorQuartoParaView(q.getValorQuarto()));
-			novaLinha.createCell(3).setCellValue(q.isAtivo() ? "Sim" : "Não");
+			novaLinha.createCell(0).setCellValue(q.getIdQuarto());
+			novaLinha.createCell(1).setCellValue(q.getNumeroQuarto());
+			novaLinha.createCell(2).setCellValue(q.getTipoQuarto());
+			novaLinha.createCell(3).setCellValue(Formatador.formatarValorQuartoParaView(q.getValorQuarto()));
+			novaLinha.createCell(4).setCellValue(q.isAtivo() ? "Sim" : "Não");
 			contadorLinhas++;
 
 		}
@@ -44,9 +52,12 @@ public class GeradorPlanilha {
 
 	public String geradorPlanilhaUsuario(ArrayList<Usuario> usuarios, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
-		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
-
-		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Funcionários");
+		
+		HSSFRow linhaTitulo = abaPlanilha.createRow(0);
+		linhaTitulo.createCell(0).setCellValue("Relatório de Funcionários");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(1);
 		linhaCabecalho.createCell(0).setCellValue("ID");
 		linhaCabecalho.createCell(1).setCellValue("Nome");
 		linhaCabecalho.createCell(2).setCellValue("CPF");
@@ -54,7 +65,7 @@ public class GeradorPlanilha {
 		linhaCabecalho.createCell(4).setCellValue("Perfil");
 		linhaCabecalho.createCell(5).setCellValue("Ativo");
 
-		int contadorLinhas = 1;
+		int contadorLinhas = 2;
 		for (Usuario usuario : usuarios) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(usuario.getIdUsuario());
@@ -68,45 +79,67 @@ public class GeradorPlanilha {
 
 		return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
-
+	
 	public String geradorPlanilhaReserva(ArrayList<Reserva> listaReservas, String destinoArquivo) {
-		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
-		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Reserva");
+	    HSSFWorkbook arquivoExcel = new HSSFWorkbook();
+	    HSSFSheet abaPlanilha = arquivoExcel.createSheet("Reservas");
+	    HSSFRow linhaTitulo = abaPlanilha.createRow(0);
+	    linhaTitulo.createCell(0).setCellValue("Relatório de Reservas");
 
-		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
-		linhaCabecalho.createCell(0).setCellValue("ID");
-		linhaCabecalho.createCell(1).setCellValue("Hospede");
-		linhaCabecalho.createCell(2).setCellValue("Numero do Quarto");
-		linhaCabecalho.createCell(3).setCellValue("Check-in Previsto");
-		linhaCabecalho.createCell(4).setCellValue("Check-out Previsto");
-		linhaCabecalho.createCell(4).setCellValue("Valor");
+	    HSSFRow linhaCabecalho = abaPlanilha.createRow(1);
+	    linhaCabecalho.createCell(0).setCellValue("ID");
+	    linhaCabecalho.createCell(1).setCellValue("Hospede");
+	    linhaCabecalho.createCell(2).setCellValue("Numero do Quarto");
+	    linhaCabecalho.createCell(3).setCellValue("Check-in Previsto");
+	    linhaCabecalho.createCell(4).setCellValue("Check-out Previsto");
+	    linhaCabecalho.createCell(5).setCellValue("Valor");
 
-		int contadorLinhas = 1;
-		for (Reserva reserva : listaReservas) {
-			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
-			novaLinha.createCell(0).setCellValue(reserva.getIdReserva());
-			novaLinha.createCell(1).setCellValue(reserva.getHospede().getNome());
-			novaLinha.createCell(2).setCellValue(reserva.getQuarto().getNumeroQuarto());
-			novaLinha.createCell(3).setCellValue(reserva.getDtCheckIn());
-			novaLinha.createCell(4).setCellValue(reserva.getDtCheckOut());
-			novaLinha.createCell(4).setCellValue(reserva.getDtCheckOut());
-			contadorLinhas++;
-		}
+	    HSSFCellStyle estiloData = arquivoExcel.createCellStyle();
+	    HSSFDataFormat formatoData = arquivoExcel.createDataFormat();
+	    estiloData.setDataFormat(formatoData.getFormat("dd/MM/yyyy"));
 
-		return salvarNoDisco(arquivoExcel, destinoArquivo);
+	    int contadorLinhas = 2;
+	    for (Reserva reserva : listaReservas) {
+	        HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
+	        novaLinha.createCell(0).setCellValue(reserva.getIdReserva());
+	        novaLinha.createCell(1).setCellValue(reserva.getHospede().getNome());
+	        novaLinha.createCell(2).setCellValue(reserva.getQuarto().getNumeroQuarto());
+	        HSSFCell cellCheckIn = novaLinha.createCell(3);
+	        cellCheckIn.setCellValue(reserva.getDtCheckIn());
+	        cellCheckIn.setCellStyle(estiloData);
+	        HSSFCell cellCheckOut = novaLinha.createCell(4);
+	        cellCheckOut.setCellValue(reserva.getDtCheckOut());
+	        cellCheckOut.setCellStyle(estiloData);
+	        novaLinha.createCell(5).setCellValue(Formatador.formatarValorQuartoParaView(reserva.calcularValorReserva(reserva)));
+	        contadorLinhas++;
+	    }
+	    
+	    // Ajustar a largura das colunas
+	    abaPlanilha.setColumnWidth(0, 3000); // Largura da coluna ID
+	    abaPlanilha.setColumnWidth(1, 6000); // Largura da coluna Hospede
+	    abaPlanilha.setColumnWidth(2, 5000); // Largura da coluna Numero do Quarto
+	    abaPlanilha.setColumnWidth(3, 5000); // Largura da coluna Check-in Previsto
+	    abaPlanilha.setColumnWidth(4, 5000); // Largura da coluna Check-out Previsto
+	    abaPlanilha.setColumnWidth(5, 4000); // Largura da coluna Valor
+	    
+
+	    return salvarNoDisco(arquivoExcel, destinoArquivo);
 	}
 
 	public String geradorPlanilhaHospedes(ArrayList<Hospede> hospedes, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
 		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Hóspedes");
 
-		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
+		HSSFRow linhaTitulo = abaPlanilha.createRow(0);
+		linhaTitulo.createCell(0).setCellValue("Relatório de Hóspedes");
+		
+		HSSFRow linhaCabecalho = abaPlanilha.createRow(1);
 		linhaCabecalho.createCell(0).setCellValue("ID");
 		linhaCabecalho.createCell(1).setCellValue("Nome");
 		linhaCabecalho.createCell(2).setCellValue("CPF");
 		linhaCabecalho.createCell(3).setCellValue("Telefone");
 
-		int contadorLinhas = 1;
+		int contadorLinhas = 2;
 		for (Hospede hospede : hospedes) {
 			HSSFRow novaLinha = abaPlanilha.createRow(contadorLinhas);
 			novaLinha.createCell(0).setCellValue(hospede.getIdHospede());

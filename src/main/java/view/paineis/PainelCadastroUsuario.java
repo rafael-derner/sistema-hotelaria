@@ -160,9 +160,16 @@ public class PainelCadastroUsuario extends JPanel {
 		boolean retorno = false;
 		usuarioVO.setNome(tfNome.getText());
 		usuarioVO.setPerfil((String) comboBox.getSelectedItem());
+		
+		String cpfSemMascara;
 		try {
-			String cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
+			cpfSemMascara = (String) mascaraCpf.stringToValue(tfCpf.getText());
 			usuarioVO.setCpf(cpfSemMascara);
+		} catch (ParseException e) {
+			
+		}
+		
+		try {
 
 			String telefoneSemMascara = (String) mascaraTelefone.stringToValue(tfTelefone.getText());
 			usuarioVO.setTelefone(telefoneSemMascara);

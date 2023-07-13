@@ -69,6 +69,7 @@ public class PainelListagemReserva extends JPanel {
 	private JButton btnInvalidar;
 	private JLabel lblTitulo;
 	private JButton btnExcluir;
+	private JButton btnAdicionarNovaReserva;
 
 	public PainelListagemReserva() {
 		setLayout(new FormLayout(new ColumnSpec[] {
@@ -190,26 +191,6 @@ public class PainelListagemReserva extends JPanel {
 		});
 		add(btnLimpar, "18, 10, fill, default");
 		add(tabelaResultado, "4, 12, 15, 1, fill, fill");
-				
-		btnGerarRelatorio = new JButton("Gerar Relatório");
-		btnGerarRelatorio.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
-				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
-				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
-					String resultado;
-					try {
-						resultado = controller.gerarPlanilha(listaReservas, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null, resultado);
-					} catch (CampoInvalidoException campoInvalidoException) {
-						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção",
-								JOptionPane.WARNING_MESSAGE);
-					}
-				}
-			}
-		});
 						
 		btnAvancarPagina = new JButton(">>");
 		btnAvancarPagina.addActionListener(new ActionListener() {
@@ -239,7 +220,32 @@ public class PainelListagemReserva extends JPanel {
 		lblPaginacao.setText("1 / " + totalPaginas);
 		add(lblPaginacao, "6, 14, center, default");
 		add(btnAvancarPagina, "8, 14");
-		add(btnGerarRelatorio, "14, 14, fill, default");
+		
+		btnGerarRelatorio = new JButton("Gerar Relatório");
+		btnGerarRelatorio.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+					String resultado;
+					try {
+						resultado = controller.gerarPlanilha(listaReservas, caminhoEscolhido);
+						JOptionPane.showMessageDialog(null, resultado);
+					} catch (CampoInvalidoException campoInvalidoException) {
+						JOptionPane.showConfirmDialog(null, campoInvalidoException.getMessage(), "Atenção",
+								JOptionPane.WARNING_MESSAGE);
+					}
+				}
+			}
+		});
+		add(btnGerarRelatorio, "12, 14, fill, default");
+		
+		btnAdicionarNovaReserva = new JButton("Adicionar nova Reserva");
+		btnAdicionarNovaReserva.setEnabled(false);
+		btnAdicionarNovaReserva.setBackground(new Color(128, 255, 128));
+		add(btnAdicionarNovaReserva, "14, 14");
 
 		
 		btnEditar = new JButton("Editar");

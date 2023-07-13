@@ -56,6 +56,12 @@ select * from usuario;
 select * from reserva;
 
 
+select distinct(quarto.id_quarto), quarto.* from quarto 
+	left join reserva on reserva.id_quarto = quarto.id_quarto and (('dataInicio'
+	not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT) and ('dataFim'
+	not between reserva.DTHR_CHECK_IN and reserva.DTHR_CHECK_OUT))where
+	quarto.tipo_quarto = 'categoria';
+
 
 
     
