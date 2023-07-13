@@ -73,6 +73,7 @@ public class PainelListagemQuarto extends JPanel {
 	private JLabel lblPaginacao = new JLabel();
 	private JLabel lblValorFiltro;
 	private JComboBox cBFiltroValor;
+	private JButton btnAdicionarNovoQuarto;
 
 	/**
 	 * Launch the application.
@@ -221,28 +222,33 @@ public class PainelListagemQuarto extends JPanel {
 		});
 		// btnAvancarPagina.setEnabled(false);
 		add(btnAvancarPagina, "8, 18, fill, top");
+		
+				btnGerarPlanilha = new JButton("Gerar Relatório");
+				btnGerarPlanilha.addActionListener(new ActionListener() {
+					public void actionPerformed(ActionEvent e) {
+						JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
+						janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
+						int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
+						if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
+							String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
+							String resultado;
+							try {
+								resultado = quartoController.gerarPlanilha(quartos, caminhoEscolhido);
+								JOptionPane.showMessageDialog(null, resultado);
+							} catch (CampoInvalidoException e1) {
+								JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
 
-		btnGerarPlanilha = new JButton("Gerar Relatório");
-		btnGerarPlanilha.addActionListener(new ActionListener() {
-			public void actionPerformed(ActionEvent e) {
-				JFileChooser janelaSelecaoDestinoArquivo = new JFileChooser();
-				janelaSelecaoDestinoArquivo.setDialogTitle("Selecione um destino para o relatório...");
-				int opcaoSelecionada = janelaSelecaoDestinoArquivo.showSaveDialog(null);
-				if (opcaoSelecionada == JFileChooser.APPROVE_OPTION) {
-					String caminhoEscolhido = janelaSelecaoDestinoArquivo.getSelectedFile().getAbsolutePath();
-					String resultado;
-					try {
-						resultado = quartoController.gerarPlanilha(quartos, caminhoEscolhido);
-						JOptionPane.showMessageDialog(null, resultado);
-					} catch (CampoInvalidoException e1) {
-						JOptionPane.showConfirmDialog(null, e1.getMessage(), "Atenção", JOptionPane.WARNING_MESSAGE);
-
+							}
+						}
 					}
-				}
-			}
-		});
-
-		add(btnGerarPlanilha, "14, 18, fill, top");
+				});
+				
+						add(btnGerarPlanilha, "12, 18, fill, top");
+		
+		btnAdicionarNovoQuarto = new JButton("Adicionar novo Quarto");
+		btnAdicionarNovoQuarto.setEnabled(false);
+		btnAdicionarNovoQuarto.setBackground(new Color(128, 255, 128));
+		add(btnAdicionarNovoQuarto, "14, 18");
 
 		btnEditar = new JButton("Editar");
 		btnEditar.setEnabled(false);
