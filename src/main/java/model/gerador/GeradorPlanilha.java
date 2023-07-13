@@ -71,7 +71,7 @@ public class GeradorPlanilha {
 
 	public String geradorPlanilhaReserva(ArrayList<Reserva> listaReservas, String destinoArquivo) {
 		HSSFWorkbook arquivoExcel = new HSSFWorkbook();
-		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Usuários");
+		HSSFSheet abaPlanilha = arquivoExcel.createSheet("Reserva");
 
 		HSSFRow linhaCabecalho = abaPlanilha.createRow(0);
 		linhaCabecalho.createCell(0).setCellValue("ID");
