@@ -8,6 +8,7 @@ import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
 import model.exception.ExclusaoGerenteException;
+import model.exception.TelefoneInvalidoException;
 import model.gerador.GeradorPlanilha;
 import model.seletor.HospedeSeletor;
 import model.seletor.UsuarioSeletor;
@@ -16,12 +17,12 @@ import model.vo.Hospede;
 public class HospedeController {
 	private HospedeBO hospedeBO = new HospedeBO();
 
-	public Hospede inserir(Hospede novoHospede) throws CampoInvalidoException, CpfDuplicadoException {
+	public Hospede inserir(Hospede novoHospede) throws CampoInvalidoException, CpfDuplicadoException, TelefoneInvalidoException {
 		this.validarCamposObrigatorios(novoHospede);
 		return hospedeBO.inserir(novoHospede);
 	}
 
-	public boolean atualizar(Hospede Hospede) throws CampoInvalidoException, CpfAlteradoException {
+	public boolean atualizar(Hospede Hospede) throws CampoInvalidoException, CpfAlteradoException, TelefoneInvalidoException {
 		this.validarCamposObrigatorios(Hospede);
 		return hospedeBO.atualizar(Hospede);
 	}
