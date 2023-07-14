@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import Util.Formatador;
+import Util.Validador;
 import model.dao.UsuarioDAO;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
@@ -11,24 +12,33 @@ import model.exception.CpfDuplicadoException;
 import model.exception.UsuarioComReservaException;
 import model.exception.UsuarioInativoException;
 import model.exception.ExclusaoGerenteException;
+import model.exception.TelefoneInvalidoException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
 public class UsuarioBO {
 	private UsuarioDAO usuarioDAO = new UsuarioDAO();
 
-	public Usuario inserir(Usuario novoUsuario) throws CpfDuplicadoException {
+	public Usuario inserir(Usuario novoUsuario) throws CpfDuplicadoException, TelefoneInvalidoException {
 		if (usuarioDAO.verificarCpfDuplicado(novoUsuario.getCpf())) {
 			throw new CpfDuplicadoException("O CPF informado já foi utilizado.");
+		}
+		
+		if(!Validador.validarTelefone(novoUsuario.getTelefone())) {
+			throw new TelefoneInvalidoException("O telefone é inválido.");
 		}
 
 		return usuarioDAO.inserir(novoUsuario);
 	}
 
-	public boolean atualizar(Usuario usuario) throws CpfAlteradoException {
+	public boolean atualizar(Usuario usuario) throws CpfAlteradoException, TelefoneInvalidoException {
 		Usuario usuarioOld = usuarioDAO.consultarPorId(usuario.getIdUsuario());
 		if (!Formatador.formatarCpfParaView(usuario.getCpf()).equals(usuarioOld.getCpf())) {
 			throw new CpfAlteradoException("O CPF não pode ser alterado");
+		}
+		
+		if(!Validador.validarTelefone(usuario.getTelefone())) {
+			throw new TelefoneInvalidoException("O telefone é inválido.");
 		}
 
 		return usuarioDAO.atualizar(usuario);

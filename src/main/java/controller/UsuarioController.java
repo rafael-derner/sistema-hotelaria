@@ -11,18 +11,19 @@ import model.exception.UsuarioComReservaException;
 import model.exception.UsuarioInativoException;
 import model.gerador.GeradorPlanilha;
 import model.exception.ExclusaoGerenteException;
+import model.exception.TelefoneInvalidoException;
 import model.seletor.UsuarioSeletor;
 import model.vo.Usuario;
 
 public class UsuarioController {
 	private UsuarioBO usuarioBO = new UsuarioBO();
 
-	public Usuario inserir(Usuario novoUsuario) throws CampoInvalidoException, CpfDuplicadoException {
+	public Usuario inserir(Usuario novoUsuario) throws CampoInvalidoException, CpfDuplicadoException, TelefoneInvalidoException {
 		this.validarCamposObrigatorios(novoUsuario);
 		return usuarioBO.inserir(novoUsuario);
 	}
 
-	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException {
+	public boolean atualizar(Usuario usuario) throws CampoInvalidoException, CpfAlteradoException, TelefoneInvalidoException {
 		this.validarCamposObrigatorios(usuario);
 		return usuarioBO.atualizar(usuario);
 	}

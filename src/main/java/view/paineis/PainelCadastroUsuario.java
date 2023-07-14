@@ -32,6 +32,7 @@ import javax.swing.JFormattedTextField;
 import model.exception.CampoInvalidoException;
 import model.exception.CpfAlteradoException;
 import model.exception.CpfDuplicadoException;
+import model.exception.TelefoneInvalidoException;
 import model.vo.Usuario;
 import controller.UsuarioController;
 
@@ -200,6 +201,8 @@ public class PainelCadastroUsuario extends JPanel {
 			JOptionPane.showMessageDialog(null, exceptionCpfDuplicado.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		} catch (CpfAlteradoException exceptionCpfAlterado) {
 			JOptionPane.showMessageDialog(null, exceptionCpfAlterado.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
+		} catch (TelefoneInvalidoException exceptionTelefoneInvalido) {
+			JOptionPane.showMessageDialog(null, exceptionTelefoneInvalido.getMessage(), "Erro", JOptionPane.ERROR_MESSAGE);
 		}
 		return retorno;
 	}

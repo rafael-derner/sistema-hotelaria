@@ -343,6 +343,7 @@ public class FramePrincipal extends JFrame {
 					painelListagemUsuario = new PainelListagemUsuario();
 					painelListagemUsuario.setVisible(true);
 					registrarCliqueBtnEditarDoPainelListagemUsuario();
+					registrarCliqueBtnAdicionarNovoUsuarioPainelListagemUsuario();
 
 					// Atualiza a tela principal
 					setContentPane(painelListagemUsuario);
